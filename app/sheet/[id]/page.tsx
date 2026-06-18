@@ -2,7 +2,7 @@
 // Loads both sides' menu data and passes to the client SheetEditorPage.
 
 import { notFound } from "next/navigation";
-import { getMenu, listSnapshots } from "@/content/store";
+import { getMenu, listSnapshots, getRestaurant, getSheetTitles } from "@/content/store";
 import { getSheetConfig } from "@/sheets/sheetConfig";
 import SheetEditorPage from "@/editor/SheetEditorPage";
 
@@ -35,6 +35,10 @@ export default async function SheetRoute({ params }: Props) {
       ? frontSnapshots
       : await listSnapshots(sheet.back.menuId);
 
+  const restaurant = await getRestaurant();
+  const sheetTitles = await getSheetTitles();
+  const sheetTitle = sheetTitles[sheet.id] ?? sheet.name;
+
   return (
     <SheetEditorPage
       sheet={sheet}
@@ -50,6 +54,8 @@ export default async function SheetRoute({ params }: Props) {
         items: backResult.items,
         snapshots: backSnapshots,
       }}
+      restaurant={restaurant}
+      sheetTitle={sheetTitle}
     />
   );
 }

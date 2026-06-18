@@ -20,7 +20,7 @@
         "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
       },
       "createdAt": "2026-06-18T03:06:33.380Z",
-      "updatedAt": "2026-06-18T03:06:33.380Z"
+      "updatedAt": "2026-06-18T13:31:44.701Z"
     },
     {
       "id": "menu-drinks",
@@ -44,11 +44,12 @@
         "sec-scotch",
         "sec-vodka",
         "sec-gin",
+        "sec-spirits-desserts",
         "sec-rum",
         "sec-tequila-mezcal",
+        "sec-port",
         "sec-xo",
         "sec-digestifs",
-        "sec-port",
         "sec-coffees"
       ],
       "createdAt": "2026-06-18T03:06:33.383Z",
@@ -56,36 +57,6 @@
     }
   ],
   "sections": [
-    {
-      "id": "sec-to-begin",
-      "menuId": "menu-dinner",
-      "name": "To Begin",
-      "sortOrder": 0
-    },
-    {
-      "id": "sec-apps-salads",
-      "menuId": "menu-dinner",
-      "name": "Appetizers & Salads",
-      "sortOrder": 1
-    },
-    {
-      "id": "sec-entrees",
-      "menuId": "menu-dinner",
-      "name": "Entrées",
-      "sortOrder": 2
-    },
-    {
-      "id": "sec-desserts",
-      "menuId": "menu-dinner",
-      "name": "Desserts",
-      "sortOrder": 3
-    },
-    {
-      "id": "sec-bread-service",
-      "menuId": "menu-dinner",
-      "name": "Bread Service",
-      "sortOrder": 4
-    },
     {
       "id": "sec-sparkling",
       "menuId": "menu-drinks",
@@ -150,360 +121,49 @@
       "id": "sec-rum",
       "menuId": "menu-spirits",
       "name": "Rum",
-      "sortOrder": 5
+      "sortOrder": 6
     },
     {
       "id": "sec-tequila-mezcal",
       "menuId": "menu-spirits",
       "name": "Tequila & Mezcal",
-      "sortOrder": 6
+      "sortOrder": 7
     },
     {
       "id": "sec-xo",
       "menuId": "menu-spirits",
       "name": "XO Collection",
-      "sortOrder": 7
+      "sortOrder": 9,
+      "subtitle": "two-ounce pours"
     },
     {
       "id": "sec-digestifs",
       "menuId": "menu-spirits",
       "name": "Digestifs",
-      "sortOrder": 8
+      "sortOrder": 10,
+      "subtitle": "two-ounce pours"
     },
     {
       "id": "sec-port",
       "menuId": "menu-spirits",
       "name": "Ports & Dessert Wines",
-      "sortOrder": 9
+      "sortOrder": 8,
+      "subtitle": "2½ oz glass · full bottle"
     },
     {
       "id": "sec-coffees",
       "menuId": "menu-spirits",
       "name": "Coffees",
-      "sortOrder": 10
+      "sortOrder": 11
+    },
+    {
+      "id": "sec-spirits-desserts",
+      "menuId": "menu-spirits",
+      "name": "Desserts",
+      "sortOrder": 5
     }
   ],
   "items": [
-    {
-      "id": "299387ad-9f29-4499-bf9b-6d7d81954e95",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-to-begin",
-      "sortOrder": 0,
-      "name": "CREAMY SHRIMP BISQUE",
-      "price": "10",
-      "gf": false
-    },
-    {
-      "id": "0426e37d-6ab2-4efa-8539-2223793a3f84",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-to-begin",
-      "sortOrder": 1,
-      "name": "SHRIMP, CHICKEN, & SAUSAGE GUMBO",
-      "price": "10",
-      "gf": false
-    },
-    {
-      "id": "68712411-5cbf-4432-84b4-be50799642f2",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-to-begin",
-      "sortOrder": 2,
-      "name": "VEGAN CARROT COCONUT GINGER SOUP",
-      "price": "10",
-      "gf": true
-    },
-    {
-      "id": "30025736-88d1-4f80-983c-93753b35ddb6",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 0,
-      "name": "PELICAN CLUB BAKED OYSTERS",
-      "price": "17",
-      "gf": true,
-      "description": "applewood smoked bacon, parmesan, garlic herb butter"
-    },
-    {
-      "id": "746474be-0690-4118-ae45-f27699dc657b",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 1,
-      "name": "SEAFOOD MARTINI",
-      "price": "17",
-      "gf": true,
-      "description": "crab, shrimp, lobster, creole potato salad, avocado, ravigote sauce"
-    },
-    {
-      "id": "cfd274ed-06c7-465c-85a0-98100ac9b5d4",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 2,
-      "name": "HEIRLOOM TOMATO, BURRATA & WALNUT SALAD",
-      "price": "17",
-      "gf": true,
-      "description": "arugula, mixed lettuces, pickled red onions, creamy basil vinaigrette · VEGAN OPTION AVAILABLE"
-    },
-    {
-      "id": "f58242c7-7870-436e-bcf3-31586d280a4d",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 3,
-      "name": "ESCARGOTS EN CROUTE",
-      "price": "18",
-      "gf": true,
-      "description": "mixed mushroom duxelle, garlic butter, puff pastry"
-    },
-    {
-      "id": "556d47c1-ab98-4706-b076-e0a792fc8a6a",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 4,
-      "name": "SEARED SCALLOPS & ARTICHOKE",
-      "price": "20",
-      "gf": true,
-      "surcharge": "(+$3)",
-      "description": "lemon garlic beurre blanc"
-    },
-    {
-      "id": "96cbbbb5-3f41-43db-945c-3e2705fa97b7",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 5,
-      "name": "KOREAN PORK STEAM BUN",
-      "price": "16",
-      "gf": false,
-      "description": "kewpie mayo, sriracha & hoisin sauces, asian slaw"
-    },
-    {
-      "id": "c52afa1a-ec2f-4ecc-952b-aae77811267d",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 6,
-      "name": "LITTLE GEM CAESAR",
-      "price": "17",
-      "gf": true,
-      "description": "Spanish boquerones white anchovies, parmesan, toasted breadcrumbs, cheese crostini · VEGETARIAN OPTION AVAILABLE"
-    },
-    {
-      "id": "571d7a16-a28c-453d-8d73-9b8920b02523",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 7,
-      "name": "NEW ORLEANS STYLE BBQ SHRIMP",
-      "price": "18",
-      "gf": true,
-      "description": "U/12 head-on shrimp served in cast iron skillet with garlic bread"
-    },
-    {
-      "id": "f16b41de-da37-41b0-a583-8622712319ab",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-apps-salads",
-      "sortOrder": 8,
-      "name": "TUNA POKE",
-      "price": "17",
-      "gf": true,
-      "description": "onions, avocado crema, mango, tortilla chips"
-    },
-    {
-      "id": "e016e401-dc70-4038-b550-f1819307c47f",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 0,
-      "name": "HALF FRIED CHICKEN",
-      "price": "28",
-      "gf": false,
-      "description": "served in an iron skillet with corn pudding, black eyed peas & collard greens, cojito cheese, housemade hot sauce"
-    },
-    {
-      "id": "0d3e384f-181a-4216-ae71-d816b4f099f6",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 1,
-      "name": "PRIME PORK CHOP",
-      "price": "36",
-      "gf": true,
-      "description": "mustard sauce, bourbon molasses sweet potatoes, collard greens"
-    },
-    {
-      "id": "1573abf3-b916-4296-a78f-5d46094a913d",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 2,
-      "name": "WHOLE CRISPY FISH",
-      "price": "36",
-      "gf": true,
-      "description": "citrus chili sauce, jasmine rice"
-    },
-    {
-      "id": "af7b5c33-4cce-4090-a200-8ad6f1d1addb",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 3,
-      "name": "SEARED RARE AHI TUNA & CHINOIS SALAD",
-      "price": "36",
-      "gf": true,
-      "description": "ginger soy glaze, avocado"
-    },
-    {
-      "id": "08a3b1a9-3fe7-4ee7-9ca0-53e45199e39a",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 4,
-      "name": "PANÉED GULF FISH WITH CRAWFISH ÉTOUFFÉE",
-      "price": "38",
-      "gf": true,
-      "description": "jalapeño hollandaise, brabant potatoes, haricots verts"
-    },
-    {
-      "id": "04f221cf-848c-463c-a6f3-c4ef5e528874",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 5,
-      "name": "LOUISIANA CIOPPINO - IN ITS OWN POT",
-      "price": "36",
-      "gf": true,
-      "description": "basil garlic tomato sauce, gulf fish, shrimp, scallops, mussels, clams, calamari, buttered linguine · VEGAN/VEGETARIAN OPTION AVAILABLE: $28 À LA CARTE / $49 PRIX FIXE"
-    },
-    {
-      "id": "01a9ad99-8bf5-409b-905d-6e624c1d3692",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 6,
-      "name": "SURF & TURF",
-      "price": "42",
-      "gf": false,
-      "surcharge": "(+$6)",
-      "description": "6 oz filet mignon, thai shrimp cake, lemongrass hollandaise, coconut cream scallion smashed red potatoes, DV"
-    },
-    {
-      "id": "61663b8b-5638-4a83-b1c3-d23e737a2912",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 7,
-      "name": "USDA \"PRIME\" BEEF RIBEYE",
-      "price": "46",
-      "gf": true,
-      "surcharge": "(+$10)",
-      "description": "trumpet mushrooms, red wine sauce, buttery mashed potatoes, DV"
-    },
-    {
-      "id": "c1df6828-d109-4737-8692-7063e86ee362",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 8,
-      "name": "12 OZ MUSTARD, WALNUT & HERB CRUSTED RACK OF LAMB",
-      "price": "46",
-      "gf": true,
-      "surcharge": "(+$10)",
-      "description": "mint-demi, buttery mashed potatoes, DV"
-    },
-    {
-      "id": "b2c11e12-4492-4c17-880e-59c644d064f2",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-entrees",
-      "sortOrder": 9,
-      "name": "1 LB WHOLE MAINE LOBSTER & FRIED SHRIMP",
-      "price": "44",
-      "gf": true,
-      "surcharge": "(+$8)",
-      "description": "served butterflied, lemon garlic beurre blanc, baby potatoes, haricots verts · LIMITED QUANTITIES AVAILABLE"
-    },
-    {
-      "id": "062573a0-2167-40d2-b247-2c9b32af0e55",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-desserts",
-      "sortOrder": 0,
-      "name": "WHITE CHOCOLATE BREAD PUDDING",
-      "price": "10",
-      "gf": false,
-      "description": "white and dark chocolate sauces"
-    },
-    {
-      "id": "d9eb979d-41a5-4943-8d5b-9af5f3620a21",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-desserts",
-      "sortOrder": 1,
-      "name": "COCONUT CREAM PIE",
-      "price": "10",
-      "gf": false,
-      "description": "chocolate sauce, whipped cream"
-    },
-    {
-      "id": "930222d9-4d99-4193-aff9-c366ace8fe90",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-desserts",
-      "sortOrder": 2,
-      "name": "BOURBON PECAN PIE",
-      "price": "10",
-      "gf": false,
-      "description": "chocolate sauce, ice cream"
-    },
-    {
-      "id": "0a07f10b-58d9-4901-b704-5c61f69f46f4",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-desserts",
-      "sortOrder": 3,
-      "name": "FLOURLESS CHOCOLATE DECADENCE CAKE",
-      "price": "10",
-      "gf": true,
-      "description": "almonds"
-    },
-    {
-      "id": "26f2f497-c345-4e3b-8ddc-b490a773f9f4",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-desserts",
-      "sortOrder": 4,
-      "name": "GRAND MARNIER CRÈME BRÛLÉE",
-      "price": "10",
-      "gf": true,
-      "description": "fresh fruit"
-    },
-    {
-      "id": "4bfeaff0-cd19-4f79-8bc0-970cc9803579",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-desserts",
-      "sortOrder": 5,
-      "name": "SORBET & FRESH FRUIT",
-      "price": "10",
-      "gf": true
-    },
-    {
-      "id": "4939d8d5-5374-4a22-8ae9-c08d6ae72c94",
-      "type": "food",
-      "menuId": "menu-dinner",
-      "sectionId": "sec-bread-service",
-      "sortOrder": 0,
-      "name": "BREAD SERVICE",
-      "price": "5",
-      "gf": false,
-      "description": "basket of our homemade focaccia bread and butter"
-    },
     {
       "id": "26f36bf7-76bb-4494-892e-d0903272fdc8",
       "type": "wine_by_glass",
@@ -1207,8 +867,8 @@
       "menuId": "menu-spirits",
       "sectionId": "sec-whiskey-bourbon",
       "sortOrder": 24,
-      "name": "Willett Grain Select",
-      "originVarietal": "Japanese",
+      "name": "Shibui Grain Select",
+      "originVarietal": "Japanese Whisky",
       "price": "16",
       "group": "Whiskey & Bourbon"
     },
@@ -1383,7 +1043,7 @@
       "menuId": "menu-spirits",
       "sectionId": "sec-scotch",
       "sortOrder": 4,
-      "name": "Dalwhinnie Doublewood 12YR",
+      "name": "Balvenie Doublewood 12YR",
       "originVarietal": "Single Malt Highland",
       "price": "13",
       "group": "Scotch"
@@ -1643,7 +1303,7 @@
       "sectionId": "sec-gin",
       "sortOrder": 3,
       "name": "Bombay Sapphire",
-      "price": "10",
+      "price": "11",
       "group": "Gin"
     },
     {
@@ -1823,7 +1483,7 @@
       "sectionId": "sec-tequila-mezcal",
       "sortOrder": 6,
       "name": "Casamigos Silver",
-      "price": "14",
+      "price": "15",
       "group": "Tequila & Mezcal"
     },
     {
@@ -1833,7 +1493,7 @@
       "sectionId": "sec-tequila-mezcal",
       "sortOrder": 7,
       "name": "Casamigos Reposado",
-      "price": "15",
+      "price": "16",
       "group": "Tequila & Mezcal"
     },
     {
@@ -2034,7 +1694,7 @@
       "menuId": "menu-spirits",
       "sectionId": "sec-digestifs",
       "sortOrder": 4,
-      "name": "Grappa — VERIFY BRAND",
+      "name": "Moletto Grappa",
       "price": "15",
       "group": "Digestifs"
     },
@@ -2211,7 +1871,1199 @@
       "name": "Nutella Coffee",
       "ingredients": "Frangelico, Meletti chocolate liquor, coffee, whipped cream, cocoa powder",
       "price": "13"
+    },
+    {
+      "id": "sdes-001",
+      "type": "food",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-spirits-desserts",
+      "sortOrder": 0,
+      "name": "White Chocolate Bread Pudding",
+      "description": "white & dark chocolate sauces",
+      "price": "10"
+    },
+    {
+      "id": "sdes-002",
+      "type": "food",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-spirits-desserts",
+      "sortOrder": 1,
+      "name": "Coconut Cream Pie",
+      "description": "chocolate sauce, whipped cream",
+      "price": "10"
+    },
+    {
+      "id": "sdes-003",
+      "type": "food",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-spirits-desserts",
+      "sortOrder": 2,
+      "name": "Bourbon Pecan Pie",
+      "description": "chocolate sauce, ice cream",
+      "price": "10"
+    },
+    {
+      "id": "sdes-004",
+      "type": "food",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-spirits-desserts",
+      "sortOrder": 3,
+      "name": "Flourless Chocolate Decadence Cake",
+      "description": "almonds",
+      "price": "10",
+      "gf": true
+    },
+    {
+      "id": "sdes-005",
+      "type": "food",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-spirits-desserts",
+      "sortOrder": 4,
+      "name": "Grand Marnier Crème Brûlée",
+      "description": "fresh fruit",
+      "price": "10",
+      "gf": true
+    },
+    {
+      "id": "sdes-006",
+      "type": "food",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-spirits-desserts",
+      "sortOrder": 5,
+      "name": "Sorbet & Fresh Fruit",
+      "price": "10",
+      "gf": true
     }
   ],
-  "snapshots": []
+  "snapshots": [
+    {
+      "id": "4be72816-2d48-4d63-b90b-d4fc62e3576b",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:24:20 AM",
+      "createdAt": "2026-06-18T13:24:20.525Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:24:20.477Z"
+        },
+        "sections": [
+          {
+            "id": "sec-to-begin",
+            "menuId": "menu-dinner",
+            "name": "To Begin",
+            "sortOrder": 0
+          },
+          {
+            "id": "sec-apps-salads",
+            "menuId": "menu-dinner",
+            "name": "Appetizers & Salads",
+            "sortOrder": 1
+          },
+          {
+            "id": "sec-entrees",
+            "menuId": "menu-dinner",
+            "name": "Entrées",
+            "sortOrder": 2
+          },
+          {
+            "id": "sec-desserts",
+            "menuId": "menu-dinner",
+            "name": "Desserts",
+            "sortOrder": 3
+          },
+          {
+            "id": "sec-bread-service",
+            "menuId": "menu-dinner",
+            "name": "Bread Service",
+            "sortOrder": 4
+          }
+        ],
+        "items": [
+          {
+            "id": "299387ad-9f29-4499-bf9b-6d7d81954e95",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-to-begin",
+            "sortOrder": 0,
+            "name": "CREAMY SHRIMP BISQUE",
+            "price": "10",
+            "gf": false
+          },
+          {
+            "id": "30025736-88d1-4f80-983c-93753b35ddb6",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 0,
+            "name": "PELICAN CLUB BAKED OYSTERS",
+            "price": "17",
+            "gf": true,
+            "description": "applewood smoked bacon, parmesan, garlic herb butter"
+          },
+          {
+            "id": "e016e401-dc70-4038-b550-f1819307c47f",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 0,
+            "name": "HALF FRIED CHICKEN",
+            "price": "28",
+            "gf": false,
+            "description": "served in an iron skillet with corn pudding, black eyed peas & collard greens, cojito cheese, housemade hot sauce"
+          },
+          {
+            "id": "062573a0-2167-40d2-b247-2c9b32af0e55",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 0,
+            "name": "WHITE CHOCOLATE BREAD PUDDING",
+            "price": "10",
+            "gf": false,
+            "description": "white and dark chocolate sauces"
+          },
+          {
+            "id": "4939d8d5-5374-4a22-8ae9-c08d6ae72c94",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-bread-service",
+            "sortOrder": 0,
+            "name": "BREAD SERVICE",
+            "price": "5",
+            "gf": false,
+            "description": "basket of our homemade focaccia bread and butter"
+          },
+          {
+            "id": "0426e37d-6ab2-4efa-8539-2223793a3f84",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-to-begin",
+            "sortOrder": 1,
+            "name": "SHRIMP, CHICKEN, & SAUSAGE GUMBO",
+            "price": "10",
+            "gf": false
+          },
+          {
+            "id": "746474be-0690-4118-ae45-f27699dc657b",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 1,
+            "name": "SEAFOOD MARTINI",
+            "price": "17",
+            "gf": true,
+            "description": "crab, shrimp, lobster, creole potato salad, avocado, ravigote sauce"
+          },
+          {
+            "id": "0d3e384f-181a-4216-ae71-d816b4f099f6",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 1,
+            "name": "PRIME PORK CHOP",
+            "price": "36",
+            "gf": true,
+            "description": "mustard sauce, bourbon molasses sweet potatoes, collard greens"
+          },
+          {
+            "id": "d9eb979d-41a5-4943-8d5b-9af5f3620a21",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 1,
+            "name": "COCONUT CREAM PIE",
+            "price": "10",
+            "gf": false,
+            "description": "chocolate sauce, whipped cream"
+          },
+          {
+            "id": "68712411-5cbf-4432-84b4-be50799642f2",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-to-begin",
+            "sortOrder": 2,
+            "name": "VEGAN CARROT COCONUT GINGER SOUP",
+            "price": "10",
+            "gf": true
+          },
+          {
+            "id": "cfd274ed-06c7-465c-85a0-98100ac9b5d4",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 2,
+            "name": "HEIRLOOM TOMATO, BURRATA & WALNUT SALAD",
+            "price": "17",
+            "gf": true,
+            "description": "arugula, mixed lettuces, pickled red onions, creamy basil vinaigrette · VEGAN OPTION AVAILABLE"
+          },
+          {
+            "id": "1573abf3-b916-4296-a78f-5d46094a913d",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 2,
+            "name": "WHOLE CRISPY FISH",
+            "price": "36",
+            "gf": true,
+            "description": "citrus chili sauce, jasmine rice"
+          },
+          {
+            "id": "930222d9-4d99-4193-aff9-c366ace8fe90",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 2,
+            "name": "BOURBON PECAN PIE",
+            "price": "10",
+            "gf": false,
+            "description": "chocolate sauce, ice cream"
+          },
+          {
+            "id": "f58242c7-7870-436e-bcf3-31586d280a4d",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 3,
+            "name": "ESCARGOTS EN CROUTE",
+            "price": "18",
+            "gf": true,
+            "description": "mixed mushroom duxelle, garlic butter, puff pastry"
+          },
+          {
+            "id": "af7b5c33-4cce-4090-a200-8ad6f1d1addb",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 3,
+            "name": "SEARED RARE AHI TUNA & CHINOIS SALAD",
+            "price": "36",
+            "gf": true,
+            "description": "ginger soy glaze, avocado"
+          },
+          {
+            "id": "0a07f10b-58d9-4901-b704-5c61f69f46f4",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 3,
+            "name": "FLOURLESS CHOCOLATE DECADENCE CAKE",
+            "price": "10",
+            "gf": true,
+            "description": "almonds"
+          },
+          {
+            "id": "556d47c1-ab98-4706-b076-e0a792fc8a6a",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 4,
+            "name": "SEARED SCALLOPS & ARTICHOKE",
+            "price": "20",
+            "gf": true,
+            "surcharge": "(+$3)",
+            "description": "lemon garlic beurre blanc"
+          },
+          {
+            "id": "08a3b1a9-3fe7-4ee7-9ca0-53e45199e39a",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 4,
+            "name": "PANÉED GULF FISH WITH CRAWFISH ÉTOUFFÉE",
+            "price": "38",
+            "gf": true,
+            "description": "jalapeño hollandaise, brabant potatoes, haricots verts"
+          },
+          {
+            "id": "26f2f497-c345-4e3b-8ddc-b490a773f9f4",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 4,
+            "name": "GRAND MARNIER CRÈME BRÛLÉE",
+            "price": "10",
+            "gf": true,
+            "description": "fresh fruit"
+          },
+          {
+            "id": "96cbbbb5-3f41-43db-945c-3e2705fa97b7",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 5,
+            "name": "KOREAN PORK STEAM BUN",
+            "price": "16",
+            "gf": false,
+            "description": "kewpie mayo, sriracha & hoisin sauces, asian slaw"
+          },
+          {
+            "id": "04f221cf-848c-463c-a6f3-c4ef5e528874",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 5,
+            "name": "LOUISIANA CIOPPINO - IN ITS OWN POT",
+            "price": "36",
+            "gf": true,
+            "description": "basil garlic tomato sauce, gulf fish, shrimp, scallops, mussels, clams, calamari, buttered linguine · VEGAN/VEGETARIAN OPTION AVAILABLE: $28 À LA CARTE / $49 PRIX FIXE"
+          },
+          {
+            "id": "4bfeaff0-cd19-4f79-8bc0-970cc9803579",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 5,
+            "name": "SORBET & FRESH FRUIT",
+            "price": "10",
+            "gf": true
+          },
+          {
+            "id": "c52afa1a-ec2f-4ecc-952b-aae77811267d",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 6,
+            "name": "LITTLE GEM CAESAR",
+            "price": "17",
+            "gf": true,
+            "description": "Spanish boquerones white anchovies, parmesan, toasted breadcrumbs, cheese crostini · VEGETARIAN OPTION AVAILABLE"
+          },
+          {
+            "id": "01a9ad99-8bf5-409b-905d-6e624c1d3692",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 6,
+            "name": "SURF & TURF",
+            "price": "42",
+            "gf": false,
+            "surcharge": "(+$6)",
+            "description": "6 oz filet mignon, thai shrimp cake, lemongrass hollandaise, coconut cream scallion smashed red potatoes, DV"
+          },
+          {
+            "id": "571d7a16-a28c-453d-8d73-9b8920b02523",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 7,
+            "name": "NEW ORLEANS STYLE BBQ SHRIMP",
+            "price": "18",
+            "gf": true,
+            "description": "U/12 head-on shrimp served in cast iron skillet with garlic bread"
+          },
+          {
+            "id": "61663b8b-5638-4a83-b1c3-d23e737a2912",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 7,
+            "name": "USDA \"PRIME\" BEEF RIBEYE",
+            "price": "46",
+            "gf": true,
+            "surcharge": "(+$10)",
+            "description": "trumpet mushrooms, red wine sauce, buttery mashed potatoes, DV"
+          },
+          {
+            "id": "f16b41de-da37-41b0-a583-8622712319ab",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 8,
+            "name": "TUNA POKE",
+            "price": "17",
+            "gf": true,
+            "description": "onions, avocado crema, mango, tortilla chips"
+          },
+          {
+            "id": "c1df6828-d109-4737-8692-7063e86ee362",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 8,
+            "name": "12 OZ MUSTARD, WALNUT & HERB CRUSTED RACK OF LAMB",
+            "price": "46",
+            "gf": true,
+            "surcharge": "(+$10)",
+            "description": "mint-demi, buttery mashed potatoes, DV"
+          },
+          {
+            "id": "b2c11e12-4492-4c17-880e-59c644d064f2",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 9,
+            "name": "1 LB WHOLE MAINE LOBSTER & FRIED SHRIMP",
+            "price": "44",
+            "gf": true,
+            "surcharge": "(+$8)",
+            "description": "served butterflied, lemon garlic beurre blanc, baby potatoes, haricots verts · LIMITED QUANTITIES AVAILABLE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "39a64e88-9bfd-4293-b2ba-93b4dbf93224",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:24:31 AM",
+      "createdAt": "2026-06-18T13:24:31.501Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:24:31.498Z"
+        },
+        "sections": [
+          {
+            "id": "sec-to-begin",
+            "menuId": "menu-dinner",
+            "name": "To Begin",
+            "sortOrder": 0
+          },
+          {
+            "id": "sec-apps-salads",
+            "menuId": "menu-dinner",
+            "name": "Appetizers & Salads",
+            "sortOrder": 1
+          },
+          {
+            "id": "sec-entrees",
+            "menuId": "menu-dinner",
+            "name": "Entrées",
+            "sortOrder": 2
+          },
+          {
+            "id": "sec-desserts",
+            "menuId": "menu-dinner",
+            "name": "Desserts",
+            "sortOrder": 3
+          },
+          {
+            "id": "sec-bread-service",
+            "menuId": "menu-dinner",
+            "name": "Bread Service",
+            "sortOrder": 4
+          }
+        ],
+        "items": [
+          {
+            "id": "299387ad-9f29-4499-bf9b-6d7d81954e95",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-to-begin",
+            "sortOrder": 0,
+            "name": "CREAMY SHRIMP BISQUE",
+            "price": "10",
+            "gf": false
+          },
+          {
+            "id": "30025736-88d1-4f80-983c-93753b35ddb6",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 0,
+            "name": "PELICAN CLUB BAKED OYSTERS",
+            "price": "17",
+            "gf": true,
+            "description": "applewood smoked bacon, parmesan, garlic herb butter"
+          },
+          {
+            "id": "e016e401-dc70-4038-b550-f1819307c47f",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 0,
+            "name": "HALF FRIED CHICKEN",
+            "price": "28",
+            "gf": false,
+            "description": "served in an iron skillet with corn pudding, black eyed peas & collard greens, cojito cheese, housemade hot sauce"
+          },
+          {
+            "id": "062573a0-2167-40d2-b247-2c9b32af0e55",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 0,
+            "name": "WHITE CHOCOLATE BREAD PUDDING",
+            "price": "10",
+            "gf": false,
+            "description": "white and dark chocolate sauces"
+          },
+          {
+            "id": "4939d8d5-5374-4a22-8ae9-c08d6ae72c94",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-bread-service",
+            "sortOrder": 0,
+            "name": "BREAD SERVICE",
+            "price": "5",
+            "gf": false,
+            "description": "basket of our homemade focaccia bread and butter"
+          },
+          {
+            "id": "0426e37d-6ab2-4efa-8539-2223793a3f84",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-to-begin",
+            "sortOrder": 1,
+            "name": "SHRIMP, CHICKEN, & SAUSAGE GUMBO",
+            "price": "10",
+            "gf": false
+          },
+          {
+            "id": "746474be-0690-4118-ae45-f27699dc657b",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 1,
+            "name": "SEAFOOD MARTINI",
+            "price": "17",
+            "gf": true,
+            "description": "crab, shrimp, lobster, creole potato salad, avocado, ravigote sauce"
+          },
+          {
+            "id": "0d3e384f-181a-4216-ae71-d816b4f099f6",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 1,
+            "name": "PRIME PORK CHOP",
+            "price": "36",
+            "gf": true,
+            "description": "mustard sauce, bourbon molasses sweet potatoes, collard greens"
+          },
+          {
+            "id": "d9eb979d-41a5-4943-8d5b-9af5f3620a21",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 1,
+            "name": "COCONUT CREAM PIE",
+            "price": "10",
+            "gf": false,
+            "description": "chocolate sauce, whipped cream"
+          },
+          {
+            "id": "68712411-5cbf-4432-84b4-be50799642f2",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-to-begin",
+            "sortOrder": 2,
+            "name": "VEGAN CARROT COCONUT GINGER SOUP",
+            "price": "10",
+            "gf": true
+          },
+          {
+            "id": "cfd274ed-06c7-465c-85a0-98100ac9b5d4",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 2,
+            "name": "HEIRLOOM TOMATO, BURRATA & WALNUT SALAD",
+            "price": "17",
+            "gf": true,
+            "description": "arugula, mixed lettuces, pickled red onions, creamy basil vinaigrette · VEGAN OPTION AVAILABLE"
+          },
+          {
+            "id": "1573abf3-b916-4296-a78f-5d46094a913d",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 2,
+            "name": "WHOLE CRISPY FISH",
+            "price": "36",
+            "gf": true,
+            "description": "citrus chili sauce, jasmine rice"
+          },
+          {
+            "id": "930222d9-4d99-4193-aff9-c366ace8fe90",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 2,
+            "name": "BOURBON PECAN PIE",
+            "price": "10",
+            "gf": false,
+            "description": "chocolate sauce, ice cream"
+          },
+          {
+            "id": "f58242c7-7870-436e-bcf3-31586d280a4d",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 3,
+            "name": "ESCARGOTS EN CROUTE",
+            "price": "18",
+            "gf": true,
+            "description": "mixed mushroom duxelle, garlic butter, puff pastry"
+          },
+          {
+            "id": "af7b5c33-4cce-4090-a200-8ad6f1d1addb",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 3,
+            "name": "SEARED RARE AHI TUNA & CHINOIS SALAD",
+            "price": "36",
+            "gf": true,
+            "description": "ginger soy glaze, avocado"
+          },
+          {
+            "id": "0a07f10b-58d9-4901-b704-5c61f69f46f4",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 3,
+            "name": "FLOURLESS CHOCOLATE DECADENCE CAKE",
+            "price": "10",
+            "gf": true,
+            "description": "almonds"
+          },
+          {
+            "id": "556d47c1-ab98-4706-b076-e0a792fc8a6a",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 4,
+            "name": "SEARED SCALLOPS & ARTICHOKE",
+            "price": "20",
+            "gf": true,
+            "surcharge": "(+$3)",
+            "description": "lemon garlic beurre blanc"
+          },
+          {
+            "id": "08a3b1a9-3fe7-4ee7-9ca0-53e45199e39a",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 4,
+            "name": "PANÉED GULF FISH WITH CRAWFISH ÉTOUFFÉE",
+            "price": "38",
+            "gf": true,
+            "description": "jalapeño hollandaise, brabant potatoes, haricots verts"
+          },
+          {
+            "id": "26f2f497-c345-4e3b-8ddc-b490a773f9f4",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 4,
+            "name": "GRAND MARNIER CRÈME BRÛLÉE",
+            "price": "10",
+            "gf": true,
+            "description": "fresh fruit"
+          },
+          {
+            "id": "96cbbbb5-3f41-43db-945c-3e2705fa97b7",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 5,
+            "name": "KOREAN PORK STEAM BUN",
+            "price": "16",
+            "gf": false,
+            "description": "kewpie mayo, sriracha & hoisin sauces, asian slaw"
+          },
+          {
+            "id": "04f221cf-848c-463c-a6f3-c4ef5e528874",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 5,
+            "name": "LOUISIANA CIOPPINO - IN ITS OWN POT",
+            "price": "36",
+            "gf": true,
+            "description": "basil garlic tomato sauce, gulf fish, shrimp, scallops, mussels, clams, calamari, buttered linguine · VEGAN/VEGETARIAN OPTION AVAILABLE: $28 À LA CARTE / $49 PRIX FIXE"
+          },
+          {
+            "id": "4bfeaff0-cd19-4f79-8bc0-970cc9803579",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 5,
+            "name": "SORBET & FRESH FRUIT",
+            "price": "10",
+            "gf": true
+          },
+          {
+            "id": "c52afa1a-ec2f-4ecc-952b-aae77811267d",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 6,
+            "name": "LITTLE GEM CAESAR",
+            "price": "17",
+            "gf": true,
+            "description": "Spanish boquerones white anchovies, parmesan, toasted breadcrumbs, cheese crostini · VEGETARIAN OPTION AVAILABLE"
+          },
+          {
+            "id": "01a9ad99-8bf5-409b-905d-6e624c1d3692",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 6,
+            "name": "SURF & TURF",
+            "price": "42",
+            "gf": false,
+            "surcharge": "(+$6)",
+            "description": "6 oz filet mignon, thai shrimp cake, lemongrass hollandaise, coconut cream scallion smashed red potatoes, DV"
+          },
+          {
+            "id": "571d7a16-a28c-453d-8d73-9b8920b02523",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 7,
+            "name": "NEW ORLEANS STYLE BBQ SHRIMP",
+            "price": "18",
+            "gf": true,
+            "description": "U/12 head-on shrimp served in cast iron skillet with garlic bread"
+          },
+          {
+            "id": "61663b8b-5638-4a83-b1c3-d23e737a2912",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 7,
+            "name": "USDA \"PRIME\" BEEF RIBEYE",
+            "price": "46",
+            "gf": true,
+            "surcharge": "(+$10)",
+            "description": "trumpet mushrooms, red wine sauce, buttery mashed potatoes, DV"
+          },
+          {
+            "id": "f16b41de-da37-41b0-a583-8622712319ab",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-apps-salads",
+            "sortOrder": 8,
+            "name": "TUNA POKE",
+            "price": "17",
+            "gf": true,
+            "description": "onions, avocado crema, mango, tortilla chips"
+          },
+          {
+            "id": "c1df6828-d109-4737-8692-7063e86ee362",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 8,
+            "name": "12 OZ MUSTARD, WALNUT & HERB CRUSTED RACK OF LAMB",
+            "price": "46",
+            "gf": true,
+            "surcharge": "(+$10)",
+            "description": "mint-demi, buttery mashed potatoes, DV"
+          },
+          {
+            "id": "b2c11e12-4492-4c17-880e-59c644d064f2",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 9,
+            "name": "1 LB WHOLE MAINE LOBSTER & FRIED SHRIMP",
+            "price": "44",
+            "gf": true,
+            "surcharge": "(+$8)",
+            "description": "served butterflied, lemon garlic beurre blanc, baby potatoes, haricots verts · LIMITED QUANTITIES AVAILABLE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a3035309-be34-416c-a9a5-75bb823fceae",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:25:11 AM",
+      "createdAt": "2026-06-18T13:25:11.865Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "pageTitle": "DINNER TEST DIRECT",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "FOUR COURSES $99 TEST",
+            "introLines": [
+              "test line 1"
+            ],
+            "footerLine": "test footer"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:25:11.859Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "e29fcbff-46c9-4977-bb2e-ad12e7221fde",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:25:41 AM",
+      "createdAt": "2026-06-18T13:25:41.105Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:25:41.101Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "4d2afea2-94b9-4333-92bd-fca79b37fa81",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:28:05 AM",
+      "createdAt": "2026-06-18T13:28:05.596Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:28:05.593Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "4d2d915b-083e-4ed6-ac41-ff48f0360996",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:28:15 AM",
+      "createdAt": "2026-06-18T13:28:15.641Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:28:15.641Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "20dbd9c8-5f4c-4405-ba5e-1266e2919d73",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:28:47 AM",
+      "createdAt": "2026-06-18T13:28:47.053Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:28:47.052Z",
+          "pageTitle": "DINNER TEST MANUAL"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "c2336911-8ac8-402c-9d8a-7962bac55a7a",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:29:13 AM",
+      "createdAt": "2026-06-18T13:29:13.274Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "PRIX DEBUG",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:29:13.274Z",
+          "pageTitle": "DINNER TEST DEBUG"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "c7c10eae-ac5a-4fe7-8352-654825c860a6",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:30:07 AM",
+      "createdAt": "2026-06-18T13:30:07.873Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:30:07.873Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "6f9f82d0-6eb5-4ec5-847d-f4a6ab2329f4",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:30:12 AM",
+      "createdAt": "2026-06-18T13:30:12.291Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:30:12.291Z",
+          "pageTitle": "DINNER TEST"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "0f798dac-9d39-45ff-bc8f-a0a7048dfe75",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:31:18 AM",
+      "createdAt": "2026-06-18T13:31:18.933Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:31:18.933Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "f952cee9-bdc3-4fda-8e89-aeff37925219",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:31:34 AM",
+      "createdAt": "2026-06-18T13:31:34.089Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:31:34.086Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    },
+    {
+      "id": "b739eef9-5569-44f9-964d-43ad24edb144",
+      "menuId": "menu-dinner",
+      "label": "6/18/2026, 8:31:44 AM",
+      "createdAt": "2026-06-18T13:31:44.702Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-to-begin",
+            "sec-apps-salads",
+            "sec-entrees",
+            "sec-desserts",
+            "sec-bread-service"
+          ],
+          "furniture": {
+            "prixFixeHeader": "THREE COURSES $56 AND UP",
+            "introLines": [
+              "(choice of appetizer or salad, main and dessert)",
+              "à la carte prices listed next to each item",
+              "add a soup $8"
+            ],
+            "footerLine": "*gluten free available · menu subject to change · no separate checks · gratuity added to parties of 6 or more"
+          },
+          "createdAt": "2026-06-18T03:06:33.380Z",
+          "updatedAt": "2026-06-18T13:31:44.701Z"
+        },
+        "sections": [],
+        "items": []
+      }
+    }
+  ],
+  "restaurant": {
+    "houseName": "The Pelican Club",
+    "eyebrowLine": "New Orleans · Established 1990"
+  },
+  "sheetTitles": {
+    "dinner-menu": "DINNER MENU RENAMED"
+  }
 }

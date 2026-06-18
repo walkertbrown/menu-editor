@@ -7,7 +7,7 @@
 // pc-preview-wrap wrapper so the pages sit flush inside the spread.
 
 import { useEffect, useRef, useState } from "react";
-import type { Menu, Section, Item } from "@/content/types";
+import type { Menu, Section, Item, RestaurantIdentity } from "@/content/types";
 import type { SheetConfig } from "@/sheets/sheetConfig";
 import { SinglePageShell } from "./MenuPreview";
 import { SpiritsPage1, SpiritsPage2 } from "./SpiritsPreview";
@@ -27,6 +27,7 @@ interface Props {
   sheet: SheetConfig;
   frontData: SideData;
   backData: SideData;
+  restaurant?: RestaurantIdentity;
 }
 
 // ── Single page renderer — no wrapper, just the .pc-page ─────────────────
@@ -36,21 +37,33 @@ function SidePage({
   sections,
   items,
   spiritsPageSlot,
+  restaurant,
 }: {
   menu: Menu;
   sections: Section[];
   items: Item[];
   spiritsPageSlot?: "p1" | "p2";
+  restaurant?: RestaurantIdentity;
 }) {
   if (menu.id === "menu-spirits" && spiritsPageSlot) {
     const sectionMap = new Map(sections.map((s) => [s.id, s]));
     if (spiritsPageSlot === "p1") {
       return (
-        <SpiritsPage1 menu={menu} sectionMap={sectionMap} allItems={items} />
+        <SpiritsPage1
+          menu={menu}
+          sectionMap={sectionMap}
+          allItems={items}
+          restaurant={restaurant}
+        />
       );
     }
     return (
-      <SpiritsPage2 menu={menu} sectionMap={sectionMap} allItems={items} />
+      <SpiritsPage2
+        menu={menu}
+        sectionMap={sectionMap}
+        allItems={items}
+        restaurant={restaurant}
+      />
     );
   }
   // Dinner or Drinks: render the bare page shell (no pc-preview-wrap)
@@ -63,6 +76,7 @@ function SidePage({
       sections={orderedSections}
       isLastPage={true}
       allItems={items}
+      restaurant={restaurant}
     />
   );
 }
@@ -73,6 +87,7 @@ export default function SheetPreviewSpread({
   sheet,
   frontData,
   backData,
+  restaurant,
 }: Props) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -123,6 +138,7 @@ export default function SheetPreviewSpread({
               spiritsPageSlot={
                 sheet.front.menuId === "menu-spirits" ? "p1" : undefined
               }
+              restaurant={restaurant}
             />
           </div>
         </div>
@@ -138,6 +154,7 @@ export default function SheetPreviewSpread({
               spiritsPageSlot={
                 sheet.back.menuId === "menu-spirits" ? "p2" : undefined
               }
+              restaurant={restaurant}
             />
           </div>
         </div>

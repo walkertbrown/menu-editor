@@ -7,8 +7,13 @@
 
 "use client";
 
-import type { Menu, Section, Item } from "@/content/types";
+import type { Menu, Section, Item, RestaurantIdentity } from "@/content/types";
 import type { FoodItem, CocktailItem, SpiritListItem } from "@/content/types";
+
+const DEFAULT_RESTAURANT: RestaurantIdentity = {
+  houseName: "The Pelican Club",
+  eyebrowLine: "New Orleans · Established 1990",
+};
 import SpiritListItemRenderer from "./renderers/SpiritListItem";
 import PageFurniture from "./PageFurniture";
 import {
@@ -155,18 +160,24 @@ export function SpiritsPage1({
   menu,
   sectionMap,
   allItems,
+  restaurant,
 }: {
   menu: Menu;
   sectionMap: Map<string, Section>;
   allItems: Item[];
+  restaurant?: RestaurantIdentity;
 }) {
+  const r = restaurant ?? DEFAULT_RESTAURANT;
   return (
     <div className="pc-page pc-page--air">
       <div className="pc-frame" aria-hidden="true" />
       <header className="pc-masthead">
-        <div className="pc-eyebrow">New Orleans · Established 1990</div>
-        <h1 className="pc-house-name">The Pelican Club</h1>
-        <p className="pc-menu-title">Spirits List</p>
+        {r.logoUrl && (
+          <img src={r.logoUrl} alt="" className="pc-masthead-logo" />
+        )}
+        <div className="pc-eyebrow">{r.eyebrowLine}</div>
+        <h1 className="pc-house-name">{r.houseName}</h1>
+        <p className="pc-menu-title">{menu.spiritsP1Title ?? "Spirits List"}</p>
       </header>
       <div className="pc-rule-orn" aria-hidden="true"><span>❦</span></div>
       <PageFurniture furniture={menu.furniture} position="header" />
@@ -209,11 +220,14 @@ export function SpiritsPage2({
   menu,
   sectionMap,
   allItems,
+  restaurant,
 }: {
   menu: Menu;
   sectionMap: Map<string, Section>;
   allItems: Item[];
+  restaurant?: RestaurantIdentity;
 }) {
+  const r = restaurant ?? DEFAULT_RESTAURANT;
   const dessertSec = getSection("Desserts", sectionMap);
   const dessertItems = getSectionItems("Desserts", sectionMap, allItems);
 
@@ -221,9 +235,12 @@ export function SpiritsPage2({
     <div className="pc-page">
       <div className="pc-frame" aria-hidden="true" />
       <header className="pc-masthead">
-        <div className="pc-eyebrow">New Orleans · Established 1990</div>
-        <h1 className="pc-house-name">The Pelican Club</h1>
-        <p className="pc-menu-title">After Dinner</p>
+        {r.logoUrl && (
+          <img src={r.logoUrl} alt="" className="pc-masthead-logo" />
+        )}
+        <div className="pc-eyebrow">{r.eyebrowLine}</div>
+        <h1 className="pc-house-name">{r.houseName}</h1>
+        <p className="pc-menu-title">{menu.spiritsP2Title ?? "After Dinner"}</p>
       </header>
       <div className="pc-rule-orn" aria-hidden="true"><span>❦</span></div>
 

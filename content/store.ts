@@ -6,7 +6,14 @@
 import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
-import type { Menu, Section, Item, VersionSnapshot, StoreShape } from "./types";
+import type {
+  Menu,
+  Section,
+  Item,
+  VersionSnapshot,
+  StoreShape,
+  RestaurantIdentity,
+} from "./types";
 
 // ---- File path ----------------------------------------------------------
 
@@ -118,6 +125,46 @@ export async function listSnapshots(
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
     .slice(0, limit);
+}
+
+// ---- Restaurant identity ------------------------------------------------
+
+const DEFAULT_RESTAURANT: RestaurantIdentity = {
+  houseName: "The Pelican Club",
+  eyebrowLine: "New Orleans · Established 1990",
+};
+
+/** Returns the shared restaurant identity record. */
+export async function getRestaurant(): Promise<RestaurantIdentity> {
+  const store = readStore();
+  return store.restaurant ?? DEFAULT_RESTAURANT;
+}
+
+/** Persists the restaurant identity record. */
+export async function saveRestaurant(
+  identity: RestaurantIdentity
+): Promise<void> {
+  const store = readStore();
+  store.restaurant = identity;
+  writeStore(store);
+}
+
+// ---- Sheet titles -------------------------------------------------------
+
+/** Returns the sheet titles map (sheetId → human label). */
+export async function getSheetTitles(): Promise<Record<string, string>> {
+  const store = readStore();
+  return store.sheetTitles ?? {};
+}
+
+/** Persists a single sheet's title. */
+export async function saveSheetTitle(
+  sheetId: string,
+  title: string
+): Promise<void> {
+  const store = readStore();
+  store.sheetTitles = { ...(store.sheetTitles ?? {}), [sheetId]: title };
+  writeStore(store);
 }
 
 /** Restores a snapshot: replaces the live menu/sections/items with snapshot data. */

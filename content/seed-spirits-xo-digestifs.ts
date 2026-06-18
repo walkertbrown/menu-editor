@@ -185,8 +185,7 @@ export const xoDigestifsItems: SpiritListItem[] = [
     menuId: spiritsMenuId,
     sectionId: sDigestifs.id,
     sortOrder: 4,
-    // Owner to confirm the exact brand name — flagged intentionally
-    name: "Grappa — VERIFY BRAND",
+    name: "Moletto Grappa",
     price: "15",
     group: "Digestifs",
   },

@@ -67,6 +67,14 @@
   margin-bottom: 4px;
 }
 
+.pc-masthead-logo {
+  max-height: 44px;
+  max-width: 260px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 4px;
+}
+
 .pc-eyebrow {
   font-family: var(--font-italic), 'Cardo', serif;
   font-style: italic;

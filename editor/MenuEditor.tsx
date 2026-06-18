@@ -17,6 +17,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import type { Menu, Section, Item, VersionSnapshot } from "@/content/types";
 import SectionEditor from "./SectionEditor";
 import PageFurniture from "@/theme/PageFurniture";
+import HeaderEditor from "./HeaderEditor";
 import { useMenuPersist } from "./useMenuPersist";
 
 interface Props {
@@ -24,6 +25,8 @@ interface Props {
   sections: Section[];
   items: Item[];
   snapshots: VersionSnapshot[];
+  /** Which spirits page this panel is editing, if any */
+  spiritsSlot?: "p1" | "p2";
   /** Phase 1: called whenever menu/sections/items state changes so the
    *  preview tab can stay in sync without a save. */
   onStateChange?: (menu: Menu, sections: Section[], items: Item[]) => void;
@@ -34,6 +37,7 @@ export default function MenuEditor({
   sections: initialSections,
   items: initialItems,
   snapshots: initialSnapshots,
+  spiritsSlot,
   onStateChange,
 }: Props) {
   const [menu, setMenu] = useState<Menu>(initialMenu);
@@ -168,6 +172,12 @@ export default function MenuEditor({
           </button>
         </div>
       </div>
+
+      <HeaderEditor
+        menu={menu}
+        spiritsSlot={spiritsSlot}
+        onMenuChange={(updated) => setMenu(updated)}
+      />
 
       <PageFurniture furniture={menu.furniture} position="header" />
 

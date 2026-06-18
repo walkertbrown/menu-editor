@@ -7,7 +7,7 @@
 
 "use client";
 
-import type { Menu, Section, Item } from "@/content/types";
+import type { Menu, Section, Item, RestaurantIdentity } from "@/content/types";
 import type {
   FoodItem,
   WineByGlassItem,
@@ -26,10 +26,16 @@ import {
   SPIRITS_P2_ALL,
 } from "./SpiritsPreview";
 
+const DEFAULT_RESTAURANT: RestaurantIdentity = {
+  houseName: "The Pelican Club",
+  eyebrowLine: "New Orleans · Established 1990",
+};
+
 interface Props {
   menu: Menu;
   sections: Section[];
   items: Item[];
+  restaurant?: RestaurantIdentity;
 }
 
 // Food sections that use a two-column grid layout.
@@ -132,19 +138,25 @@ export function SinglePageShell({
   sections,
   isLastPage,
   allItems,
+  restaurant,
 }: {
   menu: Menu;
   sections: Section[];
   isLastPage: boolean;
   allItems: Item[];
+  restaurant?: RestaurantIdentity;
 }) {
+  const r = restaurant ?? DEFAULT_RESTAURANT;
   return (
     <div className="pc-page">
       <div className="pc-frame" aria-hidden="true" />
       <header className="pc-masthead">
-        <div className="pc-eyebrow">New Orleans · Established 1990</div>
-        <h1 className="pc-house-name">The Pelican Club</h1>
-        <p className="pc-menu-title">{menu.name}</p>
+        {r.logoUrl && (
+          <img src={r.logoUrl} alt="" className="pc-masthead-logo" />
+        )}
+        <div className="pc-eyebrow">{r.eyebrowLine}</div>
+        <h1 className="pc-house-name">{r.houseName}</h1>
+        <p className="pc-menu-title">{menu.pageTitle ?? menu.name}</p>
       </header>
       <div className="pc-rule-orn" aria-hidden="true">
         <span>❦</span>
@@ -170,7 +182,7 @@ export function SinglePageShell({
 
 // ── Main preview ──────────────────────────────────────────────────────────
 
-export default function MenuPreview({ menu, sections, items }: Props) {
+export default function MenuPreview({ menu, sections, items, restaurant }: Props) {
   const orderedSections = [...sections].sort(
     (a, b) => a.sortOrder - b.sortOrder
   );
@@ -184,10 +196,20 @@ export default function MenuPreview({ menu, sections, items }: Props) {
     return (
       <div className="pc-preview-wrap">
         {p1Sections.length > 0 && (
-          <SpiritsPage1 menu={menu} sectionMap={sectionMap} allItems={items} />
+          <SpiritsPage1
+            menu={menu}
+            sectionMap={sectionMap}
+            allItems={items}
+            restaurant={restaurant}
+          />
         )}
         {p2Sections.length > 0 && (
-          <SpiritsPage2 menu={menu} sectionMap={sectionMap} allItems={items} />
+          <SpiritsPage2
+            menu={menu}
+            sectionMap={sectionMap}
+            allItems={items}
+            restaurant={restaurant}
+          />
         )}
       </div>
     );
@@ -201,6 +223,7 @@ export default function MenuPreview({ menu, sections, items }: Props) {
         sections={orderedSections}
         isLastPage={true}
         allItems={items}
+        restaurant={restaurant}
       />
     </div>
   );

@@ -43,7 +43,7 @@ export const ginRumTequilaItems: SpiritListItem[] = [
     sectionId: sGin.id,
     sortOrder: 3,
     name: "Bombay Sapphire",
-    price: "10",
+    price: "11",
     group: "Gin",
   },
   {
@@ -225,7 +225,7 @@ export const ginRumTequilaItems: SpiritListItem[] = [
     sectionId: sTequilaMezcal.id,
     sortOrder: 6,
     name: "Casamigos Silver",
-    price: "14",
+    price: "15",
     group: "Tequila & Mezcal",
   },
   {
@@ -235,7 +235,7 @@ export const ginRumTequilaItems: SpiritListItem[] = [
     sectionId: sTequilaMezcal.id,
     sortOrder: 7,
     name: "Casamigos Reposado",
-    price: "15",
+    price: "16",
     group: "Tequila & Mezcal",
   },
   {

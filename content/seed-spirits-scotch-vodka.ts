@@ -56,7 +56,7 @@ export const scotchVodkaItems: SpiritListItem[] = [
     menuId: spiritsMenuId,
     sectionId: sScotch.id,
     sortOrder: 4,
-    name: "Dalwhinnie Doublewood 12YR",
+    name: "Balvenie Doublewood 12YR",
     originVarietal: "Single Malt Highland",
     price: "13",
     group: "Scotch",

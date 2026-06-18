@@ -16,6 +16,8 @@ interface Props {
   snapshots: VersionSnapshot[];
   /** If set, only show sections whose name is in this set */
   sectionFilter?: Set<string>;
+  /** Which spirits page slot this panel is for (for HeaderEditor context) */
+  spiritsSlot?: "p1" | "p2";
   /** Called whenever in-memory state changes (for live preview sync) */
   onStateChange?: (menu: Menu, sections: Section[], items: Item[]) => void;
 }
@@ -26,6 +28,7 @@ export default function SideEditorPanel({
   items,
   snapshots,
   sectionFilter,
+  spiritsSlot,
   onStateChange,
 }: Props) {
   const filteredSections = useMemo(() => {
@@ -45,6 +48,7 @@ export default function SideEditorPanel({
       sections={filteredSections}
       items={filteredItems}
       snapshots={snapshots}
+      spiritsSlot={spiritsSlot}
       onStateChange={onStateChange}
     />
   );

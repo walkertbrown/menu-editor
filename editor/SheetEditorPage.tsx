@@ -8,11 +8,30 @@
 // All underlying data/save/history logic flows through the existing
 // MenuEditor and useMenuPersist without modification.
 
-import { useState, useCallback, useRef } from "react";
-import type { Menu, Section, Item, VersionSnapshot } from "@/content/types";
+import { useState, useCallback } from "react";
+import type {
+  Menu,
+  Section,
+  Item,
+  VersionSnapshot,
+  RestaurantIdentity,
+} from "@/content/types";
 import type { SheetConfig } from "@/sheets/sheetConfig";
 import SideEditorPanel from "./SideEditorPanel";
+import RestaurantEditor from "./RestaurantEditor";
+import SheetTitleEditor from "./SheetTitleEditor";
 import SheetPreviewSpread from "@/theme/SheetPreviewSpread";
+import {
+  tabBarStyle,
+  backLinkStyle,
+  tabGroupStyle,
+  activeTabStyle,
+  inactiveTabStyle,
+  printBtnStyle,
+  flipBarStyle,
+  sideLabelStyle,
+  flipBtnStyle,
+} from "./sheetEditorStyles";
 
 export interface SideData {
   menu: Menu;
@@ -25,12 +44,21 @@ interface Props {
   sheet: SheetConfig;
   frontData: SideData;
   backData: SideData;
+  restaurant: RestaurantIdentity;
+  /** Current sheet title (from data/store, may differ from sheet.name) */
+  sheetTitle: string;
 }
 
 type Tab = "edit" | "preview";
 type Face = "front" | "back";
 
-export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
+export default function SheetEditorPage({
+  sheet,
+  frontData,
+  backData,
+  restaurant: initialRestaurant,
+  sheetTitle,
+}: Props) {
   const [activeTab, setActiveTab] = useState<Tab>("edit");
   const [activeFace, setActiveFace] = useState<Face>("front");
   const [flipping, setFlipping] = useState(false);
@@ -38,6 +66,10 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
   // Live preview state for both sides
   const [liveFront, setLiveFront] = useState(frontData);
   const [liveBack, setLiveBack] = useState(backData);
+
+  // Restaurant identity (shared across all pages — live-synced for preview)
+  const [liveRestaurant, setLiveRestaurant] =
+    useState<RestaurantIdentity>(initialRestaurant);
 
   const handleFrontStateChange = useCallback(
     (menu: Menu, sections: Section[], items: Item[]) => {
@@ -72,6 +104,9 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
       {/* ── Tab bar ──────────────────────────────────────────────────── */}
       <div className="pc-editor-chrome" style={tabBarStyle}>
         <a href="/" style={backLinkStyle}>← All Sheets</a>
+
+        <SheetTitleEditor sheetId={sheet.id} initialTitle={sheetTitle} />
+
         <div style={tabGroupStyle}>
           <button
             onClick={() => setActiveTab("edit")}
@@ -96,6 +131,14 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
       {/* ── EDIT tab ─────────────────────────────────────────────────── */}
       {activeTab === "edit" && (
         <div>
+          {/* Restaurant identity (shared — shown once above the flip) */}
+          <div style={{ maxWidth: 800, margin: "16px auto 0", padding: "0 16px" }}>
+            <RestaurantEditor
+              restaurant={liveRestaurant}
+              onRestaurantChange={setLiveRestaurant}
+            />
+          </div>
+
           {/* Flip control bar */}
           <div style={flipBarStyle}>
             <span style={sideLabelStyle}>{sideLabel}</span>
@@ -110,11 +153,7 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
           </div>
 
           {/* Flip card container */}
-          <div
-            style={{
-              perspective: "1200px",
-            }}
-          >
+          <div style={{ perspective: "1200px" }}>
             <div
               style={{
                 transformStyle: "preserve-3d",
@@ -130,6 +169,7 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
                   items={frontData.items}
                   snapshots={frontData.snapshots}
                   sectionFilter={sheet.front.sectionNames}
+                  spiritsSlot={sheet.front.menuId === "menu-spirits" ? "p1" : undefined}
                   onStateChange={handleFrontStateChange}
                 />
               ) : (
@@ -140,6 +180,7 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
                   items={backData.items}
                   snapshots={backData.snapshots}
                   sectionFilter={sheet.back.sectionNames}
+                  spiritsSlot={sheet.back.menuId === "menu-spirits" ? "p2" : undefined}
                   onStateChange={handleBackStateChange}
                 />
               )}
@@ -162,99 +203,9 @@ export default function SheetEditorPage({ sheet, frontData, backData }: Props) {
             sections: liveBack.sections,
             items: liveBack.items,
           }}
+          restaurant={liveRestaurant}
         />
       )}
     </div>
   );
 }
-
-// ── Styles ────────────────────────────────────────────────────────────────
-
-const tabBarStyle: React.CSSProperties = {
-  position: "sticky",
-  top: 0,
-  zIndex: 40,
-  background: "#f5f5f5",
-  borderBottom: "1px solid #e0e0e0",
-  padding: "10px 20px",
-  display: "flex",
-  alignItems: "center",
-  gap: 12,
-};
-
-const backLinkStyle: React.CSSProperties = {
-  fontSize: "0.85em",
-  color: "#666",
-  textDecoration: "none",
-  marginRight: 4,
-};
-
-const tabGroupStyle: React.CSSProperties = {
-  display: "flex",
-  gap: 0,
-  borderRadius: 6,
-  overflow: "hidden",
-  border: "1px solid #ccc",
-};
-
-const baseTabStyle: React.CSSProperties = {
-  border: "none",
-  padding: "7px 20px",
-  cursor: "pointer",
-  fontSize: "0.875em",
-  fontWeight: 600,
-  letterSpacing: "0.04em",
-};
-
-const activeTabStyle: React.CSSProperties = {
-  ...baseTabStyle,
-  background: "#1a1a1a",
-  color: "#fff",
-};
-
-const inactiveTabStyle: React.CSSProperties = {
-  ...baseTabStyle,
-  background: "#fff",
-  color: "#555",
-};
-
-const printBtnStyle: React.CSSProperties = {
-  background: "#141210",
-  color: "#f3ead7",
-  border: "none",
-  borderRadius: 4,
-  padding: "7px 16px",
-  cursor: "pointer",
-  fontSize: "0.8em",
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-  fontWeight: 600,
-};
-
-const flipBarStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "10px 20px",
-  background: "#fafafa",
-  borderBottom: "1px solid #e8e8e8",
-};
-
-const sideLabelStyle: React.CSSProperties = {
-  fontWeight: 700,
-  fontSize: "0.95em",
-  color: "#333",
-  letterSpacing: "0.04em",
-};
-
-const flipBtnStyle: React.CSSProperties = {
-  background: "#fff",
-  border: "2px solid #1a1a1a",
-  borderRadius: 6,
-  padding: "7px 18px",
-  cursor: "pointer",
-  fontWeight: 700,
-  fontSize: "0.88em",
-  letterSpacing: "0.04em",
-  transition: "background 0.15s",
-};

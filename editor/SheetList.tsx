@@ -7,9 +7,11 @@ import type { SheetConfig } from "@/sheets/sheetConfig";
 
 interface Props {
   sheets: SheetConfig[];
+  /** Overridden sheet titles keyed by sheet id. Falls back to sheet.name. */
+  sheetTitles?: Record<string, string>;
 }
 
-export default function SheetList({ sheets }: Props) {
+export default function SheetList({ sheets, sheetTitles = {} }: Props) {
   return (
     <div style={{ maxWidth: 600, margin: "48px auto", padding: "0 16px" }}>
       <h1 style={{ fontFamily: "serif", marginBottom: 8 }}>
@@ -43,7 +45,7 @@ export default function SheetList({ sheets }: Props) {
             >
               <div>
                 <div style={{ fontWeight: 600, fontSize: "1.05em" }}>
-                  {sheet.name}
+                  {sheetTitles[sheet.id] ?? sheet.name}
                 </div>
                 <div style={{ fontSize: "0.8em", color: "#888", marginTop: 3 }}>
                   Front: {sheet.front.label} &nbsp;·&nbsp; Back:{" "}

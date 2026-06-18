@@ -105,6 +105,9 @@ export interface Section {
   menuId: string;
   name: string;
   sortOrder: number;
+  /** Optional small italic subtitle rendered below the header rule.
+   *  e.g. "two-ounce pours" or "2½ oz glass · full bottle" */
+  subtitle?: string;
 }
 
 // ---- Menu Furniture -----------------------------------------------------
@@ -129,6 +132,15 @@ export interface Menu {
   /** Ordered list of section ids */
   sectionOrder: string[];
   furniture?: MenuFurniture;
+  /** Italic page title shown under the house name in the masthead.
+   *  Defaults to menu.name when absent.
+   *  For the spirits menu, this field is not used directly — see
+   *  spiritsP1Title / spiritsP2Title instead. */
+  pageTitle?: string;
+  /** Spirits page 1 masthead title, e.g. "Spirits List". Only relevant for menu-spirits. */
+  spiritsP1Title?: string;
+  /** Spirits page 2 masthead title, e.g. "After Dinner". Only relevant for menu-spirits. */
+  spiritsP2Title?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -148,6 +160,18 @@ export interface VersionSnapshot {
   };
 }
 
+// ---- Restaurant identity ------------------------------------------------
+
+/** Shared identity block rendered on every page masthead. */
+export interface RestaurantIdentity {
+  /** e.g. "THE PELICAN CLUB" */
+  houseName: string;
+  /** e.g. "New Orleans · Established 1990" */
+  eyebrowLine: string;
+  /** URL of logo image shown at the top of every masthead, e.g. "/restaurant-logo.png" */
+  logoUrl?: string;
+}
+
 // ---- Store shape (what the JSON file holds) -----------------------------
 
 export interface StoreShape {
@@ -155,4 +179,8 @@ export interface StoreShape {
   sections: Section[];
   items: Item[];
   snapshots: VersionSnapshot[];
+  /** Shared restaurant identity (house name + eyebrow). One record. */
+  restaurant?: RestaurantIdentity;
+  /** Human-readable sheet titles keyed by sheet id, e.g. "dinner-menu" → "Dinner Menu" */
+  sheetTitles?: Record<string, string>;
 }
