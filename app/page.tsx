@@ -1,12 +1,11 @@
-// Menu list route — server component.
-// Loads menus directly from the store (server-side) and renders the MenuList.
+// Home route — server component.
+// Lists the two double-sided sheets.
 
-import { getMenus } from "@/content/store";
-import MenuList from "@/editor/MenuList";
+import { SHEET_CONFIGS } from "@/sheets/sheetConfig";
+import SheetList from "@/editor/SheetList";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
-  const menus = await getMenus();
-  return <MenuList menus={menus} />;
+export default function HomePage() {
+  return <SheetList sheets={SHEET_CONFIGS} />;
 }
