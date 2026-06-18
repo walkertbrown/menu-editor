@@ -159,10 +159,20 @@
   min-width: 14px;
 }
 
+/* ── Two-column dense grid — food (Appetizers, Entrées, Desserts) and all
+   spirits sections use this wrapper applied by MenuPreview.tsx.           */
+
+.pc-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 44px;
+}
+
 /* ── Food items ──────────────────────────────────────────────────────────── */
 
 .pc-food {
   margin: 5px 0;
+  break-inside: avoid;
 }
 
 .pc-food-line {
@@ -378,6 +388,7 @@
 
 .pc-spirit {
   margin: 5px 0;
+  break-inside: avoid;
 }
 
 .pc-spirit-line {

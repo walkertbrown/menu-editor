@@ -1,7 +1,9 @@
 // Assembles all per-menu seed data into a single StoreShape.
 // Dinner: seed-dinner.ts (sections/menu) + seed-dinner-starters.ts + seed-dinner-mains.ts
 // Drinks: seed-drinks.ts (sections/menu) + seed-drinks-wine.ts + seed-drinks-beer-cocktails.ts
-// Spirits: seed-spirits.ts (unchanged placeholder)
+// Spirits: seed-spirits.ts (sections/menu) + seed-spirits-whiskey.ts + seed-spirits-scotch-vodka.ts
+//          + seed-spirits-gin-rum-tequila.ts + seed-spirits-xo-digestifs.ts
+//          + seed-spirits-ports-coffees.ts
 import type { StoreShape } from "./types";
 import {
   dinnerMenu,
@@ -25,20 +27,31 @@ import { wineItems } from "./seed-drinks-wine";
 import { beerItems, cocktailItems } from "./seed-drinks-beer-cocktails";
 import {
   spiritsMenu,
+  sWhiskeyBourbon,
+  sRye,
+  sScotch,
+  sVodka,
+  sGin,
   sRum,
   sTequilaMezcal,
   sXO,
   sDigestifs,
   sPort,
-  spiritItems,
+  sCoffees,
 } from "./seed-spirits";
+import { whiskeyItems } from "./seed-spirits-whiskey";
+import { scotchVodkaItems } from "./seed-spirits-scotch-vodka";
+import { ginRumTequilaItems } from "./seed-spirits-gin-rum-tequila";
+import { xoDigestifsItems } from "./seed-spirits-xo-digestifs";
+import { portItems, coffeeItems } from "./seed-spirits-ports-coffees";
 
 export const seedData: StoreShape = {
   menus: [dinnerMenu, drinksMenu, spiritsMenu],
   sections: [
     sToBegin, sAppetizers, sEntrees, sDesserts, sBreadService,
     sSparkling, sWhiteRose, sRedWine, sBeer, sCocktails,
-    sRum, sTequilaMezcal, sXO, sDigestifs, sPort,
+    sWhiskeyBourbon, sRye, sScotch, sVodka, sGin,
+    sRum, sTequilaMezcal, sXO, sDigestifs, sPort, sCoffees,
   ],
   items: [
     ...dinnerStarterItems,
@@ -46,7 +59,12 @@ export const seedData: StoreShape = {
     ...wineItems,
     ...beerItems,
     ...cocktailItems,
-    ...spiritItems,
+    ...whiskeyItems,
+    ...scotchVodkaItems,
+    ...ginRumTequilaItems,
+    ...xoDigestifsItems,
+    ...portItems,
+    ...coffeeItems,
   ],
   snapshots: [],
 };
