@@ -1,0 +1,709 @@
+{
+  "menus": [
+    {
+      "id": "menu-dinner",
+      "name": "Dinner",
+      "sectionOrder": [
+        "sec-appetizers",
+        "sec-entrees",
+        "sec-desserts"
+      ],
+      "furniture": {
+        "prixFixeHeader": "$56 & UP",
+        "introLines": [
+          "Three courses · Chef's selection available"
+        ],
+        "footerLine": "Add a soup $8 · Consuming raw or undercooked foods may increase your risk of foodborne illness."
+      },
+      "createdAt": "2026-06-18T00:04:52.883Z",
+      "updatedAt": "2026-06-18T00:05:13.986Z"
+    },
+    {
+      "id": "menu-drinks",
+      "name": "Drinks",
+      "sectionOrder": [
+        "sec-sparkling",
+        "sec-white-rose",
+        "sec-red-wine",
+        "sec-beer",
+        "sec-cocktails"
+      ],
+      "createdAt": "2026-06-18T00:04:52.883Z",
+      "updatedAt": "2026-06-18T00:04:52.883Z"
+    },
+    {
+      "id": "menu-spirits",
+      "name": "After-Dinner / Spirits",
+      "sectionOrder": [
+        "sec-rum",
+        "sec-tequila-mezcal",
+        "sec-xo",
+        "sec-digestifs",
+        "sec-port"
+      ],
+      "createdAt": "2026-06-18T00:04:52.883Z",
+      "updatedAt": "2026-06-18T00:04:52.883Z"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-sparkling",
+      "menuId": "menu-drinks",
+      "name": "Sparkling",
+      "sortOrder": 0
+    },
+    {
+      "id": "sec-white-rose",
+      "menuId": "menu-drinks",
+      "name": "White & Rosé",
+      "sortOrder": 1
+    },
+    {
+      "id": "sec-red-wine",
+      "menuId": "menu-drinks",
+      "name": "Red",
+      "sortOrder": 2
+    },
+    {
+      "id": "sec-beer",
+      "menuId": "menu-drinks",
+      "name": "Beer & Cider",
+      "sortOrder": 3
+    },
+    {
+      "id": "sec-cocktails",
+      "menuId": "menu-drinks",
+      "name": "Cocktails",
+      "sortOrder": 4
+    },
+    {
+      "id": "sec-rum",
+      "menuId": "menu-spirits",
+      "name": "Rum",
+      "sortOrder": 0
+    },
+    {
+      "id": "sec-tequila-mezcal",
+      "menuId": "menu-spirits",
+      "name": "Tequila & Mezcal",
+      "sortOrder": 1
+    },
+    {
+      "id": "sec-xo",
+      "menuId": "menu-spirits",
+      "name": "XO & Armagnac",
+      "sortOrder": 2
+    },
+    {
+      "id": "sec-digestifs",
+      "menuId": "menu-spirits",
+      "name": "Digestifs",
+      "sortOrder": 3
+    },
+    {
+      "id": "sec-port",
+      "menuId": "menu-spirits",
+      "name": "Port & Dessert Wine",
+      "sortOrder": 4
+    },
+    {
+      "id": "sec-appetizers",
+      "menuId": "menu-dinner",
+      "name": "Appetizers",
+      "sortOrder": 0
+    },
+    {
+      "id": "sec-entrees",
+      "menuId": "menu-dinner",
+      "name": "Entrées",
+      "sortOrder": 1
+    },
+    {
+      "id": "sec-desserts",
+      "menuId": "menu-dinner",
+      "name": "Desserts",
+      "sortOrder": 2
+    }
+  ],
+  "items": [
+    {
+      "id": "b9cad2bc-0acf-464a-ae2a-a43d1614ebf8",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-sparkling",
+      "sortOrder": 0,
+      "name": "Chandon Brut",
+      "regionVintage": "California NV",
+      "price": "14",
+      "group": "Sparkling"
+    },
+    {
+      "id": "c0891dd7-88be-4a7b-8659-7551d6040339",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-sparkling",
+      "sortOrder": 1,
+      "name": "Pol Roger Brut Réserve",
+      "regionVintage": "Champagne, France NV",
+      "price": "22",
+      "group": "Sparkling"
+    },
+    {
+      "id": "cc7948a8-47ca-47c4-b663-ef7fd8692efa",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-white-rose",
+      "sortOrder": 0,
+      "name": "Muscadet Sèvre et Maine",
+      "regionVintage": "Loire, France '24",
+      "price": "13",
+      "group": "White & Rosé"
+    },
+    {
+      "id": "bef0da73-3a7a-4467-894b-eae5c234de4d",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-white-rose",
+      "sortOrder": 1,
+      "name": "Sancerre Blanc",
+      "regionVintage": "Loire, France '23",
+      "price": "18",
+      "group": "White & Rosé"
+    },
+    {
+      "id": "22649dd8-150b-49c9-8427-73cb799c8fe2",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-white-rose",
+      "sortOrder": 2,
+      "name": "Domaines Ott Rosé",
+      "regionVintage": "Provence, France '24",
+      "price": "16",
+      "group": "White & Rosé"
+    },
+    {
+      "id": "1fffd859-f7f6-401c-964f-0acfba857938",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-red-wine",
+      "sortOrder": 0,
+      "name": "Côtes du Rhône Rouge",
+      "regionVintage": "Rhône, France '22",
+      "price": "13",
+      "group": "Red"
+    },
+    {
+      "id": "245c17eb-e0e9-4347-a610-6d70d8dff221",
+      "type": "wine_by_glass",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-red-wine",
+      "sortOrder": 1,
+      "name": "Caymus Cabernet Sauvignon",
+      "regionVintage": "Napa Valley '22",
+      "price": "22",
+      "group": "Red"
+    },
+    {
+      "id": "9a5979a1-79f1-47e0-9fea-66c11d2b3921",
+      "type": "beer_cider",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-beer",
+      "sortOrder": 0,
+      "name": "Abita Amber",
+      "price": "7"
+    },
+    {
+      "id": "08e5caae-42a9-4eb1-b4de-5cccc8515a8e",
+      "type": "beer_cider",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-beer",
+      "sortOrder": 1,
+      "name": "NOLA Blonde",
+      "price": "7"
+    },
+    {
+      "id": "528ba2f6-419b-4d4b-97c8-572665869db8",
+      "type": "beer_cider",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-beer",
+      "sortOrder": 2,
+      "name": "Athletic Brewing Run Wild IPA",
+      "price": "8",
+      "nonAlcoholic": true
+    },
+    {
+      "id": "0a3e41dc-11bc-456d-9f99-dea2a0eb82ce",
+      "type": "beer_cider",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-beer",
+      "sortOrder": 3,
+      "name": "Angry Orchard Crisp Apple",
+      "price": "8"
+    },
+    {
+      "id": "5a152e70-6f54-48c3-bd0a-02ef87b016a5",
+      "type": "cocktail",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-cocktails",
+      "sortOrder": 0,
+      "name": "The Pelican Old Fashioned",
+      "price": "16",
+      "ingredients": "Buffalo Trace, demerara, orange bitters, smoked orange peel"
+    },
+    {
+      "id": "071c1144-e706-476f-8f8d-27f2800f9874",
+      "type": "cocktail",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-cocktails",
+      "sortOrder": 1,
+      "name": "Garden District",
+      "nonAlcoholicAvailable": true,
+      "price": "15",
+      "ingredients": "gin, St-Germain, cucumber, mint, lemon, soda"
+    },
+    {
+      "id": "7ec8708e-c1fa-49e9-bfea-5445efa51806",
+      "type": "cocktail",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-cocktails",
+      "sortOrder": 2,
+      "name": "French Quarter Sling",
+      "price": "15",
+      "ingredients": "rum, Campari, pineapple, lime, Peychaud's"
+    },
+    {
+      "id": "25f9e6ca-c9d3-433d-b6b6-367b03defcb6",
+      "type": "cocktail",
+      "menuId": "menu-drinks",
+      "sectionId": "sec-cocktails",
+      "sortOrder": 3,
+      "name": "Espresso Martini",
+      "price": "16",
+      "ingredients": "vodka, cold brew, Kahlúa, vanilla, espresso foam"
+    },
+    {
+      "id": "7dfa1e4a-2cb1-403d-91d5-6c8badc621b8",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-rum",
+      "sortOrder": 0,
+      "name": "Appleton Estate 12yr",
+      "originVarietal": "Jamaica",
+      "price": "14",
+      "group": "Rum"
+    },
+    {
+      "id": "31c003f3-787b-41f9-a57f-c5681bd829f3",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-rum",
+      "sortOrder": 1,
+      "name": "Mount Gay 1703",
+      "originVarietal": "Barbados",
+      "price": "18",
+      "group": "Rum"
+    },
+    {
+      "id": "532978ce-da14-4a6f-8064-fc790902e471",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-tequila-mezcal",
+      "sortOrder": 0,
+      "name": "Fortaleza Añejo",
+      "originVarietal": "Tequila · Mexico",
+      "price": "18",
+      "group": "Tequila & Mezcal"
+    },
+    {
+      "id": "d9312ab4-9626-4bb3-b53b-ea8c4f064b6c",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-tequila-mezcal",
+      "sortOrder": 1,
+      "name": "Del Maguey Vida",
+      "originVarietal": "Mezcal · Oaxaca, Mexico",
+      "price": "16",
+      "group": "Tequila & Mezcal"
+    },
+    {
+      "id": "b8800be4-d134-4f9b-9957-bcc97d30ab46",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-xo",
+      "sortOrder": 0,
+      "name": "Rémy Martin XO",
+      "originVarietal": "Cognac · France",
+      "price": "28",
+      "group": "XO"
+    },
+    {
+      "id": "6a3b4758-b2cd-4dfc-9709-6504c1a08d27",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-xo",
+      "sortOrder": 1,
+      "name": "Château de Laubade XO",
+      "originVarietal": "Armagnac · Gascony, France",
+      "price": "26",
+      "group": "XO"
+    },
+    {
+      "id": "0274a7bc-a94e-48e0-9e90-69ffe36c7629",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-digestifs",
+      "sortOrder": 0,
+      "name": "Fernet-Branca",
+      "originVarietal": "Amaro · Italy",
+      "price": "10",
+      "group": "Digestifs"
+    },
+    {
+      "id": "c7401013-228f-481a-9d73-a2e332df2778",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-digestifs",
+      "sortOrder": 1,
+      "name": "Amaro Montenegro",
+      "originVarietal": "Amaro · Italy",
+      "price": "11",
+      "group": "Digestifs"
+    },
+    {
+      "id": "db703b52-8875-4289-b5f2-d935c7666975",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-digestifs",
+      "sortOrder": 2,
+      "name": "Green Chartreuse",
+      "originVarietal": "Liqueur · Voiron, France",
+      "price": "14",
+      "group": "Digestifs"
+    },
+    {
+      "id": "8af377b7-aa7c-474e-a153-06732f813fd5",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-port",
+      "sortOrder": 0,
+      "name": "Graham's Six Grapes Reserve Port",
+      "originVarietal": "Port · Douro, Portugal",
+      "glasPrice": "12",
+      "bottlePrice": "48",
+      "binNumber": "B1",
+      "group": "Port & Dessert Wine"
+    },
+    {
+      "id": "b34d3203-71d1-406c-b1bc-65fe55d25228",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-port",
+      "sortOrder": 1,
+      "name": "Fonseca 10yr Tawny Port",
+      "originVarietal": "Port · Douro, Portugal",
+      "glasPrice": "14",
+      "bottlePrice": "58",
+      "binNumber": "B2",
+      "group": "Port & Dessert Wine"
+    },
+    {
+      "id": "d8f99de1-cb51-464a-b613-68d520e8a299",
+      "type": "spirit_list",
+      "menuId": "menu-spirits",
+      "sectionId": "sec-port",
+      "sortOrder": 2,
+      "name": "Château d'Yquem",
+      "originVarietal": "Sauternes · Bordeaux, France",
+      "glasPrice": "32",
+      "bottlePrice": "185",
+      "binNumber": "B3",
+      "group": "Port & Dessert Wine"
+    },
+    {
+      "id": "cdf0d174-5f60-4c8a-8922-c63828892a7e",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-appetizers",
+      "sortOrder": 0,
+      "name": "GULF SHRIMP REMOULADE",
+      "price": "18",
+      "gf": true,
+      "description": "chilled gulf shrimp, housemade creole remoulade, pickled celery"
+    },
+    {
+      "id": "11283ba5-523f-4eee-840c-80ecc24268ba",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-entrees",
+      "sortOrder": 0,
+      "name": "FILET MIGNON",
+      "price": "52",
+      "gf": true,
+      "description": "8oz center-cut filet, bordelaise, truffle potato gratin"
+    },
+    {
+      "id": "08dc5783-3fa4-4647-92de-32d83d137d1f",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-desserts",
+      "sortOrder": 0,
+      "name": "BANANAS FOSTER",
+      "price": "12",
+      "description": "tableside preparation, brown sugar, rum, vanilla ice cream"
+    },
+    {
+      "id": "ad987edf-49e9-4fb5-bd7c-d68fe26a459f",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-appetizers",
+      "sortOrder": 1,
+      "name": "ROASTED BEET SALAD",
+      "price": "14",
+      "gf": true,
+      "description": "local beets, goat cheese, candied pecans, balsamic reduction"
+    },
+    {
+      "id": "d3cab574-06a2-4fa4-b9d2-a69636d170c1",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-entrees",
+      "sortOrder": 1,
+      "name": "LOUISIANA DRUM",
+      "price": "38",
+      "gf": true,
+      "description": "pan-roasted black drum, crawfish étouffée, jasmine rice"
+    },
+    {
+      "id": "382c9aa6-2b83-4f02-8292-2388ac18bb22",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-desserts",
+      "sortOrder": 1,
+      "name": "CHOCOLATE LAVA CAKE",
+      "price": "10",
+      "description": "warm valrhona chocolate cake, salted caramel, chantilly"
+    },
+    {
+      "id": "e2b58d88-f8a8-4b46-a0f5-deb0c011f2ba",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-appetizers",
+      "sortOrder": 2,
+      "name": "FRENCH ONION SOUP",
+      "price": "12",
+      "description": "caramelized onion broth, gruyère crouton"
+    },
+    {
+      "id": "c8da5102-860f-4d1b-a33e-32546b7ec8be",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-entrees",
+      "sortOrder": 2,
+      "name": "DUCK CONFIT",
+      "price": "34",
+      "description": "whole leg confit, dirty rice, andouille-red wine jus"
+    },
+    {
+      "id": "44d5362e-0fcb-4ef9-810c-e8bb3d1033de",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-desserts",
+      "sortOrder": 2,
+      "name": "CRÈME BRÛLÉE",
+      "price": "9",
+      "gf": true,
+      "description": "classic vanilla custard, torched demerara"
+    },
+    {
+      "id": "76967b0e-9e23-4a16-bdfa-e822bab1db89",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-appetizers",
+      "sortOrder": 3,
+      "name": "OYSTERS ON THE HALF SHELL",
+      "price": "21",
+      "gf": true,
+      "surcharge": "(+5)",
+      "description": "gulf oysters, mignonette, cocktail sauce, lemon"
+    },
+    {
+      "id": "51a91564-bc33-40d7-b137-246b5c1c1e11",
+      "type": "food",
+      "menuId": "menu-dinner",
+      "sectionId": "sec-entrees",
+      "sortOrder": 3,
+      "name": "MUSHROOM RISOTTO",
+      "price": "28",
+      "gf": true,
+      "description": "wild mushroom blend, parmesan, truffle oil, herb oil"
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "a64d1ec1-d1e7-4289-9885-83bbe70dd8e5",
+      "menuId": "menu-dinner",
+      "label": "6/17/2026, 7:05:13 PM",
+      "createdAt": "2026-06-18T00:05:14.034Z",
+      "data": {
+        "menu": {
+          "id": "menu-dinner",
+          "name": "Dinner",
+          "sectionOrder": [
+            "sec-appetizers",
+            "sec-entrees",
+            "sec-desserts"
+          ],
+          "furniture": {
+            "prixFixeHeader": "$56 & UP",
+            "introLines": [
+              "Three courses · Chef's selection available"
+            ],
+            "footerLine": "Add a soup $8 · Consuming raw or undercooked foods may increase your risk of foodborne illness."
+          },
+          "createdAt": "2026-06-18T00:04:52.883Z",
+          "updatedAt": "2026-06-18T00:05:13.986Z"
+        },
+        "sections": [
+          {
+            "id": "sec-appetizers",
+            "menuId": "menu-dinner",
+            "name": "Appetizers",
+            "sortOrder": 0
+          },
+          {
+            "id": "sec-entrees",
+            "menuId": "menu-dinner",
+            "name": "Entrées",
+            "sortOrder": 1
+          },
+          {
+            "id": "sec-desserts",
+            "menuId": "menu-dinner",
+            "name": "Desserts",
+            "sortOrder": 2
+          }
+        ],
+        "items": [
+          {
+            "id": "cdf0d174-5f60-4c8a-8922-c63828892a7e",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-appetizers",
+            "sortOrder": 0,
+            "name": "GULF SHRIMP REMOULADE",
+            "price": "18",
+            "gf": true,
+            "description": "chilled gulf shrimp, housemade creole remoulade, pickled celery"
+          },
+          {
+            "id": "11283ba5-523f-4eee-840c-80ecc24268ba",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 0,
+            "name": "FILET MIGNON",
+            "price": "52",
+            "gf": true,
+            "description": "8oz center-cut filet, bordelaise, truffle potato gratin"
+          },
+          {
+            "id": "08dc5783-3fa4-4647-92de-32d83d137d1f",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 0,
+            "name": "BANANAS FOSTER",
+            "price": "12",
+            "description": "tableside preparation, brown sugar, rum, vanilla ice cream"
+          },
+          {
+            "id": "ad987edf-49e9-4fb5-bd7c-d68fe26a459f",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-appetizers",
+            "sortOrder": 1,
+            "name": "ROASTED BEET SALAD",
+            "price": "14",
+            "gf": true,
+            "description": "local beets, goat cheese, candied pecans, balsamic reduction"
+          },
+          {
+            "id": "d3cab574-06a2-4fa4-b9d2-a69636d170c1",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 1,
+            "name": "LOUISIANA DRUM",
+            "price": "38",
+            "gf": true,
+            "description": "pan-roasted black drum, crawfish étouffée, jasmine rice"
+          },
+          {
+            "id": "382c9aa6-2b83-4f02-8292-2388ac18bb22",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 1,
+            "name": "CHOCOLATE LAVA CAKE",
+            "price": "10",
+            "description": "warm valrhona chocolate cake, salted caramel, chantilly"
+          },
+          {
+            "id": "e2b58d88-f8a8-4b46-a0f5-deb0c011f2ba",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-appetizers",
+            "sortOrder": 2,
+            "name": "FRENCH ONION SOUP",
+            "price": "12",
+            "description": "caramelized onion broth, gruyère crouton"
+          },
+          {
+            "id": "c8da5102-860f-4d1b-a33e-32546b7ec8be",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 2,
+            "name": "DUCK CONFIT",
+            "price": "34",
+            "description": "whole leg confit, dirty rice, andouille-red wine jus"
+          },
+          {
+            "id": "44d5362e-0fcb-4ef9-810c-e8bb3d1033de",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-desserts",
+            "sortOrder": 2,
+            "name": "CRÈME BRÛLÉE",
+            "price": "9",
+            "gf": true,
+            "description": "classic vanilla custard, torched demerara"
+          },
+          {
+            "id": "76967b0e-9e23-4a16-bdfa-e822bab1db89",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-appetizers",
+            "sortOrder": 3,
+            "name": "OYSTERS ON THE HALF SHELL",
+            "price": "21",
+            "gf": true,
+            "surcharge": "(+5)",
+            "description": "gulf oysters, mignonette, cocktail sauce, lemon"
+          },
+          {
+            "id": "51a91564-bc33-40d7-b137-246b5c1c1e11",
+            "type": "food",
+            "menuId": "menu-dinner",
+            "sectionId": "sec-entrees",
+            "sortOrder": 3,
+            "name": "MUSHROOM RISOTTO",
+            "price": "28",
+            "gf": true,
+            "description": "wild mushroom blend, parmesan, truffle oil, herb oil"
+          }
+        ]
+      }
+    }
+  ]
+}

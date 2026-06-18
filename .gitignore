@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Menu data — commit sample data but not live edits
+# Uncomment below to gitignore the live data file:
+# /data/menus.json
