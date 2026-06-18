@@ -1,9 +1,10 @@
 // Menu editor route — server component shell.
-// Loads menu data server-side and passes to the client MenuEditor component.
+// Loads menu data server-side and passes to the client MenuEditorPage component.
+// Phase 1: MenuEditorPage provides Edit and Preview tabs.
 
 import { notFound } from "next/navigation";
 import { getMenu, listSnapshots } from "@/content/store";
-import MenuEditor from "@/editor/MenuEditor";
+import MenuEditorPage from "@/editor/MenuEditorPage";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +12,7 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-export default async function MenuEditorPage({ params }: Props) {
+export default async function MenuRoute({ params }: Props) {
   const { id } = await params;
   const result = await getMenu(id);
   if (!result) notFound();
@@ -19,7 +20,7 @@ export default async function MenuEditorPage({ params }: Props) {
   const snapshots = await listSnapshots(id);
 
   return (
-    <MenuEditor
+    <MenuEditorPage
       menu={result.menu}
       sections={result.sections}
       items={result.items}

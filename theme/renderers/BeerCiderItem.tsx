@@ -1,5 +1,9 @@
-// Stub renderer for beer and cider items.
-// Phase 0: functional, intentionally unstyled.
+// Pelican Club themed renderer for beer and cider items.
+// Phase 1: compact two-column row (handled by parent grid), Della Respira name,
+// dotted leader, Raleway price. N/A tag in italic Cardo for non-alcoholic options.
+//
+// Note: the two-column grid (.pc-beer-grid) is applied by the section container
+// (MenuPreview / SectionBlock), not here. This component renders a single row.
 
 import type { BeerCiderItem } from "@/content/types";
 
@@ -9,18 +13,15 @@ interface Props {
 
 export default function BeerCiderItemRenderer({ item }: Props) {
   return (
-    <div style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <span style={{ fontWeight: 500 }}>
-          {item.name}
-          {item.nonAlcoholic && (
-            <span style={{ marginLeft: 8, fontSize: "0.75em", color: "#888", fontWeight: 400 }}>
-              N/A
-            </span>
-          )}
-        </span>
-        <span style={{ fontWeight: 500, marginLeft: 16 }}>{item.price}</span>
-      </div>
+    <div className="pc-beer">
+      <span className="pc-beer-name">
+        {item.name}
+        {item.nonAlcoholic && (
+          <span className="pc-beer-na">N/A</span>
+        )}
+        <span className="pc-dots" />
+      </span>
+      <span className="pc-beer-price">${item.price}</span>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 // Manages local React state for all sections + items.
 // Save/restore logic lives in useMenuPersist.ts.
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   DndContext,
@@ -24,6 +24,9 @@ interface Props {
   sections: Section[];
   items: Item[];
   snapshots: VersionSnapshot[];
+  /** Phase 1: called whenever menu/sections/items state changes so the
+   *  preview tab can stay in sync without a save. */
+  onStateChange?: (menu: Menu, sections: Section[], items: Item[]) => void;
 }
 
 export default function MenuEditor({
@@ -31,6 +34,7 @@ export default function MenuEditor({
   sections: initialSections,
   items: initialItems,
   snapshots: initialSnapshots,
+  onStateChange,
 }: Props) {
   const [menu, setMenu] = useState<Menu>(initialMenu);
   const [sections, setSections] = useState<Section[]>(
@@ -40,6 +44,12 @@ export default function MenuEditor({
   const [snapshots, setSnapshots] = useState<VersionSnapshot[]>(initialSnapshots);
   const [showHistory, setShowHistory] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor));
+
+  // Notify parent (MenuEditorPage) whenever state changes so the Preview tab
+  // stays current. Runs after every render where menu/sections/items changed.
+  useEffect(() => {
+    onStateChange?.(menu, sections, items);
+  }, [menu, sections, items, onStateChange]);
 
   // Stable ref so the hook can read current state without stale closures.
   const stateRef = useRef({ menu, sections, items });

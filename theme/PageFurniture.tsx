@@ -1,5 +1,12 @@
-// Stub renderer for per-menu furniture (header, intro lines, footer text).
-// Phase 0: functional, intentionally unstyled.
+// Pelican Club themed PageFurniture renderer.
+// Phase 1: styled masthead, prix-fixe header, intro lines, ornament, and footer.
+//
+// position="header" renders:
+//   - prix-fixe header (e.g. "THREE COURSES $56 & UP") in Della Respira
+//   - intro lines (choice / à-la-carte lines) in italic Cardo
+//   - ornament text centered
+//
+// position="footer" renders footer line(s) in italic small-caps Raleway/Cardo.
 
 import type { MenuFurniture } from "@/content/types";
 
@@ -12,35 +19,34 @@ export default function PageFurniture({ furniture, position }: Props) {
   if (!furniture) return null;
 
   if (position === "header") {
+    const hasContent =
+      furniture.prixFixeHeader ||
+      (furniture.introLines && furniture.introLines.length > 0) ||
+      furniture.ornamentText;
+
+    if (!hasContent) return null;
+
     return (
-      <div style={{ marginBottom: 16 }}>
+      <div className="pc-furniture-header">
         {furniture.prixFixeHeader && (
-          <div style={{ fontWeight: 600, fontSize: "1.1em", marginBottom: 4 }}>
-            {furniture.prixFixeHeader}
-          </div>
+          <div className="pc-prix-fixe-header">{furniture.prixFixeHeader}</div>
         )}
         {furniture.introLines?.map((line, i) => (
-          <div key={i} style={{ fontStyle: "italic", fontSize: "0.9em", color: "#555" }}>
-            {line}
-          </div>
+          <div key={i} className="pc-intro-line">{line}</div>
         ))}
         {furniture.ornamentText && (
-          <div style={{ textAlign: "center", margin: "8px 0", color: "#888" }}>
-            {furniture.ornamentText}
-          </div>
+          <div className="pc-ornament">{furniture.ornamentText}</div>
         )}
       </div>
     );
   }
 
   // footer
+  if (!furniture.footerLine) return null;
+
   return (
-    <div style={{ marginTop: 16 }}>
-      {furniture.footerLine && (
-        <div style={{ fontSize: "0.8em", color: "#888", fontStyle: "italic" }}>
-          {furniture.footerLine}
-        </div>
-      )}
+    <div className="pc-furniture-footer">
+      <div className="pc-footer-line">{furniture.footerLine}</div>
     </div>
   );
 }

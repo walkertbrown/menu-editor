@@ -1,0 +1,531 @@
+/*
+ * Pelican Club menu preview styles — Phase 1.
+ * Ported from the reference Drink Menu.html visual system,
+ * with Cormorant/EB-Garamond swapped for Della Respira / Raleway / Cardo.
+ *
+ * CSS variables for font roles (set in layout.tsx via next/font):
+ *   --font-display  Della Respira (masthead, headers, item names)
+ *   --font-body     Raleway (descriptions, prices, subtext)
+ *   --font-italic   Cardo (italic notes, parentheticals)
+ */
+
+/* ── Outer shell ─────────────────────────────────────────────────────────── */
+
+.pc-preview-wrap {
+  background: #d6cdb8;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* ── Page shell (8.5 × 14-in canvas at 96 dpi = 816 × 1344 px) ─────────── */
+
+.pc-page {
+  width: 816px;
+  min-height: 1344px;
+  background: #ffffff;
+  color: #141210;
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  padding: 70px 70px 64px;
+  box-sizing: border-box;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+}
+
+/* ── Double-rule frame ───────────────────────────────────────────────────── */
+
+.pc-frame {
+  position: absolute;
+  inset: 40px;
+  border: 1px solid #141210;
+  pointer-events: none;
+}
+
+.pc-frame::before,
+.pc-frame::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  border-top: 1px solid #141210;
+  opacity: 0.55;
+}
+
+.pc-frame::before { top: 4px; }
+.pc-frame::after  { bottom: 4px; }
+
+/* ── Masthead ────────────────────────────────────────────────────────────── */
+
+.pc-masthead {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.pc-eyebrow {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.pc-house-name {
+  font-family: var(--font-display), 'Della Respira', serif;
+  font-size: 40px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin: 8px 0 4px;
+  font-weight: 400;
+}
+
+.pc-menu-title {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  margin: 2px 0 0;
+  font-weight: 400;
+}
+
+/* ── Fleuron ornament divider ────────────────────────────────────────────── */
+
+.pc-rule-orn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 12px 0 14px;
+  font-size: 15px;
+  opacity: 0.8;
+}
+
+.pc-rule-orn::before,
+.pc-rule-orn::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #141210;
+  opacity: 0.6;
+  max-width: 200px;
+}
+
+/* ── Section header ──────────────────────────────────────────────────────── */
+
+.pc-section {
+  margin-bottom: 16px;
+}
+
+.pc-section-header {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin: 0 0 5px;
+  font-weight: 400;
+}
+
+.pc-section-sub {
+  font-family: var(--font-italic), 'Cardo', serif;
+  text-align: center;
+  font-style: italic;
+  font-size: 12.5px;
+  opacity: 0.82;
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+  font-weight: 400;
+}
+
+.pc-section-hr {
+  border: 0;
+  border-top: 1px solid #141210;
+  opacity: 0.35;
+  margin: 0 0 9px;
+}
+
+/* ── Dotted price leader (shared) ───────────────────────────────────────── */
+
+.pc-dots {
+  border-bottom: 1px dotted #141210;
+  opacity: 0.45;
+  flex: 1;
+  transform: translateY(-3px);
+  min-width: 14px;
+}
+
+/* ── Food items ──────────────────────────────────────────────────────────── */
+
+.pc-food {
+  margin: 5px 0;
+}
+
+.pc-food-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pc-food-name {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 400;
+}
+
+.pc-food-name .pc-gf {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  align-self: baseline;
+  padding: 1px 3px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  line-height: 1.2;
+}
+
+.pc-food-name .pc-surcharge {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.7;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.pc-food-price {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  opacity: 0.9;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.pc-food-desc {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 13px;
+  opacity: 0.78;
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+/* ── Wine by the glass ───────────────────────────────────────────────────── */
+
+.pc-wine {
+  margin: 5px 0;
+}
+
+.pc-wine-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pc-wine-name {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 400;
+}
+
+.pc-wine-price {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  opacity: 0.9;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.pc-wine-region {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 12.5px;
+  opacity: 0.72;
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+
+/* ── Beer & Cider ────────────────────────────────────────────────────────── */
+
+.pc-beer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 44px;
+}
+
+.pc-beer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.pc-beer-name {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+  font-weight: 400;
+}
+
+.pc-beer-na {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  opacity: 0.55;
+  font-size: 11.5px;
+}
+
+.pc-beer-price {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  opacity: 0.9;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ── Cocktails ───────────────────────────────────────────────────────────── */
+
+.pc-cocktails-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 46px;
+  row-gap: 18px;
+}
+
+.pc-cocktail {
+  break-inside: avoid;
+}
+
+.pc-cocktail-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pc-cocktail-name {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+  font-weight: 400;
+}
+
+.pc-cocktail-star {
+  color: #141210;
+  opacity: 0.5;
+  font-size: 11px;
+}
+
+.pc-cocktail-price {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  opacity: 0.9;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.pc-cocktail-desc {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 13px;
+  opacity: 0.82;
+  line-height: 1.32;
+  margin-top: 3px;
+}
+
+/* Non-alcoholic footnote line */
+.pc-na-note {
+  font-family: var(--font-italic), 'Cardo', serif;
+  text-align: center;
+  font-style: italic;
+  font-size: 12.5px;
+  opacity: 0.6;
+  letter-spacing: 0.04em;
+  margin: 14px 0 0;
+}
+
+/* ── Spirit list ─────────────────────────────────────────────────────────── */
+
+.pc-spirit {
+  margin: 5px 0;
+}
+
+.pc-spirit-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pc-spirit-name {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 400;
+}
+
+.pc-spirit-bin {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  font-size: 11px;
+  opacity: 0.55;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.pc-spirit-price {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  opacity: 0.9;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.pc-spirit-two-price {
+  font-family: var(--font-body), 'Raleway', sans-serif;
+  display: flex;
+  gap: 12px;
+  opacity: 0.9;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.pc-spirit-origin {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 12.5px;
+  opacity: 0.72;
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+
+/* ── Page furniture ──────────────────────────────────────────────────────── */
+
+.pc-furniture-header {
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.pc-prix-fixe-header {
+  font-family: var(--font-display), 'Della Respira', serif;
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.pc-intro-line {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 13px;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+.pc-ornament {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-align: center;
+  font-size: 16px;
+  margin: 8px 0;
+  opacity: 0.6;
+}
+
+.pc-furniture-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.pc-footer-line {
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+/* Absolute footer at page bottom (for full-page print view) */
+.pc-page-foot {
+  position: absolute;
+  bottom: 52px;
+  left: 70px;
+  right: 70px;
+  text-align: center;
+  font-family: var(--font-italic), 'Cardo', serif;
+  font-style: italic;
+  font-size: 11.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+/* ── Print styles ────────────────────────────────────────────────────────── */
+
+@page {
+  size: 8.5in 14in;
+  margin: 0;
+}
+
+@media print {
+  .pc-preview-wrap {
+    background: #ffffff;
+    padding: 0;
+  }
+
+  .pc-page {
+    width: 8.5in;
+    min-height: 14in;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .pc-page:last-child {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Hide editor chrome when printing */
+  .pc-editor-chrome {
+    display: none !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

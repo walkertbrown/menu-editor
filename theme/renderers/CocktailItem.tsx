@@ -1,5 +1,10 @@
-// Stub renderer for cocktail items.
-// Phase 0: functional, intentionally unstyled.
+// Pelican Club themed renderer for cocktail items.
+// Phase 1: two-column grid layout (applied by parent), Della Respira name
+// with ✦ marker if non-alcoholic version available, dotted leader, Raleway price.
+// Ingredient line in italic Cardo beneath.
+//
+// Note: the two-column grid (.pc-cocktails-grid) is applied by the section
+// container (MenuPreview / SectionBlock). This component renders a single card.
 
 import type { CocktailItem } from "@/content/types";
 
@@ -9,25 +14,21 @@ interface Props {
 
 export default function CocktailItemRenderer({ item }: Props) {
   return (
-    <div style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <span style={{ fontWeight: 500 }}>
+    <div className="pc-cocktail">
+      <div className="pc-cocktail-line">
+        <span className="pc-cocktail-name">
           {item.name}
           {item.nonAlcoholicAvailable && (
-            <span
-              title="Non-alcoholic version available"
-              style={{ marginLeft: 6, fontSize: "0.85em", color: "#666" }}
-            >
+            <span className="pc-cocktail-star" title="Non-alcoholic version available">
               ✦
             </span>
           )}
+          <span className="pc-dots" />
         </span>
-        <span style={{ fontWeight: 500, marginLeft: 16 }}>{item.price}</span>
+        <span className="pc-cocktail-price">${item.price}</span>
       </div>
       {item.ingredients && (
-        <div style={{ fontStyle: "italic", fontSize: "0.875em", color: "#555", marginTop: 2 }}>
-          {item.ingredients}
-        </div>
+        <div className="pc-cocktail-desc">{item.ingredients}</div>
       )}
     </div>
   );
