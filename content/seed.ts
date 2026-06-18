@@ -1,7 +1,18 @@
 // Assembles all per-menu seed data into a single StoreShape.
-// Each menu's data lives in its own file (seed-dinner, seed-drinks, seed-spirits).
+// Dinner: seed-dinner.ts (sections/menu) + seed-dinner-starters.ts + seed-dinner-mains.ts
+// Drinks: seed-drinks.ts (sections/menu) + seed-drinks-wine.ts + seed-drinks-beer-cocktails.ts
+// Spirits: seed-spirits.ts (unchanged placeholder)
 import type { StoreShape } from "./types";
-import { dinnerMenu, sAppetizers, sEntrees, sDesserts, dinnerItems } from "./seed-dinner";
+import {
+  dinnerMenu,
+  sToBegin,
+  sAppetizers,
+  sEntrees,
+  sDesserts,
+  sBreadService,
+} from "./seed-dinner";
+import { dinnerStarterItems } from "./seed-dinner-starters";
+import { dinnerMainItems } from "./seed-dinner-mains";
 import {
   drinksMenu,
   sSparkling,
@@ -9,10 +20,9 @@ import {
   sRedWine,
   sBeer,
   sCocktails,
-  wineItems,
-  beerItems,
-  cocktailItems,
 } from "./seed-drinks";
+import { wineItems } from "./seed-drinks-wine";
+import { beerItems, cocktailItems } from "./seed-drinks-beer-cocktails";
 import {
   spiritsMenu,
   sRum,
@@ -26,12 +36,13 @@ import {
 export const seedData: StoreShape = {
   menus: [dinnerMenu, drinksMenu, spiritsMenu],
   sections: [
-    sAppetizers, sEntrees, sDesserts,
+    sToBegin, sAppetizers, sEntrees, sDesserts, sBreadService,
     sSparkling, sWhiteRose, sRedWine, sBeer, sCocktails,
     sRum, sTequilaMezcal, sXO, sDigestifs, sPort,
   ],
   items: [
-    ...dinnerItems,
+    ...dinnerStarterItems,
+    ...dinnerMainItems,
     ...wineItems,
     ...beerItems,
     ...cocktailItems,
