@@ -12,6 +12,8 @@ interface Props {
   items: Item[];
   isFirst: boolean;
   isLast: boolean;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
   onRename: (name: string) => void;
   onDelete: () => void;
   onMoveUp: () => void;
@@ -34,6 +36,8 @@ export default function SectionEditor({
   items,
   isFirst,
   isLast,
+  collapsed,
+  onToggleCollapse,
   onRename,
   onDelete,
   onMoveUp,
@@ -55,7 +59,14 @@ export default function SectionEditor({
       }}
     >
       {/* Section header controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: collapsed ? 0 : 10 }}>
+        <button
+          onClick={onToggleCollapse}
+          style={{ ...iconBtnStyle, fontSize: "0.75em", minWidth: 22 }}
+          title={collapsed ? "Expand section" : "Collapse section"}
+        >
+          {collapsed ? "▸" : "▾"}
+        </button>
         <input
           style={{
             fontWeight: 700,
@@ -85,53 +96,58 @@ export default function SectionEditor({
         </button>
       </div>
 
-      {/* Items list — droppable + sortable */}
-      <div ref={setNodeRef}>
-        <SortableContext
-          items={items.map((i) => i.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {items.length === 0 && (
-            <div
-              style={{
-                padding: "12px",
-                color: "#aaa",
-                fontStyle: "italic",
-                fontSize: "0.9em",
-                border: "1px dashed #ccc",
-                borderRadius: 4,
-                textAlign: "center",
-                marginBottom: 8,
-              }}
+      {/* Items list + add row — hidden when collapsed */}
+      {!collapsed && (
+        <>
+          {/* Items list — droppable + sortable */}
+          <div ref={setNodeRef}>
+            <SortableContext
+              items={items.map((i) => i.id)}
+              strategy={verticalListSortingStrategy}
             >
-              No items yet — add one below.
-            </div>
-          )}
-          {items.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              onUpdate={onUpdateItem}
-              onDelete={() => onDeleteItem(item.id)}
-            />
-          ))}
-        </SortableContext>
-      </div>
+              {items.length === 0 && (
+                <div
+                  style={{
+                    padding: "12px",
+                    color: "#aaa",
+                    fontStyle: "italic",
+                    fontSize: "0.9em",
+                    border: "1px dashed #ccc",
+                    borderRadius: 4,
+                    textAlign: "center",
+                    marginBottom: 8,
+                  }}
+                >
+                  No items yet — add one below.
+                </div>
+              )}
+              {items.map((item) => (
+                <ItemCard
+                  key={item.id}
+                  item={item}
+                  onUpdate={onUpdateItem}
+                  onDelete={() => onDeleteItem(item.id)}
+                />
+              ))}
+            </SortableContext>
+          </div>
 
-      {/* Add item */}
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
-        <span style={{ fontSize: "0.8em", color: "#666" }}>Add item:</span>
-        {ITEM_TYPES.map((type) => (
-          <button
-            key={type}
-            onClick={() => onAddItem(type)}
-            style={addBtnStyle}
-            title={`Add ${type.replace(/_/g, " ")}`}
-          >
-            + {type.replace(/_/g, " ")}
-          </button>
-        ))}
-      </div>
+          {/* Add item */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
+            <span style={{ fontSize: "0.8em", color: "#666" }}>Add item:</span>
+            {ITEM_TYPES.map((type) => (
+              <button
+                key={type}
+                onClick={() => onAddItem(type)}
+                style={addBtnStyle}
+                title={`Add ${type.replace(/_/g, " ")}`}
+              >
+                + {type.replace(/_/g, " ")}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

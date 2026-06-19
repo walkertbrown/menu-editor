@@ -67,6 +67,7 @@ export default function MenuEditor({
   const [items, setItems] = useState<Item[]>(initialItems);
   const [snapshots, setSnapshots] = useState<VersionSnapshot[]>(initialSnapshots);
   const [showHistory, setShowHistory] = useState(false);
+  const [collapsedIds, setCollapsedIds] = useState<Set<string>>(new Set());
   const sensors = useSensors(useSensor(PointerSensor));
 
   // Notify parent (MenuEditorPage) whenever state changes so the Preview tab
@@ -183,9 +184,21 @@ export default function MenuEditor({
     });
   };
 
+  // ---- Collapse controls -------------------------------------------------
+
+  const toggleCollapse = useCallback((sectionId: string) => {
+    setCollapsedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(sectionId)) next.delete(sectionId);
+      else next.add(sectionId);
+      return next;
+    });
+  }, []);
+
   // ---- Render ------------------------------------------------------------
 
   const orderedSections = [...sections].sort((a, b) => a.sortOrder - b.sortOrder);
+  const allCollapsed = orderedSections.length > 0 && orderedSections.every((s) => collapsedIds.has(s.id));
 
   const outerStyle: React.CSSProperties = embedded
     ? { padding: "12px 14px" }
@@ -202,6 +215,16 @@ export default function MenuEditor({
         )}
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
           {saveMsg && <span style={{ fontSize: "0.85em", color: saveMsg.includes("fail") ? "#c00" : "#060" }}>{saveMsg}</span>}
+          <button
+            onClick={() => {
+              if (allCollapsed) setCollapsedIds(new Set());
+              else setCollapsedIds(new Set(orderedSections.map((s) => s.id)));
+            }}
+            style={secondaryBtnStyle}
+            title={allCollapsed ? "Expand all sections" : "Collapse all sections"}
+          >
+            {allCollapsed ? "Expand all" : "Collapse all"}
+          </button>
           <button onClick={() => setShowHistory((s) => !s)} style={secondaryBtnStyle}>
             History ({snapshots.length})
           </button>
@@ -242,6 +265,8 @@ export default function MenuEditor({
             items={items.filter((i) => i.sectionId === section.id).sort((a, b) => a.sortOrder - b.sortOrder)}
             isFirst={idx === 0}
             isLast={idx === orderedSections.length - 1}
+            collapsed={collapsedIds.has(section.id)}
+            onToggleCollapse={() => toggleCollapse(section.id)}
             onRename={(name) => renameSection(section.id, name)}
             onDelete={() => deleteSection(section.id)}
             onMoveUp={() => moveSectionUp(section.id)}

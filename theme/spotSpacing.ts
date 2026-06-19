@@ -20,6 +20,8 @@
  * The builder helpers below make it easy to add a scope prefix param later.
  */
 
+import type { Section, Item } from "@/content/types";
+
 // ── ID builders ──────────────────────────────────────────────────────────────
 
 /** Fixed furniture/masthead spot ids (no dynamic segment needed). */
@@ -59,28 +61,47 @@ export function categoryOfSpot(spotId: string): "header" | "item" | "masthead" |
 
 // ── Friendly label ────────────────────────────────────────────────────────────
 
+/** Optional context for resolving human names from live editor state. */
+export interface SpotLabelContext {
+  sections?: Section[];
+  items?: Item[];
+}
+
 /**
  * Returns a human-readable label for the sidebar SpacingControl panel.
+ * When ctx is supplied, item- and section- ids resolve to their actual names.
  * Falls back to the raw id for unknown spots.
  */
-export function spotLabel(id: string): string {
-  if (id === SPOT.mastheadEyebrow) return "Masthead — eyebrow line";
-  if (id === SPOT.mastheadLogo)    return "Masthead — logo / house name";
-  if (id === SPOT.mastheadTitle)   return "Masthead — menu title";
-  if (id === SPOT.fleuron)         return "Fleuron divider";
+export function spotLabel(id: string, ctx?: SpotLabelContext): string {
+  if (id === SPOT.mastheadEyebrow) return "Eyebrow";
+  if (id === SPOT.mastheadLogo)    return "Logo";
+  if (id === SPOT.mastheadTitle)   return "Menu title";
+  if (id === SPOT.fleuron)         return "Divider";
   if (id === SPOT.prixfixe)        return "Prix-fixe header";
-  if (id === SPOT.ornament)        return "Ornament text";
+  if (id === SPOT.ornament)        return "Ornament";
   if (id === SPOT.footer)          return "Footer";
 
   if (id.startsWith("intro-")) {
     const n = id.slice("intro-".length);
     return `Intro line ${Number(n) + 1}`;
   }
+
   if (id.startsWith("section-")) {
-    return `Section — ${id.slice("section-".length)} (header)`;
+    const sectionId = id.slice("section-".length);
+    if (ctx?.sections) {
+      const section = ctx.sections.find((s) => s.id === sectionId);
+      if (section) return `${section.name} — header`;
+    }
+    return `Section — ${sectionId} (header)`;
   }
+
   if (id.startsWith("item-")) {
-    return `Item — ${id.slice("item-".length)}`;
+    const itemId = id.slice("item-".length);
+    if (ctx?.items) {
+      const item = ctx.items.find((i) => i.id === itemId);
+      if (item) return item.name;
+    }
+    return `Item — ${itemId}`;
   }
 
   return id;

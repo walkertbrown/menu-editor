@@ -181,6 +181,8 @@ export default function SheetEditorPage({
               categoryBaseline={activeCategoryBaseline}
               onChange={(val) => selectedSpotId && handleSpacingChange(activeFace, selectedSpotId, val)}
               onReset={() => selectedSpotId && handleSpacingReset(activeFace, selectedSpotId)}
+              sections={activeFace === "front" ? liveFront.sections : liveBack.sections}
+              items={activeFace === "front" ? liveFront.items : liveBack.items}
             />
 
             {/* Front / Back toggle */}

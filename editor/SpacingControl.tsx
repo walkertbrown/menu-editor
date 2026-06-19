@@ -12,7 +12,8 @@
  * onChange / onReset into the live menu state.
  */
 
-import { spotLabel } from "@/theme/spotSpacing";
+import { spotLabel, type SpotLabelContext } from "@/theme/spotSpacing";
+import type { Section, Item } from "@/content/types";
 
 const MIN = -40;
 const MAX = 80;
@@ -28,6 +29,9 @@ interface Props {
   onChange: (value: number) => void;
   /** Called when Reset is clicked — removes the override key. */
   onReset: () => void;
+  /** Live sections/items from the active side — used to resolve friendly names. */
+  sections?: Section[];
+  items?: Item[];
 }
 
 const containerStyle: React.CSSProperties = {
@@ -101,6 +105,8 @@ export default function SpacingControl({
   categoryBaseline,
   onChange,
   onReset,
+  sections,
+  items,
 }: Props) {
   if (!selectedSpotId) {
     return (
@@ -115,7 +121,7 @@ export default function SpacingControl({
   return (
     <div style={containerStyle}>
       <div style={labelStyle}>Spacing nudge</div>
-      <div style={spotNameStyle}>{spotLabel(selectedSpotId)}</div>
+      <div style={spotNameStyle}>{spotLabel(selectedSpotId, { sections, items })}</div>
       {categoryBaseline !== undefined && (
         <div style={{ fontSize: 10, color: "#9a8a70", fontStyle: "italic", marginBottom: 6 }}>
           Category baseline: {categoryBaseline}px
