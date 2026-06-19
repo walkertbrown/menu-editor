@@ -44,9 +44,13 @@ export default function PageFurniture({ furniture, position }: Props) {
   // footer
   if (!furniture.footerLine) return null;
 
+  const footerLines = furniture.footerLine.split('\n');
+
   return (
     <div className="pc-furniture-footer">
-      <div className="pc-footer-line">{furniture.footerLine}</div>
+      {footerLines.map((line, i) => (
+        <div key={i} className="pc-footer-line">{line}</div>
+      ))}
     </div>
   );
 }

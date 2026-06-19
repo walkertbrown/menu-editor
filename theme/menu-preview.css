@@ -64,7 +64,7 @@
 
 .pc-masthead {
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .pc-masthead-logo {
@@ -91,6 +91,14 @@
   text-transform: uppercase;
   margin: 4px 0 2px;
   font-weight: 400;
+}
+
+/* Compact wordmark fallback used when no logo is present (SinglePageShell) */
+.pc-house-name--compact {
+  font-size: 13px;
+  letter-spacing: 0.20em;
+  margin: 0 0 1px;
+  opacity: 0.72;
 }
 
 .pc-menu-title {
@@ -233,6 +241,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 32px;
+}
+
+/* Hide dotted leaders in two-col food sections — name left, price right, no dots */
+.pc-two-col-grid .pc-dots {
+  display: none;
 }
 
 /* ── Desserts full-width feature block (page 2 top) ─────────────────────── */
@@ -818,6 +831,25 @@
   /* Hide editor chrome when printing */
   .pc-editor-chrome {
     display: none !important;
+  }
+
+  /* Hide spread side labels ("Front — Dinner" / "Back — Drinks") from PDF */
+  .pc-spread-side-label {
+    display: none;
+  }
+
+  /* Reset spread scaling so the PDF exports at true legal size */
+  .pc-spread-outer {
+    overflow: visible;
+    padding: 0;
+    background: #fff;
+    display: block;
+  }
+
+  .pc-spread-inner {
+    transform: none !important;
+    width: auto !important;
+    display: block;
   }
 
   * {

@@ -151,11 +151,12 @@ export function SinglePageShell({
     <div className="pc-page">
       <div className="pc-frame" aria-hidden="true" />
       <header className="pc-masthead">
-        {r.logoUrl && (
-          <img src={r.logoUrl} alt="" className="pc-masthead-logo" />
-        )}
         <div className="pc-eyebrow">{r.eyebrowLine}</div>
-        <h1 className="pc-house-name">{r.houseName}</h1>
+        {r.logoUrl ? (
+          <img src={r.logoUrl} alt="" className="pc-masthead-logo" />
+        ) : (
+          <h1 className="pc-house-name pc-house-name--compact">{r.houseName}</h1>
+        )}
         <p className="pc-menu-title">{menu.pageTitle ?? menu.name}</p>
       </header>
       <div className="pc-rule-orn" aria-hidden="true">
