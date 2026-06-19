@@ -38,8 +38,10 @@
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
 }
 
-/* Dinner/Drinks: distribute sections to fill the full page height so the
-   content reaches the bottom instead of bunching at the top. */
+/* Dinner/Drinks: sections pack from the top with their literal margins, so a
+   spacing nudge changes the gap to the element directly above it 1:1 (no
+   redistribution). The sections block grows to fill, which pins the footer to
+   the page bottom; any leftover space collects above the footer. */
 .pc-page--fill {
   display: flex;
   flex-direction: column;
@@ -47,9 +49,6 @@
 
 .pc-page--fill .pc-sections {
   flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 /* ── Double-rule frame ───────────────────────────────────────────────────── */
