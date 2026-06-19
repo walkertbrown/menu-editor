@@ -9,13 +9,30 @@
 // position="footer" renders footer line(s) in italic small-caps Raleway/Cardo.
 
 import type { MenuFurniture } from "@/content/types";
+import SpotWrap from "./SpotWrap";
+import { SPOT, introSpotId } from "./spotSpacing";
 
 interface Props {
   furniture?: MenuFurniture;
   position: "header" | "footer";
+  overrides?: Record<string, number>;
+  categorySpacing?: Record<string, number>;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }
 
-export default function PageFurniture({ furniture, position }: Props) {
+export default function PageFurniture({
+  furniture,
+  position,
+  overrides,
+  categorySpacing,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
+}: Props) {
+  const spotProps = { overrides, categorySpacing, editMode, selectedSpotId, onSelectSpot };
+
   if (!furniture) return null;
 
   if (position === "header") {
@@ -29,13 +46,19 @@ export default function PageFurniture({ furniture, position }: Props) {
     return (
       <div className="pc-furniture-header">
         {furniture.prixFixeHeader && (
-          <div className="pc-prix-fixe-header">{furniture.prixFixeHeader}</div>
+          <SpotWrap spotId={SPOT.prixfixe} {...spotProps}>
+            <div className="pc-prix-fixe-header">{furniture.prixFixeHeader}</div>
+          </SpotWrap>
         )}
         {furniture.introLines?.map((line, i) => (
-          <div key={i} className="pc-intro-line">{line}</div>
+          <SpotWrap key={i} spotId={introSpotId(i)} {...spotProps}>
+            <div className="pc-intro-line">{line}</div>
+          </SpotWrap>
         ))}
         {furniture.ornamentText && (
-          <div className="pc-ornament">{furniture.ornamentText}</div>
+          <SpotWrap spotId={SPOT.ornament} {...spotProps}>
+            <div className="pc-ornament">{furniture.ornamentText}</div>
+          </SpotWrap>
         )}
       </div>
     );
@@ -47,10 +70,12 @@ export default function PageFurniture({ furniture, position }: Props) {
   const footerLines = furniture.footerLine.split('\n');
 
   return (
-    <div className="pc-furniture-footer">
-      {footerLines.map((line, i) => (
-        <div key={i} className="pc-footer-line">{line}</div>
-      ))}
-    </div>
+    <SpotWrap spotId={SPOT.footer} {...spotProps}>
+      <div className="pc-furniture-footer">
+        {footerLines.map((line, i) => (
+          <div key={i} className="pc-footer-line">{line}</div>
+        ))}
+      </div>
+    </SpotWrap>
   );
 }

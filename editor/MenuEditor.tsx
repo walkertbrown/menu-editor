@@ -42,6 +42,11 @@ interface Props {
    * side's sections/items are preserved. Absent for unscoped menus.
    */
   scopeSectionIds?: string[];
+  /**
+   * Current spacing state owned by SheetEditorPage. Read at save time only
+   * (via ref) — never synced into internal state to avoid update loops.
+   */
+  spacing?: { categorySpacing?: Record<string, number>; spacingOverrides?: Record<string, number> };
 }
 
 export default function MenuEditor({
@@ -53,6 +58,7 @@ export default function MenuEditor({
   onStateChange,
   embedded,
   scopeSectionIds,
+  spacing,
 }: Props) {
   const [menu, setMenu] = useState<Menu>(initialMenu);
   const [sections, setSections] = useState<Section[]>(
@@ -73,9 +79,20 @@ export default function MenuEditor({
   const stateRef = useRef({ menu, sections, items });
   stateRef.current = { menu, sections, items };
 
+  // Spacing ref: read at save time only, never drives re-renders.
+  const spacingRef = useRef(spacing);
+  spacingRef.current = spacing;
+
   const { saving, saveMsg, handleSave, handleRestore } = useMenuPersist({
     menuId: menu.id,
-    getState: () => stateRef.current,
+    getState: () => ({
+      ...stateRef.current,
+      menu: {
+        ...stateRef.current.menu,
+        categorySpacing: spacingRef.current?.categorySpacing,
+        spacingOverrides: spacingRef.current?.spacingOverrides,
+      },
+    }),
     onRestored: (m, s, i) => { setMenu(m); setSections(s); setItems(i); setShowHistory(false); },
     onSnapshotsUpdated: setSnapshots,
     scopeSectionIds,

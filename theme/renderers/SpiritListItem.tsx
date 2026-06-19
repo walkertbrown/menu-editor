@@ -5,11 +5,21 @@
 //   2. Port / dessert wine (has binNumber + glasPrice + bottlePrice):
 //      bin | name | glass price | bottle price (4-column grid, right-aligned prices)
 // Origin/varietal in italic Cardo beneath (standard only).
+//
+// Per-spot spacing props are accepted but intentionally not wired yet —
+// spirits spacing is a future phase. Accepting the props prevents crashes
+// when the parent threads them through.
 
 import type { SpiritListItem } from "@/content/types";
 
 interface Props {
   item: SpiritListItem;
+  // Accepted but unused until spirits spacing is wired (future phase).
+  overrides?: Record<string, number>;
+  categorySpacing?: Record<string, number>;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }
 
 const isPort = (item: SpiritListItem) =>

@@ -34,6 +34,12 @@ interface Props {
    * When unset, show the full two-page spread (sidebar collapsed mode).
    */
   focusSide?: "front" | "back";
+  /** Whether the preview is in edit mode (affordances + click targets active). */
+  editMode?: boolean;
+  /** The currently selected spot id. */
+  selectedSpotId?: string;
+  /** Called when the user clicks a spot in the preview. */
+  onSelectSpot?: (id: string) => void;
 }
 
 // ── Single page renderer — no wrapper, just the .pc-page ─────────────────
@@ -44,12 +50,18 @@ function SidePage({
   items,
   spiritsPageSlot,
   restaurant,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
 }: {
   menu: Menu;
   sections: Section[];
   items: Item[];
   spiritsPageSlot?: "p1" | "p2";
   restaurant?: RestaurantIdentity;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }) {
   if (menu.id === "menu-spirits" && spiritsPageSlot) {
     const sectionMap = new Map(sections.map((s) => [s.id, s]));
@@ -83,6 +95,9 @@ function SidePage({
       isLastPage={true}
       allItems={items}
       restaurant={restaurant}
+      editMode={editMode}
+      selectedSpotId={selectedSpotId}
+      onSelectSpot={onSelectSpot}
     />
   );
 }
@@ -95,6 +110,9 @@ export default function SheetPreviewSpread({
   backData,
   restaurant,
   focusSide,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
 }: Props) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -166,6 +184,9 @@ export default function SheetPreviewSpread({
                 items={data.items}
                 spiritsPageSlot={spiritsSlot}
                 restaurant={restaurant}
+                editMode={editMode}
+                selectedSpotId={selectedSpotId}
+                onSelectSpot={onSelectSpot}
               />
             </div>
           </div>
@@ -210,6 +231,9 @@ export default function SheetPreviewSpread({
                 sheet.front.menuId === "menu-spirits" ? "p1" : undefined
               }
               restaurant={restaurant}
+              editMode={editMode}
+              selectedSpotId={selectedSpotId}
+              onSelectSpot={onSelectSpot}
             />
           </div>
         </div>
@@ -226,6 +250,9 @@ export default function SheetPreviewSpread({
                 sheet.back.menuId === "menu-spirits" ? "p2" : undefined
               }
               restaurant={restaurant}
+              editMode={editMode}
+              selectedSpotId={selectedSpotId}
+              onSelectSpot={onSelectSpot}
             />
           </div>
         </div>

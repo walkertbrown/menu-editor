@@ -7,29 +7,52 @@
 // container (MenuPreview / SectionBlock). This component renders a single card.
 
 import type { CocktailItem } from "@/content/types";
+import SpotWrap from "@/theme/SpotWrap";
+import { itemSpotId } from "@/theme/spotSpacing";
 
 interface Props {
   item: CocktailItem;
+  overrides?: Record<string, number>;
+  categorySpacing?: Record<string, number>;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }
 
-export default function CocktailItemRenderer({ item }: Props) {
+export default function CocktailItemRenderer({
+  item,
+  overrides,
+  categorySpacing,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
+}: Props) {
   return (
-    <div className="pc-cocktail">
-      <div className="pc-cocktail-line">
-        <span className="pc-cocktail-name">
-          {item.name}
-          {item.nonAlcoholicAvailable && (
-            <span className="pc-cocktail-star" title="Non-alcoholic version available">
-              ✦
-            </span>
-          )}
-          <span className="pc-dots" />
-        </span>
-        <span className="pc-cocktail-price">${item.price}</span>
+    <SpotWrap
+      spotId={itemSpotId(item.id)}
+      overrides={overrides}
+      categorySpacing={categorySpacing}
+      editMode={editMode}
+      selectedSpotId={selectedSpotId}
+      onSelectSpot={onSelectSpot}
+    >
+      <div className="pc-cocktail">
+        <div className="pc-cocktail-line">
+          <span className="pc-cocktail-name">
+            {item.name}
+            {item.nonAlcoholicAvailable && (
+              <span className="pc-cocktail-star" title="Non-alcoholic version available">
+                ✦
+              </span>
+            )}
+            <span className="pc-dots" />
+          </span>
+          <span className="pc-cocktail-price">${item.price}</span>
+        </div>
+        {item.ingredients && (
+          <div className="pc-cocktail-desc">{item.ingredients}</div>
+        )}
       </div>
-      {item.ingredients && (
-        <div className="pc-cocktail-desc">{item.ingredients}</div>
-      )}
-    </div>
+    </SpotWrap>
   );
 }

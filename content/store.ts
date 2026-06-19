@@ -1,27 +1,15 @@
 // Data access layer for the menu editor.
 // Implementation: local JSON file at data/menus.json.
-// Swapping to Supabase later means implementing the same interface
-// in a new file and changing the import below — no other code changes.
+// Swapping to Supabase: implement same interface in a new file, change the import.
 //
-// saveMenu contract (updated):
-//   saveMenu(menu, sections, items, opts?)
+// saveMenu(menu, sections, items, opts?)
+//   opts.snapshotLabel     — human label for the snapshot
+//   opts.scopeSectionIds   — sections outside this set are preserved (scoped-merge mode)
+//   opts.allowEmpty        — bypass the empty-save guard after user confirmation
 //
-//   opts.snapshotLabel     — human label for the snapshot (was 4th positional arg)
-//   opts.scopeSectionIds   — when provided, only the named section-ids are
-//                            considered "this side's" scope; sections/items
-//                            outside the scope are preserved from the store.
-//                            Omit for unscoped (full-replace) menus like dinner
-//                            and drinks.
-//   opts.allowEmpty        — when true, bypass the empty-save guard. Use when
-//                            the caller has already confirmed with the user that
-//                            they want to erase all content on this side.
-//
-//   The empty-save guard: if the incoming scoped set is empty but the store
-//   has content for that scope, saveMenu throws EmptyMenuSaveError (code
-//   'EMPTY_MENU_SAVE'). The API maps this to HTTP 409.
-//
-//   Snapshots always store the FULL merged state (not just the filtered half),
-//   so restore is safe even for scoped saves.
+//   Empty-save guard: if incoming scoped set is empty but store has content,
+//   saveMenu throws EmptyMenuSaveError ('EMPTY_MENU_SAVE'). API maps to HTTP 409.
+//   Snapshots always store the FULL merged state so restore is safe.
 //
 // The future Supabase adapter must honour the same opts interface.
 
@@ -155,26 +143,34 @@ export async function saveMenu(
     ? new Set(opts.scopeSectionIds)
     : undefined;
 
-  const { sections: mergedSections, items: mergedItems, sectionOrder, blockedEmpty } =
-    mergeMenuSave(
-      storedSections,
-      storedItems,
-      storedMenu,
-      sections,
-      items,
-      menu,
-      scopeSet
-    );
+  const {
+    sections: mergedSections,
+    items: mergedItems,
+    sectionOrder,
+    blockedEmpty,
+    spacingOverrides,
+    categorySpacing,
+  } = mergeMenuSave(
+    storedSections,
+    storedItems,
+    storedMenu,
+    sections,
+    items,
+    menu,
+    scopeSet
+  );
 
   // Empty-save guard.
   if (blockedEmpty && !opts?.allowEmpty) {
     throw new EmptyMenuSaveError();
   }
 
-  // Build the updated Menu record with reconciled sectionOrder.
+  // Build the updated Menu record.
   const updatedMenu: Menu = {
     ...menu,
     sectionOrder,
+    spacingOverrides,
+    categorySpacing,
     updatedAt: new Date().toISOString(),
   };
 

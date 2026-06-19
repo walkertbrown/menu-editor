@@ -27,6 +27,8 @@ interface Props {
   onStateChange?: (menu: Menu, sections: Section[], items: Item[]) => void;
   /** Forwarded to MenuEditor — suppresses heading/back link, uses sidebar layout */
   embedded?: boolean;
+  /** Current spacing for this side (categorySpacing + spacingOverrides), merged at save time */
+  spacing?: { categorySpacing?: Record<string, number>; spacingOverrides?: Record<string, number> };
 }
 
 export default function SideEditorPanel({
@@ -38,6 +40,7 @@ export default function SideEditorPanel({
   spiritsSlot,
   onStateChange,
   embedded,
+  spacing,
 }: Props) {
   const filteredSections = useMemo(() => {
     if (!sectionFilter) return sections;
@@ -72,6 +75,7 @@ export default function SideEditorPanel({
       onStateChange={onStateChange}
       embedded={embedded}
       scopeSectionIds={scopeRef.current}
+      spacing={spacing}
     />
   );
 }

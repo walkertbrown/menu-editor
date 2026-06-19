@@ -141,6 +141,19 @@ export interface Menu {
   spiritsP1Title?: string;
   /** Spirits page 2 masthead title, e.g. "After Dinner". Only relevant for menu-spirits. */
   spiritsP2Title?: string;
+  /**
+   * Per-category baseline vertical spacing in px. Keys: "header" | "item" | "masthead" | "footer".
+   * Applied to every spot in that category. A per-spot spacingOverrides entry takes precedence.
+   */
+  categorySpacing?: Record<string, number>;
+  /**
+   * Per-spot vertical spacing overrides for the preview and print layout.
+   * Keyed by stable spot id (see theme/spotSpacing.ts for the id scheme).
+   * Values are margin-top nudges in px (additive on top of auto-fill).
+   * A missing key means "no override" (pure auto-fill for that spot).
+   * This is part of the design — it persists to print.
+   */
+  spacingOverrides?: Record<string, number>;
   createdAt: string;
   updatedAt: string;
 }

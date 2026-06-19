@@ -8,8 +8,9 @@
 // Front/Back toggle at the top of the sidebar selects the edited side and
 // drives which single side the enlarged preview shows.
 //
-// All underlying data/save/history logic flows through the existing
-// MenuEditor and useMenuPersist without modification.
+// Spacing state (categorySpacing + spacingOverrides) is owned here via
+// useSpotSpacing. It is merged into menus for preview and read at save time
+// via a ref in MenuEditor — never duplicated into MenuEditor's own state.
 
 import { useState, useCallback, useRef } from "react";
 import { flushSync } from "react-dom";
@@ -24,7 +25,11 @@ import type { SheetConfig } from "@/sheets/sheetConfig";
 import SideEditorPanel from "./SideEditorPanel";
 import RestaurantEditor from "./RestaurantEditor";
 import SheetTitleEditor from "./SheetTitleEditor";
+import SpacingControl from "./SpacingControl";
+import CategorySpacingControl from "./CategorySpacingControl";
 import SheetPreviewSpread from "@/theme/SheetPreviewSpread";
+import { useSpotSpacing } from "./useSpotSpacing";
+import { categoryOfSpot } from "@/theme/spotSpacing";
 import {
   tabBarStyle,
   backLinkStyle,
@@ -64,7 +69,7 @@ export default function SheetEditorPage({
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeFace, setActiveFace] = useState<Face>("front");
 
-  // Live preview state for both sides
+  // Live preview state for both sides (sections/items/header — not spacing)
   const [liveFront, setLiveFront] = useState(frontData);
   const [liveBack, setLiveBack] = useState(backData);
 
@@ -74,9 +79,20 @@ export default function SheetEditorPage({
 
   // Track whether we are in a print-triggered full-spread momentarily
   const [printingSpread, setPrintingSpread] = useState(false);
-
-  // Ref so the print handler can access the latest state without stale closures
   const printingRef = useRef(false);
+
+  // Per-spot spacing: selected spot id (cleared when switching sides)
+  const [selectedSpotId, setSelectedSpotId] = useState<string | undefined>(undefined);
+
+  // Spacing state owned here, merged into preview and save via ref
+  const {
+    spacingFor,
+    handleSpacingChange,
+    handleSpacingReset,
+    handleCategoryChange,
+    handleCategoryReset,
+    mergeSpacingIntoMenu,
+  } = useSpotSpacing(frontData.menu, backData.menu);
 
   const handleFrontStateChange = useCallback(
     (menu: Menu, sections: Section[], items: Item[]) => {
@@ -92,15 +108,6 @@ export default function SheetEditorPage({
     []
   );
 
-  // Print: briefly switch preview to full spread so both pages are in the DOM,
-  // then call window.print(). Restore focus-side immediately after.
-  //
-  // flushSync forces React to commit the printingSpread=true state synchronously
-  // before we call window.print(). React 19 schedules renders via microtasks /
-  // MessageChannel — NOT rAF — so nested rAF callbacks can fire before the DOM
-  // is updated. flushSync guarantees the full spread is painted first.
-  // window.print() is blocking (returns after the dialog closes), so restoring
-  // state after it is safe.
   const handlePrint = useCallback(() => {
     if (printingRef.current) return;
     printingRef.current = true;
@@ -110,20 +117,31 @@ export default function SheetEditorPage({
     printingRef.current = false;
   }, []);
 
-  // focusSide: undefined = show full spread; "front"/"back" = enlarged single page
+  const handleSetActiveFace = useCallback((face: Face) => {
+    setActiveFace(face);
+    setSelectedSpotId(undefined);
+  }, []);
+
   const focusSide: Face | undefined =
     printingSpread ? undefined : sidebarOpen ? activeFace : undefined;
+  const isEditMode = !printingSpread;
+
+  // Spacing for the active face
+  const activeSpacing = spacingFor(activeFace);
+  const activeSpacingValue = selectedSpotId !== undefined
+    ? activeSpacing.spacingOverrides?.[selectedSpotId]
+    : undefined;
+  const activeCategoryBaseline = selectedSpotId !== undefined
+    ? activeSpacing.categorySpacing?.[categoryOfSpot(selectedSpotId)]
+    : undefined;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
-      {/* ── Top chrome bar ──────────────────────────────────────── */}
+      {/* Top chrome bar */}
       <div className="pc-editor-chrome" style={tabBarStyle}>
         <a href="/" style={backLinkStyle}>← All Sheets</a>
-
         <SheetTitleEditor sheetId={sheet.id} initialTitle={sheetTitle} />
-
         <div style={{ flex: 1 }} />
-
         <button
           className="pc-editor-chrome"
           onClick={() => setSidebarOpen((o) => !o)}
@@ -131,20 +149,14 @@ export default function SheetEditorPage({
         >
           {sidebarOpen ? "Hide editor" : "Show editor"}
         </button>
-
-        <button
-          className="pc-editor-chrome"
-          onClick={handlePrint}
-          style={printBtnStyle}
-        >
+        <button className="pc-editor-chrome" onClick={handlePrint} style={printBtnStyle}>
           Print / Save PDF
         </button>
       </div>
 
-      {/* ── Main body: sidebar + preview ────────────────────────── */}
+      {/* Main body: sidebar + preview */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
 
-        {/* LEFT: collapsible sidebar */}
         {sidebarOpen && (
           <div className="pc-editor-chrome" style={sidebarContainerStyle}>
             {/* Restaurant identity */}
@@ -155,16 +167,32 @@ export default function SheetEditorPage({
               />
             </div>
 
+            {/* Category-level spacing (always visible) */}
+            <CategorySpacingControl
+              categorySpacing={activeSpacing.categorySpacing}
+              onChange={(cat, val) => handleCategoryChange(activeFace, cat, val)}
+              onReset={(cat) => handleCategoryReset(activeFace, cat)}
+            />
+
+            {/* Per-spot spacing control (visible when a spot is selected) */}
+            <SpacingControl
+              selectedSpotId={selectedSpotId}
+              value={activeSpacingValue}
+              categoryBaseline={activeCategoryBaseline}
+              onChange={(val) => selectedSpotId && handleSpacingChange(activeFace, selectedSpotId, val)}
+              onReset={() => selectedSpotId && handleSpacingReset(activeFace, selectedSpotId)}
+            />
+
             {/* Front / Back toggle */}
             <div className="pc-editor-chrome" style={faceToggleGroupStyle}>
               <button
-                onClick={() => setActiveFace("front")}
+                onClick={() => handleSetActiveFace("front")}
                 style={activeFace === "front" ? activeTabStyle : inactiveTabStyle}
               >
                 Front — {sheet.front.label}
               </button>
               <button
-                onClick={() => setActiveFace("back")}
+                onClick={() => handleSetActiveFace("back")}
                 style={activeFace === "back" ? activeTabStyle : inactiveTabStyle}
               >
                 Back — {sheet.back.label}
@@ -182,6 +210,7 @@ export default function SheetEditorPage({
                 sectionFilter={sheet.front.sectionNames}
                 spiritsSlot={sheet.front.menuId === "menu-spirits" ? "p1" : undefined}
                 onStateChange={handleFrontStateChange}
+                spacing={spacingFor("front")}
                 embedded
               />
             ) : (
@@ -194,6 +223,7 @@ export default function SheetEditorPage({
                 sectionFilter={sheet.back.sectionNames}
                 spiritsSlot={sheet.back.menuId === "menu-spirits" ? "p2" : undefined}
                 onStateChange={handleBackStateChange}
+                spacing={spacingFor("back")}
                 embedded
               />
             )}
@@ -205,17 +235,20 @@ export default function SheetEditorPage({
           <SheetPreviewSpread
             sheet={sheet}
             frontData={{
-              menu: liveFront.menu,
+              menu: mergeSpacingIntoMenu("front", liveFront.menu),
               sections: liveFront.sections,
               items: liveFront.items,
             }}
             backData={{
-              menu: liveBack.menu,
+              menu: mergeSpacingIntoMenu("back", liveBack.menu),
               sections: liveBack.sections,
               items: liveBack.items,
             }}
             restaurant={liveRestaurant}
             focusSide={focusSide}
+            editMode={isEditMode}
+            selectedSpotId={selectedSpotId}
+            onSelectSpot={setSelectedSpotId}
           />
         </div>
       </div>

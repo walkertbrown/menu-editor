@@ -19,6 +19,9 @@ import WineByGlassItemRenderer from "./renderers/WineByGlassItem";
 import BeerCiderItemRenderer from "./renderers/BeerCiderItem";
 import CocktailItemRenderer from "./renderers/CocktailItem";
 import PageFurniture from "./PageFurniture";
+import Masthead from "./Masthead";
+import SpotWrap from "./SpotWrap";
+import { SPOT, sectionSpotId } from "./spotSpacing";
 import {
   SpiritsPage1,
   SpiritsPage2,
@@ -31,11 +34,23 @@ const DEFAULT_RESTAURANT: RestaurantIdentity = {
   eyebrowLine: "New Orleans · Established 1990",
 };
 
+// Shared edit-mode props threaded through the tree.
+interface EditProps {
+  overrides?: Record<string, number>;
+  categorySpacing?: Record<string, number>;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
+}
+
 interface Props {
   menu: Menu;
   sections: Section[];
   items: Item[];
   restaurant?: RestaurantIdentity;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }
 
 // Food sections that use a two-column grid layout.
@@ -53,9 +68,11 @@ const WINE_TWO_COL_NAMES = new Set(["Sparkling", "White & Rosé", "Red"]);
 function SectionBlock({
   section,
   items,
+  editProps,
 }: {
   section: Section;
   items: Item[];
+  editProps: EditProps;
 }) {
   if (items.length === 0) return null;
 
@@ -70,7 +87,16 @@ function SectionBlock({
     (items as CocktailItem[]).some((i) => i.nonAlcoholicAvailable);
 
   return (
-    <section className="pc-section">
+    <SpotWrap
+      spotId={sectionSpotId(section.id)}
+      overrides={editProps.overrides}
+      categorySpacing={editProps.categorySpacing}
+      editMode={editProps.editMode}
+      selectedSpotId={editProps.selectedSpotId}
+      onSelectSpot={editProps.onSelectSpot}
+      as="section"
+      className="pc-section"
+    >
       <h3 className="pc-section-header">{section.name}</h3>
       {section.subtitle && (
         <p className="pc-section-sub">{section.subtitle}</p>
@@ -80,7 +106,7 @@ function SectionBlock({
       {isBeer && (
         <div className="pc-beer-grid">
           {(items as BeerCiderItem[]).map((item) => (
-            <BeerCiderItemRenderer key={item.id} item={item} />
+            <BeerCiderItemRenderer key={item.id} item={item} {...editProps} />
           ))}
         </div>
       )}
@@ -89,7 +115,7 @@ function SectionBlock({
         <>
           <div className="pc-cocktails-grid">
             {(items as CocktailItem[]).map((item) => (
-              <CocktailItemRenderer key={item.id} item={item} />
+              <CocktailItemRenderer key={item.id} item={item} {...editProps} />
             ))}
           </div>
           {hasNonAlcCocktail && (
@@ -101,7 +127,7 @@ function SectionBlock({
       {isFoodTwoCol && (
         <div className="pc-two-col-grid">
           {(items as FoodItem[]).map((item) => (
-            <FoodItemRenderer key={item.id} item={item} />
+            <FoodItemRenderer key={item.id} item={item} {...editProps} />
           ))}
         </div>
       )}
@@ -109,7 +135,7 @@ function SectionBlock({
       {isWineTwoCol && (
         <div className="pc-two-col-grid">
           {(items as WineByGlassItem[]).map((item) => (
-            <WineByGlassItemRenderer key={item.id} item={item} />
+            <WineByGlassItemRenderer key={item.id} item={item} {...editProps} />
           ))}
         </div>
       )}
@@ -117,17 +143,18 @@ function SectionBlock({
       {!isBeer && !isCocktail && !isFoodTwoCol && !isWineTwoCol &&
         items.map((item) => {
           if (item.type === "food")
-            return <FoodItemRenderer key={item.id} item={item as FoodItem} />;
+            return <FoodItemRenderer key={item.id} item={item as FoodItem} {...editProps} />;
           if (item.type === "wine_by_glass")
             return (
               <WineByGlassItemRenderer
                 key={item.id}
                 item={item as WineByGlassItem}
+                {...editProps}
               />
             );
           return null;
         })}
-    </section>
+    </SpotWrap>
   );
 }
 
@@ -139,30 +166,50 @@ export function SinglePageShell({
   isLastPage,
   allItems,
   restaurant,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
 }: {
   menu: Menu;
   sections: Section[];
   isLastPage: boolean;
   allItems: Item[];
   restaurant?: RestaurantIdentity;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }) {
   const r = restaurant ?? DEFAULT_RESTAURANT;
+  const overrides = menu.spacingOverrides;
+  const categorySpacing = menu.categorySpacing;
+  const editProps: EditProps = { overrides, categorySpacing, editMode, selectedSpotId, onSelectSpot };
+
   return (
     <div className="pc-page pc-page--fill">
       <div className="pc-frame" aria-hidden="true" />
-      <header className="pc-masthead">
-        <div className="pc-eyebrow">{r.eyebrowLine}</div>
-        {r.logoUrl ? (
-          <img src={r.logoUrl} alt="" className="pc-masthead-logo" />
-        ) : (
-          <h1 className="pc-house-name pc-house-name--compact">{r.houseName}</h1>
-        )}
-        <p className="pc-menu-title">{menu.pageTitle ?? menu.name}</p>
-      </header>
-      <div className="pc-rule-orn" aria-hidden="true">
-        <span>❦</span>
-      </div>
-      <PageFurniture furniture={menu.furniture} position="header" />
+      <Masthead
+        menu={menu}
+        restaurant={r}
+        overrides={overrides}
+        categorySpacing={categorySpacing}
+        editMode={editMode}
+        selectedSpotId={selectedSpotId}
+        onSelectSpot={onSelectSpot}
+      />
+      <SpotWrap spotId={SPOT.fleuron} {...editProps}>
+        <div className="pc-rule-orn" aria-hidden="true">
+          <span>❦</span>
+        </div>
+      </SpotWrap>
+      <PageFurniture
+        furniture={menu.furniture}
+        position="header"
+        overrides={overrides}
+        categorySpacing={categorySpacing}
+        editMode={editMode}
+        selectedSpotId={selectedSpotId}
+        onSelectSpot={onSelectSpot}
+      />
 
       <div className="pc-sections">
         {sections.map((section) => (
@@ -172,12 +219,21 @@ export function SinglePageShell({
             items={allItems
               .filter((i) => i.sectionId === section.id)
               .sort((a, b) => a.sortOrder - b.sortOrder)}
+            editProps={editProps}
           />
         ))}
       </div>
 
       {isLastPage && (
-        <PageFurniture furniture={menu.furniture} position="footer" />
+        <PageFurniture
+          furniture={menu.furniture}
+          position="footer"
+          overrides={overrides}
+          categorySpacing={categorySpacing}
+          editMode={editMode}
+          selectedSpotId={selectedSpotId}
+          onSelectSpot={onSelectSpot}
+        />
       )}
     </div>
   );
@@ -185,12 +241,20 @@ export function SinglePageShell({
 
 // ── Main preview ──────────────────────────────────────────────────────────
 
-export default function MenuPreview({ menu, sections, items, restaurant }: Props) {
+export default function MenuPreview({
+  menu,
+  sections,
+  items,
+  restaurant,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
+}: Props) {
   const orderedSections = [...sections].sort(
     (a, b) => a.sortOrder - b.sortOrder
   );
 
-  // Spirits menu: two dedicated page components
+  // Spirits menu: two dedicated page components (not wired for spacing yet)
   if (menu.id === "menu-spirits") {
     const sectionMap = new Map(sections.map((s) => [s.id, s]));
     const p1Sections = orderedSections.filter((s) => SPIRITS_P1_ALL.has(s.name));
@@ -227,6 +291,9 @@ export default function MenuPreview({ menu, sections, items, restaurant }: Props
         isLastPage={true}
         allItems={items}
         restaurant={restaurant}
+        editMode={editMode}
+        selectedSpotId={selectedSpotId}
+        onSelectSpot={onSelectSpot}
       />
     </div>
   );

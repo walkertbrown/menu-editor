@@ -44,6 +44,19 @@ export interface MergeMenuSaveResult {
    * allowEmpty).
    */
   blockedEmpty: boolean;
+  /**
+   * The reconciled spacingOverrides map to persist on the Menu record.
+   * On a scoped save: out-of-scope keys are preserved from the stored menu;
+   * in-scope keys come from the incoming menu; stale item/section keys
+   * (for ids that no longer exist) are dropped.
+   * On an unscoped save: taken as-is from the incoming menu.
+   */
+  spacingOverrides: Record<string, number> | undefined;
+  /**
+   * The categorySpacing map to persist. Menu-global: incoming wins (last-write-wins
+   * is acceptable for scoped saves since both sides share one menu record).
+   */
+  categorySpacing: Record<string, number> | undefined;
 }
 
 /**
@@ -78,6 +91,9 @@ export function mergeMenuSave(
       items: incomingItems,
       sectionOrder: incomingMenu.sectionOrder,
       blockedEmpty: incomingIsEmpty && hasStoredContent,
+      // Unscoped save: take incoming values as-is
+      spacingOverrides: incomingMenu.spacingOverrides,
+      categorySpacing: incomingMenu.categorySpacing,
     };
   }
 
@@ -163,10 +179,88 @@ export function mergeMenuSave(
     }
   }
 
+  // ---- Reconcile spacingOverrides (scoped save) --------------------------
+  // Strategy (mirrors sectionOrder reconciliation):
+  //   1. Start from stored overrides.
+  //   2. Overlay in-scope keys from the incoming menu (add / update / remove).
+  //      "In-scope" for overrides = any key that starts with "section-<scopeId>"
+  //      or "item-<itemId-belonging-to-scope>" OR fixed furniture keys (these
+  //      are page-global for dinner/drinks — single-menu pages — so no collision).
+  //   3. Drop stale keys for section/item ids that no longer exist after the merge.
+  //
+  // Note: for the current dinner/drinks single-page menus, every scoped save
+  // that supplies overrides replaces the whole override map. The preservation
+  // logic below is built for the future spirits dual-page case.
+  const mergedSectionIds = new Set(mergedSections.map((s) => s.id));
+  const mergedItemIds = new Set(mergedItems.map((i) => i.id));
+
+  const storedOverrides: Record<string, number> =
+    storedMenu.spacingOverrides ?? {};
+  const incomingOverrides: Record<string, number> =
+    incomingMenu.spacingOverrides ?? {};
+
+  // Build the set of ids that are in scope: scope section ids + their item ids.
+  const inScopeItemIds = new Set(
+    mergedItems
+      .filter((i) => scopeSet.has(i.sectionId))
+      .map((i) => i.id)
+  );
+
+  const reconciledOverrides: Record<string, number> = {};
+
+  // Pass 1: keep stored keys that are NOT in scope (belong to the other side).
+  for (const [k, v] of Object.entries(storedOverrides)) {
+    const isSectionKey = k.startsWith("section-");
+    const isItemKey = k.startsWith("item-");
+    if (isSectionKey) {
+      const sId = k.slice("section-".length);
+      if (!scopeSet.has(sId)) {
+        // Out-of-scope section key — preserve it.
+        reconciledOverrides[k] = v;
+      }
+    } else if (isItemKey) {
+      const iId = k.slice("item-".length);
+      if (!inScopeItemIds.has(iId)) {
+        // Out-of-scope item key — preserve it.
+        reconciledOverrides[k] = v;
+      }
+    } else {
+      // Fixed furniture / masthead key — page-global, incoming wins if present.
+      if (!(k in incomingOverrides)) {
+        reconciledOverrides[k] = v;
+      }
+    }
+  }
+
+  // Pass 2: overlay incoming overrides (in-scope changes).
+  for (const [k, v] of Object.entries(incomingOverrides)) {
+    reconciledOverrides[k] = v;
+  }
+
+  // Pass 3: drop stale keys for ids that no longer exist.
+  const finalOverrides: Record<string, number> = {};
+  for (const [k, v] of Object.entries(reconciledOverrides)) {
+    if (k.startsWith("section-")) {
+      const sId = k.slice("section-".length);
+      if (mergedSectionIds.has(sId)) finalOverrides[k] = v;
+    } else if (k.startsWith("item-")) {
+      const iId = k.slice("item-".length);
+      if (mergedItemIds.has(iId)) finalOverrides[k] = v;
+    } else {
+      // Fixed key — always keep.
+      finalOverrides[k] = v;
+    }
+  }
+
+  const spacingOverrides =
+    Object.keys(finalOverrides).length > 0 ? finalOverrides : undefined;
+
   return {
     sections: mergedSections,
     items: mergedItems,
     sectionOrder: reconciledOrder,
     blockedEmpty,
+    spacingOverrides,
+    categorySpacing: incomingMenu.categorySpacing ?? storedMenu.categorySpacing,
   };
 }

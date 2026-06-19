@@ -761,6 +761,26 @@
   opacity: 0.55;
 }
 
+/* ── Per-spot spacing affordances (screen-only; hidden in print) ─────────── */
+
+/* Subtle hover ring on any clickable spot in edit mode */
+.pc-spot--clickable {
+  cursor: pointer;
+  outline: 1px dashed transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.12s ease;
+}
+
+.pc-spot--clickable:hover {
+  outline-color: rgba(90, 80, 64, 0.35);
+}
+
+/* Clear selection ring on the selected spot */
+.pc-spot--selected {
+  outline: 2px solid rgba(90, 80, 64, 0.75) !important;
+  outline-offset: 2px;
+}
+
 /* ── Sheet spread (two legal pages side by side) ────────────────────────── */
 /*
  * Two 816px pages + 24px gap = 1656px natural width.
@@ -844,6 +864,13 @@
   /* Hide editor chrome when printing */
   .pc-editor-chrome {
     display: none !important;
+  }
+
+  /* Hide spot affordances when printing — spacing still applies via marginTop */
+  .pc-spot--clickable,
+  .pc-spot--selected {
+    outline: none !important;
+    cursor: default !important;
   }
 
   /* Hide spread side labels ("Front — Dinner" / "Back — Drinks") from PDF */

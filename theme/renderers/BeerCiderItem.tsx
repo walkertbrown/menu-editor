@@ -6,22 +6,45 @@
 // (MenuPreview / SectionBlock), not here. This component renders a single row.
 
 import type { BeerCiderItem } from "@/content/types";
+import SpotWrap from "@/theme/SpotWrap";
+import { itemSpotId } from "@/theme/spotSpacing";
 
 interface Props {
   item: BeerCiderItem;
+  overrides?: Record<string, number>;
+  categorySpacing?: Record<string, number>;
+  editMode?: boolean;
+  selectedSpotId?: string;
+  onSelectSpot?: (id: string) => void;
 }
 
-export default function BeerCiderItemRenderer({ item }: Props) {
+export default function BeerCiderItemRenderer({
+  item,
+  overrides,
+  categorySpacing,
+  editMode,
+  selectedSpotId,
+  onSelectSpot,
+}: Props) {
   return (
-    <div className="pc-beer">
-      <span className="pc-beer-name">
-        {item.name}
-        {item.nonAlcoholic && (
-          <span className="pc-beer-na">N/A</span>
-        )}
-        <span className="pc-dots" />
-      </span>
-      <span className="pc-beer-price">${item.price}</span>
-    </div>
+    <SpotWrap
+      spotId={itemSpotId(item.id)}
+      overrides={overrides}
+      categorySpacing={categorySpacing}
+      editMode={editMode}
+      selectedSpotId={selectedSpotId}
+      onSelectSpot={onSelectSpot}
+    >
+      <div className="pc-beer">
+        <span className="pc-beer-name">
+          {item.name}
+          {item.nonAlcoholic && (
+            <span className="pc-beer-na">N/A</span>
+          )}
+          <span className="pc-dots" />
+        </span>
+        <span className="pc-beer-price">${item.price}</span>
+      </div>
+    </SpotWrap>
   );
 }
