@@ -43,16 +43,33 @@ The store shape (`StoreShape`) is:
 `/content/store.ts` exports:
 - `getMenus()` — list all menus
 - `getMenu(id)` — menu + sections + items
-- `saveMenu(menu, sections, items, label?)` — persists + creates snapshot
+- `saveMenu(menu, sections, items, opts?)` — persists + creates snapshot
+  - `opts.snapshotLabel` — human label for the snapshot
+  - `opts.scopeSectionIds` — string[]; when provided, only those section ids are
+    considered "this side's" scope. Sections/items outside the scope are preserved
+    from the store (scoped-merge mode). Omit for unscoped full-replace saves
+    (dinner and drinks).
+  - `opts.allowEmpty` — when true bypasses the empty-save guard. Use only after
+    the user confirms they want to erase all content on this side.
+  - Throws `EmptyMenuSaveError` (exported; `err.code === 'EMPTY_MENU_SAVE'`) when
+    the incoming scoped set is empty but the store has content there.
+  - Snapshots always store the FULL merged state so restore is always safe.
 - `listSnapshots(menuId)` — last 10 snapshots
 - `restoreSnapshot(snapshotId)` — rolls back live data
+- `EmptyMenuSaveError` — exported error class; `code === 'EMPTY_MENU_SAVE'`
 
-**To swap to Supabase**: implement the same five functions in a new file and change the import in `/content/store.ts`. No other files change.
+`/content/mergeMenuSave.ts` — pure helper (no I/O) that implements the
+scoped-merge logic. Supabase adapter must call the equivalent logic.
+
+**To swap to Supabase**: implement the same five functions + EmptyMenuSaveError in
+a new file and change the import in `/content/store.ts`. No other files change.
 
 ## API routes
 - `GET  /api/menus` — all menus
 - `GET  /api/menus/[id]` — menu + sections + items
-- `PUT  /api/menus/[id]` — save (body: `{menu, sections, items}`)
+- `PUT  /api/menus/[id]` — save; body: `{menu, sections, items, snapshotLabel?,
+  scopeSectionIds?, allowEmpty?}`; returns 200 `{ok, snapshots}`, 409 `{code,
+  error}` on empty-save guard, 400 on missing fields
 - `GET  /api/menus/[id]/snapshots` — snapshot list
 - `POST /api/menus/[id]/snapshots` — restore (body: `{snapshotId}`)
 

@@ -2,6 +2,28 @@
 // Implementation: local JSON file at data/menus.json.
 // Swapping to Supabase later means implementing the same interface
 // in a new file and changing the import below — no other code changes.
+//
+// saveMenu contract (updated):
+//   saveMenu(menu, sections, items, opts?)
+//
+//   opts.snapshotLabel     — human label for the snapshot (was 4th positional arg)
+//   opts.scopeSectionIds   — when provided, only the named section-ids are
+//                            considered "this side's" scope; sections/items
+//                            outside the scope are preserved from the store.
+//                            Omit for unscoped (full-replace) menus like dinner
+//                            and drinks.
+//   opts.allowEmpty        — when true, bypass the empty-save guard. Use when
+//                            the caller has already confirmed with the user that
+//                            they want to erase all content on this side.
+//
+//   The empty-save guard: if the incoming scoped set is empty but the store
+//   has content for that scope, saveMenu throws EmptyMenuSaveError (code
+//   'EMPTY_MENU_SAVE'). The API maps this to HTTP 409.
+//
+//   Snapshots always store the FULL merged state (not just the filtered half),
+//   so restore is safe even for scoped saves.
+//
+// The future Supabase adapter must honour the same opts interface.
 
 import fs from "fs";
 import path from "path";
@@ -14,6 +36,22 @@ import type {
   StoreShape,
   RestaurantIdentity,
 } from "./types";
+import { mergeMenuSave } from "./mergeMenuSave";
+
+// ---- Error types --------------------------------------------------------
+
+/**
+ * Thrown by saveMenu when the incoming scoped set is empty but the store has
+ * content for that scope and opts.allowEmpty is not set.
+ * The API route maps this to HTTP 409.
+ */
+export class EmptyMenuSaveError extends Error {
+  readonly code = "EMPTY_MENU_SAVE" as const;
+  constructor(message = "Refusing to save: would erase all content on this side") {
+    super(message);
+    this.name = "EmptyMenuSaveError";
+  }
+}
 
 // ---- File path ----------------------------------------------------------
 
@@ -66,46 +104,107 @@ export async function getMenu(
   return { menu, sections, items };
 }
 
+export interface SaveMenuOpts {
+  /** Human-readable label for the version snapshot. */
+  snapshotLabel?: string;
+  /**
+   * The canonical set of section ids that belong to this editing side.
+   * When provided, sections/items whose id is NOT in this set are preserved
+   * from the store (scoped-merge mode). When absent, the whole menu is
+   * replaced (unscoped / full-replace mode — dinner and drinks).
+   */
+  scopeSectionIds?: string[];
+  /**
+   * When true, bypasses the empty-save guard and allows saving an empty
+   * scoped set even if the store currently has content there.
+   * Use after confirming with the user.
+   */
+  allowEmpty?: boolean;
+}
+
 /**
  * Saves a menu and its sections + items back to the store.
- * Also creates a version snapshot.
+ *
+ * When opts.scopeSectionIds is provided, performs a scoped merge:
+ *   - Preserves sections/items outside the scope (the other side).
+ *   - Replaces only in-scope sections/items with the incoming set.
+ *   - Renumbers sortOrder and reconciles sectionOrder.
+ *   - Snapshots the FULL merged state so restore is always safe.
+ *
+ * When opts.scopeSectionIds is absent, behaves like the original full-replace
+ * (correct for dinner and drinks which load the whole menu).
+ *
+ * Throws EmptyMenuSaveError when the incoming scoped set is empty but the
+ * store has content there, unless opts.allowEmpty is true.
  */
 export async function saveMenu(
   menu: Menu,
   sections: Section[],
   items: Item[],
-  snapshotLabel?: string
+  opts?: SaveMenuOpts
 ): Promise<void> {
   const store = readStore();
 
-  // Update or insert menu
+  // Retrieve the current stored data for this menu.
+  const storedMenu = store.menus.find((m) => m.id === menu.id) ?? menu;
+  const storedSections = store.sections.filter((s) => s.menuId === menu.id);
+  const storedItems = store.items.filter((i) => i.menuId === menu.id);
+
+  // Run the scoped merge (or full-replace if no scope provided).
+  const scopeSet = opts?.scopeSectionIds
+    ? new Set(opts.scopeSectionIds)
+    : undefined;
+
+  const { sections: mergedSections, items: mergedItems, sectionOrder, blockedEmpty } =
+    mergeMenuSave(
+      storedSections,
+      storedItems,
+      storedMenu,
+      sections,
+      items,
+      menu,
+      scopeSet
+    );
+
+  // Empty-save guard.
+  if (blockedEmpty && !opts?.allowEmpty) {
+    throw new EmptyMenuSaveError();
+  }
+
+  // Build the updated Menu record with reconciled sectionOrder.
+  const updatedMenu: Menu = {
+    ...menu,
+    sectionOrder,
+    updatedAt: new Date().toISOString(),
+  };
+
+  // Update or insert menu record.
   const menuIdx = store.menus.findIndex((m) => m.id === menu.id);
-  const updatedMenu: Menu = { ...menu, updatedAt: new Date().toISOString() };
   if (menuIdx === -1) {
     store.menus.push(updatedMenu);
   } else {
     store.menus[menuIdx] = updatedMenu;
   }
 
-  // Replace sections for this menu
+  // Write merged sections/items (everything outside this menu is untouched).
   store.sections = [
     ...store.sections.filter((s) => s.menuId !== menu.id),
-    ...sections,
+    ...mergedSections,
   ];
-
-  // Replace items for this menu
   store.items = [
     ...store.items.filter((i) => i.menuId !== menu.id),
-    ...items,
+    ...mergedItems,
   ];
 
-  // Create snapshot
+  // Snapshot the FULL merged state (not just the filtered half), so a restore
+  // never wipes the other side.
+  const snapshotLabel = opts?.snapshotLabel ?? new Date().toLocaleString();
   const snapshot: VersionSnapshot = {
     id: uuidv4(),
     menuId: menu.id,
-    label: snapshotLabel ?? new Date().toLocaleString(),
+    label: snapshotLabel,
     createdAt: new Date().toISOString(),
-    data: { menu: updatedMenu, sections, items },
+    data: { menu: updatedMenu, sections: mergedSections, items: mergedItems },
   };
   store.snapshots.push(snapshot);
 
