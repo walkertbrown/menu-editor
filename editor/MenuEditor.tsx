@@ -30,6 +30,18 @@ interface Props {
   /** Phase 1: called whenever menu/sections/items state changes so the
    *  preview tab can stay in sync without a save. */
   onStateChange?: (menu: Menu, sections: Section[], items: Item[]) => void;
+  /**
+   * When true: suppress the back link and menu name heading, and switch to
+   * full-width layout to fit inside the ~440px sidebar column.
+   */
+  embedded?: boolean;
+  /**
+   * The canonical section ids this side owns (stable for the component's
+   * life — captured at mount from the initially-filtered set).
+   * When provided, the save sends a scoped-merge request so the other
+   * side's sections/items are preserved. Absent for unscoped menus.
+   */
+  scopeSectionIds?: string[];
 }
 
 export default function MenuEditor({
@@ -39,6 +51,8 @@ export default function MenuEditor({
   snapshots: initialSnapshots,
   spiritsSlot,
   onStateChange,
+  embedded,
+  scopeSectionIds,
 }: Props) {
   const [menu, setMenu] = useState<Menu>(initialMenu);
   const [sections, setSections] = useState<Section[]>(
@@ -64,6 +78,7 @@ export default function MenuEditor({
     getState: () => stateRef.current,
     onRestored: (m, s, i) => { setMenu(m); setSections(s); setItems(i); setShowHistory(false); },
     onSnapshotsUpdated: setSnapshots,
+    scopeSectionIds,
   });
 
   // ---- Section operations ------------------------------------------------
@@ -155,14 +170,20 @@ export default function MenuEditor({
 
   const orderedSections = [...sections].sort((a, b) => a.sortOrder - b.sortOrder);
 
+  const outerStyle: React.CSSProperties = embedded
+    ? { padding: "12px 14px" }
+    : { maxWidth: 800, margin: "0 auto", padding: "24px 16px" };
+
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px 16px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <div>
-          <a href="/" style={{ fontSize: "0.85em", color: "#666", textDecoration: "none" }}>← All Menus</a>
-          <h1 style={{ fontFamily: "serif", margin: "4px 0 0" }}>{menu.name}</h1>
-        </div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <div style={outerStyle}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
+        {!embedded && (
+          <div>
+            <a href="/" style={{ fontSize: "0.85em", color: "#666", textDecoration: "none" }}>← All Menus</a>
+            <h1 style={{ fontFamily: "serif", margin: "4px 0 0" }}>{menu.name}</h1>
+          </div>
+        )}
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
           {saveMsg && <span style={{ fontSize: "0.85em", color: saveMsg.includes("fail") ? "#c00" : "#060" }}>{saveMsg}</span>}
           <button onClick={() => setShowHistory((s) => !s)} style={secondaryBtnStyle}>
             History ({snapshots.length})
@@ -196,7 +217,7 @@ export default function MenuEditor({
         </div>
       )}
 
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext id={`dnd-${menu.id}`} sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         {orderedSections.map((section, idx) => (
           <SectionEditor
             key={section.id}

@@ -1,5 +1,6 @@
 "use client";
-// SheetPreviewSpread — renders both sides of a sheet side by side.
+// SheetPreviewSpread — renders both sides of a sheet side by side,
+// or a single enlarged side when focusSide is provided.
 //
 // Two legal pages (816×1344 each) + gap = 1656px wide at natural size.
 // We CSS-transform scale the whole spread down to fit the viewport.
@@ -28,6 +29,11 @@ interface Props {
   frontData: SideData;
   backData: SideData;
   restaurant?: RestaurantIdentity;
+  /**
+   * When set, show only that side at enlarged scale (sidebar open mode).
+   * When unset, show the full two-page spread (sidebar collapsed mode).
+   */
+  focusSide?: "front" | "back";
 }
 
 // ── Single page renderer — no wrapper, just the .pc-page ─────────────────
@@ -88,6 +94,7 @@ export default function SheetPreviewSpread({
   frontData,
   backData,
   restaurant,
+  focusSide,
 }: Props) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -97,13 +104,77 @@ export default function SheetPreviewSpread({
       if (!outerRef.current) return;
       // 32px padding inside the outer container
       const availW = outerRef.current.clientWidth - 32;
-      const s = Math.min(1, availW / SPREAD_W);
+      // In single-side focus mode scale against one page width; in spread
+      // mode scale against the full two-page spread width.
+      const referenceW = focusSide ? PAGE_W : SPREAD_W;
+      const s = Math.min(1, availW / referenceW);
       setScale(s);
     }
     computeScale();
     window.addEventListener("resize", computeScale);
     return () => window.removeEventListener("resize", computeScale);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusSide]);
+
+  // When focusSide changes the container width may change (sidebar
+  // collapses/expands without firing a window resize). Force a recompute
+  // after the DOM has settled using a requestAnimationFrame.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      if (!outerRef.current) return;
+      const availW = outerRef.current.clientWidth - 32;
+      const referenceW = focusSide ? PAGE_W : SPREAD_W;
+      const s = Math.min(1, availW / referenceW);
+      setScale(s);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [focusSide]);
+
+  if (focusSide) {
+    // ── Single-side enlarged view ─────────────────────────────────────
+    const data = focusSide === "front" ? frontData : backData;
+    const side = focusSide === "front" ? sheet.front : sheet.back;
+    const spiritsSlot =
+      side.menuId === "menu-spirits"
+        ? focusSide === "front"
+          ? "p1"
+          : "p2"
+        : undefined;
+
+    // Reserve vertical space so content below doesn't overlap
+    const scaledH = Math.round(PAGE_H * scale + 32);
+
+    return (
+      <div
+        ref={outerRef}
+        className="pc-spread-outer"
+        style={{ minHeight: scaledH }}
+      >
+        <div
+          className="pc-spread-inner"
+          style={{
+            width: PAGE_W,
+            transform: `scale(${scale})`,
+            transformOrigin: "top center",
+          }}
+        >
+          <div className="pc-spread-side">
+            <div style={{ width: PAGE_W, height: PAGE_H, overflow: "hidden" }}>
+              <SidePage
+                menu={data.menu}
+                sections={data.sections}
+                items={data.items}
+                spiritsPageSlot={spiritsSlot}
+                restaurant={restaurant}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Full two-page spread ──────────────────────────────────────────────
 
   // Reserve vertical space so the page below doesn't overlap
   const scaledH = Math.round(PAGE_H * scale + 48); // 48 for labels

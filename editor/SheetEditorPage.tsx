@@ -1,14 +1,18 @@
 "use client";
 // SheetEditorPage — top-level page for one double-sided sheet.
 //
-// Edit tab: shows ONE side at a time with a Flip control that switches
-//   between FRONT and BACK using a CSS 3D Y-axis flip animation.
-// Preview tab: renders both sides side by side (SheetPreviewSpread).
+// Layout: collapsible docked sidebar on the LEFT; live preview on the RIGHT.
+//   Sidebar OPEN  → preview shows only the active side (enlarged).
+//   Sidebar CLOSED → preview shows the full two-page spread.
+//
+// Front/Back toggle at the top of the sidebar selects the edited side and
+// drives which single side the enlarged preview shows.
 //
 // All underlying data/save/history logic flows through the existing
 // MenuEditor and useMenuPersist without modification.
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
+import { flushSync } from "react-dom";
 import type {
   Menu,
   Section,
@@ -24,13 +28,12 @@ import SheetPreviewSpread from "@/theme/SheetPreviewSpread";
 import {
   tabBarStyle,
   backLinkStyle,
-  tabGroupStyle,
+  printBtnStyle,
   activeTabStyle,
   inactiveTabStyle,
-  printBtnStyle,
-  flipBarStyle,
-  sideLabelStyle,
-  flipBtnStyle,
+  collapseToggleStyle,
+  sidebarContainerStyle,
+  faceToggleGroupStyle,
 } from "./sheetEditorStyles";
 
 export interface SideData {
@@ -49,7 +52,6 @@ interface Props {
   sheetTitle: string;
 }
 
-type Tab = "edit" | "preview";
 type Face = "front" | "back";
 
 export default function SheetEditorPage({
@@ -59,9 +61,8 @@ export default function SheetEditorPage({
   restaurant: initialRestaurant,
   sheetTitle,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<Tab>("edit");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeFace, setActiveFace] = useState<Face>("front");
-  const [flipping, setFlipping] = useState(false);
 
   // Live preview state for both sides
   const [liveFront, setLiveFront] = useState(frontData);
@@ -70,6 +71,12 @@ export default function SheetEditorPage({
   // Restaurant identity (shared across all pages — live-synced for preview)
   const [liveRestaurant, setLiveRestaurant] =
     useState<RestaurantIdentity>(initialRestaurant);
+
+  // Track whether we are in a print-triggered full-spread momentarily
+  const [printingSpread, setPrintingSpread] = useState(false);
+
+  // Ref so the print handler can access the latest state without stale closures
+  const printingRef = useRef(false);
 
   const handleFrontStateChange = useCallback(
     (menu: Menu, sections: Section[], items: Item[]) => {
@@ -85,127 +92,133 @@ export default function SheetEditorPage({
     []
   );
 
-  const doFlip = () => {
-    if (flipping) return;
-    setFlipping(true);
-    setTimeout(() => {
-      setActiveFace((f) => (f === "front" ? "back" : "front"));
-      setFlipping(false);
-    }, 350);
-  };
+  // Print: briefly switch preview to full spread so both pages are in the DOM,
+  // then call window.print(). Restore focus-side immediately after.
+  //
+  // flushSync forces React to commit the printingSpread=true state synchronously
+  // before we call window.print(). React 19 schedules renders via microtasks /
+  // MessageChannel — NOT rAF — so nested rAF callbacks can fire before the DOM
+  // is updated. flushSync guarantees the full spread is painted first.
+  // window.print() is blocking (returns after the dialog closes), so restoring
+  // state after it is safe.
+  const handlePrint = useCallback(() => {
+    if (printingRef.current) return;
+    printingRef.current = true;
+    flushSync(() => setPrintingSpread(true));
+    window.print();
+    setPrintingSpread(false);
+    printingRef.current = false;
+  }, []);
 
-  const currentSide = activeFace === "front" ? sheet.front : sheet.back;
-  const otherSide = activeFace === "front" ? sheet.back : sheet.front;
-  const flipLabel = `Flip to ${otherSide.label} (${otherSide.position})`;
-  const sideLabel = `${currentSide.label} — ${currentSide.position}`;
+  // focusSide: undefined = show full spread; "front"/"back" = enlarged single page
+  const focusSide: Face | undefined =
+    printingSpread ? undefined : sidebarOpen ? activeFace : undefined;
 
   return (
-    <div>
-      {/* ── Tab bar ──────────────────────────────────────────────────── */}
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
+      {/* ── Top chrome bar ──────────────────────────────────────── */}
       <div className="pc-editor-chrome" style={tabBarStyle}>
         <a href="/" style={backLinkStyle}>← All Sheets</a>
 
         <SheetTitleEditor sheetId={sheet.id} initialTitle={sheetTitle} />
 
-        <div style={tabGroupStyle}>
-          <button
-            onClick={() => setActiveTab("edit")}
-            style={activeTab === "edit" ? activeTabStyle : inactiveTabStyle}
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => setActiveTab("preview")}
-            style={activeTab === "preview" ? activeTabStyle : inactiveTabStyle}
-          >
-            Preview
-          </button>
-        </div>
-        {activeTab === "preview" && (
-          <button onClick={() => window.print()} style={printBtnStyle}>
-            Print / Save PDF
-          </button>
-        )}
+        <div style={{ flex: 1 }} />
+
+        <button
+          className="pc-editor-chrome"
+          onClick={() => setSidebarOpen((o) => !o)}
+          style={collapseToggleStyle}
+        >
+          {sidebarOpen ? "Hide editor" : "Show editor"}
+        </button>
+
+        <button
+          className="pc-editor-chrome"
+          onClick={handlePrint}
+          style={printBtnStyle}
+        >
+          Print / Save PDF
+        </button>
       </div>
 
-      {/* ── EDIT tab ─────────────────────────────────────────────────── */}
-      {activeTab === "edit" && (
-        <div>
-          {/* Restaurant identity (shared — shown once above the flip) */}
-          <div style={{ maxWidth: 800, margin: "16px auto 0", padding: "0 16px" }}>
-            <RestaurantEditor
-              restaurant={liveRestaurant}
-              onRestaurantChange={setLiveRestaurant}
-            />
-          </div>
+      {/* ── Main body: sidebar + preview ────────────────────────── */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
 
-          {/* Flip control bar */}
-          <div style={flipBarStyle}>
-            <span style={sideLabelStyle}>{sideLabel}</span>
-            <button
-              onClick={doFlip}
-              disabled={flipping}
-              style={flipBtnStyle}
-              title={flipLabel}
-            >
-              {flipLabel} ⇄
-            </button>
-          </div>
-
-          {/* Flip card container */}
-          <div style={{ perspective: "1200px" }}>
-            <div
-              style={{
-                transformStyle: "preserve-3d",
-                transition: flipping ? "transform 0.35s ease-in-out" : "none",
-                transform: flipping ? "rotateY(90deg)" : "rotateY(0deg)",
-              }}
-            >
-              {activeFace === "front" ? (
-                <SideEditorPanel
-                  key="front"
-                  menu={frontData.menu}
-                  sections={frontData.sections}
-                  items={frontData.items}
-                  snapshots={frontData.snapshots}
-                  sectionFilter={sheet.front.sectionNames}
-                  spiritsSlot={sheet.front.menuId === "menu-spirits" ? "p1" : undefined}
-                  onStateChange={handleFrontStateChange}
-                />
-              ) : (
-                <SideEditorPanel
-                  key="back"
-                  menu={backData.menu}
-                  sections={backData.sections}
-                  items={backData.items}
-                  snapshots={backData.snapshots}
-                  sectionFilter={sheet.back.sectionNames}
-                  spiritsSlot={sheet.back.menuId === "menu-spirits" ? "p2" : undefined}
-                  onStateChange={handleBackStateChange}
-                />
-              )}
+        {/* LEFT: collapsible sidebar */}
+        {sidebarOpen && (
+          <div className="pc-editor-chrome" style={sidebarContainerStyle}>
+            {/* Restaurant identity */}
+            <div style={{ padding: "10px 14px 0" }}>
+              <RestaurantEditor
+                restaurant={liveRestaurant}
+                onRestaurantChange={setLiveRestaurant}
+              />
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* ── PREVIEW tab ──────────────────────────────────────────────── */}
-      {activeTab === "preview" && (
-        <SheetPreviewSpread
-          sheet={sheet}
-          frontData={{
-            menu: liveFront.menu,
-            sections: liveFront.sections,
-            items: liveFront.items,
-          }}
-          backData={{
-            menu: liveBack.menu,
-            sections: liveBack.sections,
-            items: liveBack.items,
-          }}
-          restaurant={liveRestaurant}
-        />
-      )}
+            {/* Front / Back toggle */}
+            <div className="pc-editor-chrome" style={faceToggleGroupStyle}>
+              <button
+                onClick={() => setActiveFace("front")}
+                style={activeFace === "front" ? activeTabStyle : inactiveTabStyle}
+              >
+                Front — {sheet.front.label}
+              </button>
+              <button
+                onClick={() => setActiveFace("back")}
+                style={activeFace === "back" ? activeTabStyle : inactiveTabStyle}
+              >
+                Back — {sheet.back.label}
+              </button>
+            </div>
+
+            {/* Active side editor */}
+            {activeFace === "front" ? (
+              <SideEditorPanel
+                key="front"
+                menu={frontData.menu}
+                sections={frontData.sections}
+                items={frontData.items}
+                snapshots={frontData.snapshots}
+                sectionFilter={sheet.front.sectionNames}
+                spiritsSlot={sheet.front.menuId === "menu-spirits" ? "p1" : undefined}
+                onStateChange={handleFrontStateChange}
+                embedded
+              />
+            ) : (
+              <SideEditorPanel
+                key="back"
+                menu={backData.menu}
+                sections={backData.sections}
+                items={backData.items}
+                snapshots={backData.snapshots}
+                sectionFilter={sheet.back.sectionNames}
+                spiritsSlot={sheet.back.menuId === "menu-spirits" ? "p2" : undefined}
+                onStateChange={handleBackStateChange}
+                embedded
+              />
+            )}
+          </div>
+        )}
+
+        {/* RIGHT: live preview */}
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          <SheetPreviewSpread
+            sheet={sheet}
+            frontData={{
+              menu: liveFront.menu,
+              sections: liveFront.sections,
+              items: liveFront.items,
+            }}
+            backData={{
+              menu: liveBack.menu,
+              sections: liveBack.sections,
+              items: liveBack.items,
+            }}
+            restaurant={liveRestaurant}
+            focusSide={focusSide}
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -19,14 +19,6 @@ export const backLinkStyle: React.CSSProperties = {
   marginRight: 4,
 };
 
-export const tabGroupStyle: React.CSSProperties = {
-  display: "flex",
-  gap: 0,
-  borderRadius: 6,
-  overflow: "hidden",
-  border: "1px solid #ccc",
-};
-
 const baseTabStyle: React.CSSProperties = {
   border: "none",
   padding: "7px 20px",
@@ -61,32 +53,33 @@ export const printBtnStyle: React.CSSProperties = {
   fontWeight: 600,
 };
 
-export const flipBarStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "10px 20px",
-  background: "#fafafa",
-  borderBottom: "1px solid #e8e8e8",
-};
-
-export const sideLabelStyle: React.CSSProperties = {
-  fontWeight: 700,
-  fontSize: "0.95em",
-  color: "#333",
-  letterSpacing: "0.04em",
-};
-
-export const flipBtnStyle: React.CSSProperties = {
+export const collapseToggleStyle: React.CSSProperties = {
   background: "#fff",
-  border: "2px solid #1a1a1a",
-  borderRadius: 6,
-  padding: "7px 18px",
+  border: "1px solid #ccc",
+  borderRadius: 4,
+  padding: "5px 12px",
   cursor: "pointer",
-  fontWeight: 700,
-  fontSize: "0.88em",
-  letterSpacing: "0.04em",
-  transition: "background 0.15s",
+  fontSize: "0.78em",
+  fontWeight: 600,
+  letterSpacing: "0.05em",
+  color: "#555",
+};
+
+export const sidebarContainerStyle: React.CSSProperties = {
+  width: 440,
+  flexShrink: 0,
+  borderRight: "1px solid #e0e0e0",
+  overflowY: "auto",
+  background: "#fafafa",
+};
+
+export const faceToggleGroupStyle: React.CSSProperties = {
+  display: "flex",
+  gap: 0,
+  borderRadius: 6,
+  overflow: "hidden",
+  border: "1px solid #ccc",
+  margin: "10px 14px",
 };
 
 export const sheetTitleBtnStyle: React.CSSProperties = {
