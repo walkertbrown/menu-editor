@@ -148,7 +148,7 @@ export function SinglePageShell({
 }) {
   const r = restaurant ?? DEFAULT_RESTAURANT;
   return (
-    <div className="pc-page">
+    <div className="pc-page pc-page--fill">
       <div className="pc-frame" aria-hidden="true" />
       <header className="pc-masthead">
         <div className="pc-eyebrow">{r.eyebrowLine}</div>
@@ -164,15 +164,17 @@ export function SinglePageShell({
       </div>
       <PageFurniture furniture={menu.furniture} position="header" />
 
-      {sections.map((section) => (
-        <SectionBlock
-          key={section.id}
-          section={section}
-          items={allItems
-            .filter((i) => i.sectionId === section.id)
-            .sort((a, b) => a.sortOrder - b.sortOrder)}
-        />
-      ))}
+      <div className="pc-sections">
+        {sections.map((section) => (
+          <SectionBlock
+            key={section.id}
+            section={section}
+            items={allItems
+              .filter((i) => i.sectionId === section.id)
+              .sort((a, b) => a.sortOrder - b.sortOrder)}
+          />
+        ))}
+      </div>
 
       {isLastPage && (
         <PageFurniture furniture={menu.furniture} position="footer" />
