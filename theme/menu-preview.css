@@ -238,8 +238,7 @@
    spirits sections use this wrapper applied by MenuPreview.tsx.           */
 
 .pc-two-col-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  column-count: 2;
   column-gap: 32px;
 }
 
