@@ -154,6 +154,19 @@ export interface Menu {
    * This is part of the design — it persists to print.
    */
   spacingOverrides?: Record<string, number>;
+  /**
+   * User-defined spacing categories beyond the four built-ins
+   * (header | item | masthead | footer). Each has a stable uuid id and a name.
+   */
+  customCategories?: { id: string; name: string }[];
+  /**
+   * Maps a spot id → the category id to use for that spot's baseline spacing.
+   * The id may be one of the four built-in category keys OR a custom category id.
+   * When absent, the spot falls back to its default built-in category via
+   * categoryOfSpot(). Overriding a spot's category does NOT change the
+   * per-spot spacingOverrides precedence — that still wins.
+   */
+  spotCategories?: Record<string, string>;
   createdAt: string;
   updatedAt: string;
 }

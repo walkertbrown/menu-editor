@@ -833,6 +833,22 @@
   gap: 0;
 }
 
+/* ── Spacing menu popover (editor-only; hidden via pc-editor-chrome) ────── */
+
+/* The popover and popup are already tagged pc-editor-chrome and will not print.
+   The inline styles in SpacingMenu.tsx / SpotNudgePopup.tsx handle positioning.
+   These rules add hover/focus polish. */
+
+/* Spacing-menu trigger button hover */
+.pc-spacing-btn:hover {
+  background: #f0ead8 !important;
+}
+
+/* SpotNudgePopup drag handle cursor feedback */
+.pc-popup-drag:active {
+  cursor: grabbing !important;
+}
+
 /* ── Print styles ────────────────────────────────────────────────────────── */
 
 @page {

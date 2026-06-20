@@ -6,6 +6,11 @@
  * and must render in print too). When editMode is true, also adds the click
  * affordance class, data-spot-id attribute, and selected-outline class.
  * In print mode (editMode=false), renders a plain wrapper with only the margin.
+ *
+ * Phase 3: onSelectSpot now receives a DOMRect (post-transform viewport coords)
+ * so the floating popup can anchor near the clicked spot without manual scale math.
+ * The signature is (id: string, rect?: DOMRect) — callers that do not need
+ * positioning can continue passing a single-argument handler.
  */
 
 import type { CSSProperties } from "react";
@@ -15,9 +20,11 @@ interface Props {
   spotId: string;
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
+  /** Phase 3: maps spotId → assigned category id (custom or built-in). */
+  spotCategories?: Record<string, string>;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
   /** HTML element to render as. Default: "div". */
   as?: "div" | "span" | "p" | "header" | "section" | "footer";
   className?: string;
@@ -29,6 +36,7 @@ export default function SpotWrap({
   spotId,
   overrides,
   categorySpacing,
+  spotCategories,
   editMode,
   selectedSpotId,
   onSelectSpot,
@@ -37,7 +45,7 @@ export default function SpotWrap({
   style,
   children,
 }: Props) {
-  const marginStyle = spotMarginStyle(overrides, spotId, categorySpacing);
+  const marginStyle = spotMarginStyle(overrides, spotId, categorySpacing, spotCategories);
   const isSelected = editMode && selectedSpotId === spotId;
 
   const combinedStyle: CSSProperties = {
@@ -61,7 +69,8 @@ export default function SpotWrap({
         style={Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined}
         onClick={(e) => {
           e.stopPropagation();
-          onSelectSpot?.(spotId);
+          const rect = e.currentTarget.getBoundingClientRect();
+          onSelectSpot?.(spotId, rect);
         }}
       >
         {children}

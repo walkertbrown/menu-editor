@@ -110,16 +110,46 @@ export function spotLabel(id: string, ctx?: SpotLabelContext): string {
 // ── Style helper ─────────────────────────────────────────────────────────────
 
 /**
- * Returns { marginTop: N } when the spot has an override in the map,
- * or a category-level baseline, or undefined when neither applies.
- * Per-spot spacingOverrides take precedence over categorySpacing.
+ * Returns the effective category key for a spot, respecting spotCategories
+ * assignment. Falls back to the built-in categoryOfSpot() when no assignment.
+ *
+ * @param spotId        The spot id to resolve.
+ * @param spotCategories  Optional map of spotId → custom/built-in category id.
+ */
+export function assignedCategoryOf(
+  spotId: string,
+  spotCategories?: Record<string, string>
+): string {
+  return spotCategories?.[spotId] ?? categoryOfSpot(spotId);
+}
+
+/**
+ * Returns { marginTop: N } when the spot has an override, a category-level
+ * baseline, or a spot-category-based baseline; undefined when none applies.
+ *
+ * Precedence (highest → lowest):
+ *   1. spacingOverrides[spotId]   — per-spot explicit override
+ *   2. categorySpacing[ spotCategories[spotId] ]  — assigned custom/built-in
+ *   3. categorySpacing[ categoryOfSpot(spotId) ]  — default built-in category
+ *
+ * Zero-config (no overrides, no customCategories): behaves identically to
+ * the original two-argument form (returns undefined, emitting no inline margin).
  */
 export function spotMarginStyle(
   overrides: Record<string, number> | undefined,
   id: string,
-  categorySpacing?: Record<string, number>
+  categorySpacing?: Record<string, number>,
+  spotCategories?: Record<string, string>
 ): { marginTop: number } | undefined {
-  const val = overrides?.[id] ?? categorySpacing?.[categoryOfSpot(id)];
-  if (val === undefined) return undefined;
-  return { marginTop: val };
+  if (overrides?.[id] !== undefined) {
+    return { marginTop: overrides[id] };
+  }
+  if (spotCategories?.[id] !== undefined && categorySpacing) {
+    const assignedKey = spotCategories[id];
+    const assignedVal = categorySpacing[assignedKey];
+    if (assignedVal !== undefined) return { marginTop: assignedVal };
+  }
+  const defaultVal = categorySpacing?.[categoryOfSpot(id)];
+  if (defaultVal === undefined) return undefined;
+  return { marginTop: defaultVal };
 }

@@ -27,8 +27,13 @@ interface Props {
   onStateChange?: (menu: Menu, sections: Section[], items: Item[]) => void;
   /** Forwarded to MenuEditor — suppresses heading/back link, uses sidebar layout */
   embedded?: boolean;
-  /** Current spacing for this side (categorySpacing + spacingOverrides), merged at save time */
-  spacing?: { categorySpacing?: Record<string, number>; spacingOverrides?: Record<string, number> };
+  /** Current spacing for this side, merged at save time via ref in MenuEditor */
+  spacing?: {
+    categorySpacing?: Record<string, number>;
+    spacingOverrides?: Record<string, number>;
+    customCategories?: { id: string; name: string }[];
+    spotCategories?: Record<string, string>;
+  };
 }
 
 export default function SideEditorPanel({

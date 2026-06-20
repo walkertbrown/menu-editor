@@ -150,6 +150,8 @@ export async function saveMenu(
     blockedEmpty,
     spacingOverrides,
     categorySpacing,
+    customCategories,
+    spotCategories,
   } = mergeMenuSave(
     storedSections,
     storedItems,
@@ -171,6 +173,8 @@ export async function saveMenu(
     sectionOrder,
     spacingOverrides,
     categorySpacing,
+    customCategories,
+    spotCategories,
     updatedAt: new Date().toISOString(),
   };
 

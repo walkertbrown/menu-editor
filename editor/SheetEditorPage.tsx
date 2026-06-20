@@ -8,9 +8,13 @@
 // Front/Back toggle at the top of the sidebar selects the edited side and
 // drives which single side the enlarged preview shows.
 //
-// Spacing state (categorySpacing + spacingOverrides) is owned here via
-// useSpotSpacing. It is merged into menus for preview and read at save time
-// via a ref in MenuEditor — never duplicated into MenuEditor's own state.
+// Spacing state (categorySpacing + spacingOverrides + customCategories +
+// spotCategories) is owned here via useSpotSpacing. It is merged into menus
+// for preview and read at save time via a ref in MenuEditor — never duplicated
+// into MenuEditor's own state.
+//
+// Phase 2: CategorySpacingControl sidebar panel replaced by "Spacing ▾" button.
+// Phase 3: Per-spot SpacingControl sidebar panel replaced by floating SpotNudgePopup.
 
 import { useState, useCallback, useRef } from "react";
 import { flushSync } from "react-dom";
@@ -25,11 +29,10 @@ import type { SheetConfig } from "@/sheets/sheetConfig";
 import SideEditorPanel from "./SideEditorPanel";
 import RestaurantEditor from "./RestaurantEditor";
 import SheetTitleEditor from "./SheetTitleEditor";
-import SpacingControl from "./SpacingControl";
-import CategorySpacingControl from "./CategorySpacingControl";
+import SpacingMenu from "./SpacingMenu";
+import SpotNudgePopup from "./SpotNudgePopup";
 import SheetPreviewSpread from "@/theme/SheetPreviewSpread";
 import { useSpotSpacing } from "./useSpotSpacing";
-import { categoryOfSpot } from "@/theme/spotSpacing";
 import {
   tabBarStyle,
   backLinkStyle,
@@ -81,8 +84,9 @@ export default function SheetEditorPage({
   const [printingSpread, setPrintingSpread] = useState(false);
   const printingRef = useRef(false);
 
-  // Per-spot spacing: selected spot id (cleared when switching sides)
+  // Phase 3: selected spot + anchor rect for the floating popup
   const [selectedSpotId, setSelectedSpotId] = useState<string | undefined>(undefined);
+  const [anchorRect, setAnchorRect] = useState<DOMRect | undefined>(undefined);
 
   // Spacing state owned here, merged into preview and save via ref
   const {
@@ -91,6 +95,8 @@ export default function SheetEditorPage({
     handleSpacingReset,
     handleCategoryChange,
     handleCategoryReset,
+    handleCreateCategory,
+    handleAssignSpot,
     mergeSpacingIntoMenu,
   } = useSpotSpacing(frontData.menu, backData.menu);
 
@@ -120,6 +126,13 @@ export default function SheetEditorPage({
   const handleSetActiveFace = useCallback((face: Face) => {
     setActiveFace(face);
     setSelectedSpotId(undefined);
+    setAnchorRect(undefined);
+  }, []);
+
+  // Phase 3: click handler from preview passes the viewport rect of the spot
+  const handleSelectSpot = useCallback((id: string, rect?: DOMRect) => {
+    setSelectedSpotId(id);
+    setAnchorRect(rect);
   }, []);
 
   const focusSide: Face | undefined =
@@ -131,9 +144,10 @@ export default function SheetEditorPage({
   const activeSpacingValue = selectedSpotId !== undefined
     ? activeSpacing.spacingOverrides?.[selectedSpotId]
     : undefined;
-  const activeCategoryBaseline = selectedSpotId !== undefined
-    ? activeSpacing.categorySpacing?.[categoryOfSpot(selectedSpotId)]
-    : undefined;
+
+  // Sections/items for the active face (for friendly spot labels)
+  const activeSections = activeFace === "front" ? liveFront.sections : liveBack.sections;
+  const activeItems = activeFace === "front" ? liveFront.items : liveBack.items;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
@@ -142,10 +156,20 @@ export default function SheetEditorPage({
         <a href="/" style={backLinkStyle}>← All Sheets</a>
         <SheetTitleEditor sheetId={sheet.id} initialTitle={sheetTitle} />
         <div style={{ flex: 1 }} />
+
+        {/* Phase 2: Spacing ▾ dropdown */}
+        <SpacingMenu
+          categorySpacing={activeSpacing.categorySpacing}
+          customCategories={activeSpacing.customCategories}
+          onChange={(cat, val) => handleCategoryChange(activeFace, cat, val)}
+          onReset={(cat) => handleCategoryReset(activeFace, cat)}
+          onCreateCategory={(name) => handleCreateCategory(activeFace, name)}
+        />
+
         <button
           className="pc-editor-chrome"
           onClick={() => setSidebarOpen((o) => !o)}
-          style={collapseToggleStyle}
+          style={{ ...collapseToggleStyle, marginLeft: 8 }}
         >
           {sidebarOpen ? "Hide editor" : "Show editor"}
         </button>
@@ -166,24 +190,6 @@ export default function SheetEditorPage({
                 onRestaurantChange={setLiveRestaurant}
               />
             </div>
-
-            {/* Category-level spacing (always visible) */}
-            <CategorySpacingControl
-              categorySpacing={activeSpacing.categorySpacing}
-              onChange={(cat, val) => handleCategoryChange(activeFace, cat, val)}
-              onReset={(cat) => handleCategoryReset(activeFace, cat)}
-            />
-
-            {/* Per-spot spacing control (visible when a spot is selected) */}
-            <SpacingControl
-              selectedSpotId={selectedSpotId}
-              value={activeSpacingValue}
-              categoryBaseline={activeCategoryBaseline}
-              onChange={(val) => selectedSpotId && handleSpacingChange(activeFace, selectedSpotId, val)}
-              onReset={() => selectedSpotId && handleSpacingReset(activeFace, selectedSpotId)}
-              sections={activeFace === "front" ? liveFront.sections : liveBack.sections}
-              items={activeFace === "front" ? liveFront.items : liveBack.items}
-            />
 
             {/* Front / Back toggle */}
             <div className="pc-editor-chrome" style={faceToggleGroupStyle}>
@@ -250,10 +256,32 @@ export default function SheetEditorPage({
             focusSide={focusSide}
             editMode={isEditMode}
             selectedSpotId={selectedSpotId}
-            onSelectSpot={setSelectedSpotId}
+            onSelectSpot={handleSelectSpot}
           />
         </div>
       </div>
+
+      {/* Phase 3: floating SpotNudgePopup — rendered outside the scaled preview */}
+      {isEditMode && selectedSpotId && (
+        <SpotNudgePopup
+          spotId={selectedSpotId}
+          anchorRect={anchorRect}
+          overrideValue={activeSpacingValue}
+          categorySpacing={activeSpacing.categorySpacing}
+          customCategories={activeSpacing.customCategories}
+          spotCategories={activeSpacing.spotCategories}
+          sections={activeSections}
+          items={activeItems}
+          onChange={(val) => handleSpacingChange(activeFace, selectedSpotId, val)}
+          onReset={() => handleSpacingReset(activeFace, selectedSpotId)}
+          onAssignCategory={(catId) => handleAssignSpot(activeFace, selectedSpotId, catId)}
+          onCreateCategory={(name) => handleCreateCategory(activeFace, name)}
+          onClose={() => {
+            setSelectedSpotId(undefined);
+            setAnchorRect(undefined);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -17,9 +17,10 @@ interface Props {
   // Accepted but unused until spirits spacing is wired (future phase).
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
+  spotCategories?: Record<string, string>;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }
 
 const isPort = (item: SpiritListItem) =>

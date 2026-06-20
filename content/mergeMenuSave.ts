@@ -30,6 +30,7 @@
  */
 
 import type { Menu, Section, Item } from "./types";
+import { reconcileSpotMap } from "./reconcileSpotMap";
 
 export interface MergeMenuSaveResult {
   /** The full merged section list to persist. */
@@ -57,6 +58,18 @@ export interface MergeMenuSaveResult {
    * is acceptable for scoped saves since both sides share one menu record).
    */
   categorySpacing: Record<string, number> | undefined;
+  /**
+   * Custom category definitions to persist on the Menu record.
+   * Menu-global: incoming wins (last-write-wins).
+   */
+  customCategories: { id: string; name: string }[] | undefined;
+  /**
+   * Spot→category assignment map to persist on the Menu record.
+   * Reconciled like spacingOverrides: on a scoped save, out-of-scope keys
+   * are preserved from the stored menu; in-scope keys come from incoming.
+   * Stale item/section keys are pruned. On an unscoped save: taken as-is.
+   */
+  spotCategories: Record<string, string> | undefined;
 }
 
 /**
@@ -94,6 +107,8 @@ export function mergeMenuSave(
       // Unscoped save: take incoming values as-is
       spacingOverrides: incomingMenu.spacingOverrides,
       categorySpacing: incomingMenu.categorySpacing,
+      customCategories: incomingMenu.customCategories,
+      spotCategories: incomingMenu.spotCategories,
     };
   }
 
@@ -179,81 +194,36 @@ export function mergeMenuSave(
     }
   }
 
-  // ---- Reconcile spacingOverrides (scoped save) --------------------------
-  // Strategy (mirrors sectionOrder reconciliation):
-  //   1. Start from stored overrides.
-  //   2. Overlay in-scope keys from the incoming menu (add / update / remove).
-  //      "In-scope" for overrides = any key that starts with "section-<scopeId>"
-  //      or "item-<itemId-belonging-to-scope>" OR fixed furniture keys (these
-  //      are page-global for dinner/drinks — single-menu pages — so no collision).
-  //   3. Drop stale keys for section/item ids that no longer exist after the merge.
-  //
-  // Note: for the current dinner/drinks single-page menus, every scoped save
-  // that supplies overrides replaces the whole override map. The preservation
-  // logic below is built for the future spirits dual-page case.
+  // ---- Reconcile spacingOverrides + spotCategories (scoped save) ----------
+  // Both use the same three-pass strategy via reconcileSpotMap.
+  // See content/reconcileSpotMap.ts for the algorithm.
   const mergedSectionIds = new Set(mergedSections.map((s) => s.id));
   const mergedItemIds = new Set(mergedItems.map((i) => i.id));
 
-  const storedOverrides: Record<string, number> =
-    storedMenu.spacingOverrides ?? {};
-  const incomingOverrides: Record<string, number> =
-    incomingMenu.spacingOverrides ?? {};
-
-  // Build the set of ids that are in scope: scope section ids + their item ids.
+  // Build the set of item ids that are in scope (belong to this editing side).
   const inScopeItemIds = new Set(
     mergedItems
       .filter((i) => scopeSet.has(i.sectionId))
       .map((i) => i.id)
   );
 
-  const reconciledOverrides: Record<string, number> = {};
+  const spacingOverrides = reconcileSpotMap<number>(
+    storedMenu.spacingOverrides ?? {},
+    incomingMenu.spacingOverrides ?? {},
+    scopeSet,
+    inScopeItemIds,
+    mergedSectionIds,
+    mergedItemIds
+  );
 
-  // Pass 1: keep stored keys that are NOT in scope (belong to the other side).
-  for (const [k, v] of Object.entries(storedOverrides)) {
-    const isSectionKey = k.startsWith("section-");
-    const isItemKey = k.startsWith("item-");
-    if (isSectionKey) {
-      const sId = k.slice("section-".length);
-      if (!scopeSet.has(sId)) {
-        // Out-of-scope section key — preserve it.
-        reconciledOverrides[k] = v;
-      }
-    } else if (isItemKey) {
-      const iId = k.slice("item-".length);
-      if (!inScopeItemIds.has(iId)) {
-        // Out-of-scope item key — preserve it.
-        reconciledOverrides[k] = v;
-      }
-    } else {
-      // Fixed furniture / masthead key — page-global, incoming wins if present.
-      if (!(k in incomingOverrides)) {
-        reconciledOverrides[k] = v;
-      }
-    }
-  }
-
-  // Pass 2: overlay incoming overrides (in-scope changes).
-  for (const [k, v] of Object.entries(incomingOverrides)) {
-    reconciledOverrides[k] = v;
-  }
-
-  // Pass 3: drop stale keys for ids that no longer exist.
-  const finalOverrides: Record<string, number> = {};
-  for (const [k, v] of Object.entries(reconciledOverrides)) {
-    if (k.startsWith("section-")) {
-      const sId = k.slice("section-".length);
-      if (mergedSectionIds.has(sId)) finalOverrides[k] = v;
-    } else if (k.startsWith("item-")) {
-      const iId = k.slice("item-".length);
-      if (mergedItemIds.has(iId)) finalOverrides[k] = v;
-    } else {
-      // Fixed key — always keep.
-      finalOverrides[k] = v;
-    }
-  }
-
-  const spacingOverrides =
-    Object.keys(finalOverrides).length > 0 ? finalOverrides : undefined;
+  const spotCategories = reconcileSpotMap<string>(
+    storedMenu.spotCategories ?? {},
+    incomingMenu.spotCategories ?? {},
+    scopeSet,
+    inScopeItemIds,
+    mergedSectionIds,
+    mergedItemIds
+  );
 
   return {
     sections: mergedSections,
@@ -262,5 +232,8 @@ export function mergeMenuSave(
     blockedEmpty,
     spacingOverrides,
     categorySpacing: incomingMenu.categorySpacing ?? storedMenu.categorySpacing,
+    // Menu-global fields: incoming wins
+    customCategories: incomingMenu.customCategories ?? storedMenu.customCategories,
+    spotCategories,
   };
 }

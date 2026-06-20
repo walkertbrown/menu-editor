@@ -38,9 +38,11 @@ const DEFAULT_RESTAURANT: RestaurantIdentity = {
 interface EditProps {
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
+  /** Phase 3: spot → category assignment map. */
+  spotCategories?: Record<string, string>;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }
 
 interface Props {
@@ -50,7 +52,7 @@ interface Props {
   restaurant?: RestaurantIdentity;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }
 
 // Food sections that use a two-column grid layout.
@@ -91,6 +93,7 @@ function SectionBlock({
       spotId={sectionSpotId(section.id)}
       overrides={editProps.overrides}
       categorySpacing={editProps.categorySpacing}
+      spotCategories={editProps.spotCategories}
       editMode={editProps.editMode}
       selectedSpotId={editProps.selectedSpotId}
       onSelectSpot={editProps.onSelectSpot}
@@ -177,12 +180,13 @@ export function SinglePageShell({
   restaurant?: RestaurantIdentity;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }) {
   const r = restaurant ?? DEFAULT_RESTAURANT;
   const overrides = menu.spacingOverrides;
   const categorySpacing = menu.categorySpacing;
-  const editProps: EditProps = { overrides, categorySpacing, editMode, selectedSpotId, onSelectSpot };
+  const spotCategories = menu.spotCategories;
+  const editProps: EditProps = { overrides, categorySpacing, spotCategories, editMode, selectedSpotId, onSelectSpot };
 
   return (
     <div className="pc-page pc-page--fill">
@@ -192,6 +196,7 @@ export function SinglePageShell({
         restaurant={r}
         overrides={overrides}
         categorySpacing={categorySpacing}
+        spotCategories={spotCategories}
         editMode={editMode}
         selectedSpotId={selectedSpotId}
         onSelectSpot={onSelectSpot}
@@ -206,6 +211,7 @@ export function SinglePageShell({
         position="header"
         overrides={overrides}
         categorySpacing={categorySpacing}
+        spotCategories={spotCategories}
         editMode={editMode}
         selectedSpotId={selectedSpotId}
         onSelectSpot={onSelectSpot}
@@ -230,6 +236,7 @@ export function SinglePageShell({
           position="footer"
           overrides={overrides}
           categorySpacing={categorySpacing}
+          spotCategories={spotCategories}
           editMode={editMode}
           selectedSpotId={selectedSpotId}
           onSelectSpot={onSelectSpot}

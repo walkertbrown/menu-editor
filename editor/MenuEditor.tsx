@@ -46,7 +46,12 @@ interface Props {
    * Current spacing state owned by SheetEditorPage. Read at save time only
    * (via ref) — never synced into internal state to avoid update loops.
    */
-  spacing?: { categorySpacing?: Record<string, number>; spacingOverrides?: Record<string, number> };
+  spacing?: {
+    categorySpacing?: Record<string, number>;
+    spacingOverrides?: Record<string, number>;
+    customCategories?: { id: string; name: string }[];
+    spotCategories?: Record<string, string>;
+  };
 }
 
 export default function MenuEditor({
@@ -92,6 +97,8 @@ export default function MenuEditor({
         ...stateRef.current.menu,
         categorySpacing: spacingRef.current?.categorySpacing,
         spacingOverrides: spacingRef.current?.spacingOverrides,
+        customCategories: spacingRef.current?.customCategories,
+        spotCategories: spacingRef.current?.spotCategories,
       },
     }),
     onRestored: (m, s, i) => { setMenu(m); setSections(s); setItems(i); setShowHistory(false); },

@@ -14,15 +14,17 @@ interface Props {
   item: CocktailItem;
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
+  spotCategories?: Record<string, string>;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }
 
 export default function CocktailItemRenderer({
   item,
   overrides,
   categorySpacing,
+  spotCategories,
   editMode,
   selectedSpotId,
   onSelectSpot,
@@ -32,6 +34,7 @@ export default function CocktailItemRenderer({
       spotId={itemSpotId(item.id)}
       overrides={overrides}
       categorySpacing={categorySpacing}
+      spotCategories={spotCategories}
       editMode={editMode}
       selectedSpotId={selectedSpotId}
       onSelectSpot={onSelectSpot}

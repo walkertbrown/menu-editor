@@ -38,8 +38,8 @@ interface Props {
   editMode?: boolean;
   /** The currently selected spot id. */
   selectedSpotId?: string;
-  /** Called when the user clicks a spot in the preview. */
-  onSelectSpot?: (id: string) => void;
+  /** Called when the user clicks a spot in the preview. Receives post-transform viewport rect. */
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }
 
 // ── Single page renderer — no wrapper, just the .pc-page ─────────────────
@@ -61,7 +61,7 @@ function SidePage({
   restaurant?: RestaurantIdentity;
   editMode?: boolean;
   selectedSpotId?: string;
-  onSelectSpot?: (id: string) => void;
+  onSelectSpot?: (id: string, rect?: DOMRect) => void;
 }) {
   if (menu.id === "menu-spirits" && spiritsPageSlot) {
     const sectionMap = new Map(sections.map((s) => [s.id, s]));
