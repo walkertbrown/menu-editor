@@ -33,6 +33,17 @@ export default function Masthead({
 }: Props) {
   const spotProps = { overrides, categorySpacing, spotCategories, editMode, selectedSpotId, onSelectSpot };
 
+  // Minimal masthead (e.g. Drinks): just the title, no eyebrow/logo/wordmark.
+  if (menu.mastheadMinimal) {
+    return (
+      <header className="pc-masthead pc-masthead--minimal">
+        <SpotWrap spotId={SPOT.mastheadTitle} as="div" {...spotProps}>
+          <h2 className="pc-masthead-minimal-title">{menu.pageTitle ?? menu.name}</h2>
+        </SpotWrap>
+      </header>
+    );
+  }
+
   return (
     <header className="pc-masthead">
       <SpotWrap spotId={SPOT.mastheadEyebrow} as="div" {...spotProps}>

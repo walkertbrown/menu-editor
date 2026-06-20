@@ -201,11 +201,13 @@ export function SinglePageShell({
         selectedSpotId={selectedSpotId}
         onSelectSpot={onSelectSpot}
       />
-      <SpotWrap spotId={SPOT.fleuron} {...editProps}>
-        <div className="pc-rule-orn" aria-hidden="true">
-          <span>❦</span>
-        </div>
-      </SpotWrap>
+      {!menu.mastheadMinimal && (
+        <SpotWrap spotId={SPOT.fleuron} {...editProps}>
+          <div className="pc-rule-orn" aria-hidden="true">
+            <span>❦</span>
+          </div>
+        </SpotWrap>
+      )}
       <PageFurniture
         furniture={menu.furniture}
         position="header"

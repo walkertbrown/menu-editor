@@ -148,6 +148,12 @@ export interface Menu {
    */
   eyebrowLine?: string;
   /**
+   * When true, render a minimal masthead: just the page title (caps, centered),
+   * with no eyebrow, no logo/wordmark, and no fleuron divider. Used by the Drinks
+   * page to match its "WINES BY THE GLASS" reference. Dinner/spirits leave it unset.
+   */
+  mastheadMinimal?: boolean;
+  /**
    * Per-category baseline vertical spacing in px. Keys: "header" | "item" | "masthead" | "footer".
    * Applied to every spot in that category. A per-spot spacingOverrides entry takes precedence.
    */

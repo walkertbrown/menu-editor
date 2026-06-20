@@ -33,7 +33,9 @@
         "sec-cocktails"
       ],
       "createdAt": "2026-06-18T03:06:33.383Z",
-      "updatedAt": "2026-06-18T03:06:33.383Z"
+      "updatedAt": "2026-06-18T03:06:33.383Z",
+      "pageTitle": "Wines by the Glass",
+      "mastheadMinimal": true
     },
     {
       "id": "menu-spirits",

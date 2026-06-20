@@ -123,6 +123,21 @@
   font-weight: 400;
 }
 
+/* Minimal masthead (Drinks): a single centered caps title, no other chrome. */
+.pc-masthead--minimal {
+  margin-bottom: 10px;
+}
+
+.pc-masthead-minimal-title {
+  font-family: var(--font-display), 'Della Respira', serif;
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin: 2px 0 8px;
+  font-weight: 400;
+}
+
 /* ── Fleuron ornament divider ────────────────────────────────────────────── */
 
 .pc-rule-orn {
