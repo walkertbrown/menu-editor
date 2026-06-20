@@ -20,7 +20,60 @@
       },
       "createdAt": "2026-06-18T03:06:33.380Z",
       "updatedAt": "2026-06-19T15:38:45.824Z",
-      "pageTitle": "Prix Fixe Dinner"
+      "pageTitle": "Prix Fixe Dinner",
+      "customCategories": [
+        {
+          "id": "c8c9a41f-314d-4a2b-b7fe-f053f4c43809",
+          "name": "To Begin"
+        },
+        {
+          "id": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+          "name": "Appetizers & Salads"
+        },
+        {
+          "id": "399f337a-bf9a-4c95-890e-d37a61001d46",
+          "name": "Entrées"
+        },
+        {
+          "id": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+          "name": "Desserts"
+        },
+        {
+          "id": "bd2f5466-220c-4040-8236-f684be145add",
+          "name": "Bread Service"
+        }
+      ],
+      "spotCategories": {
+        "item-299387ad-9f29-4499-bf9b-6d7d81954e95": "c8c9a41f-314d-4a2b-b7fe-f053f4c43809",
+        "item-0426e37d-6ab2-4efa-8539-2223793a3f84": "c8c9a41f-314d-4a2b-b7fe-f053f4c43809",
+        "item-68712411-5cbf-4432-84b4-be50799642f2": "c8c9a41f-314d-4a2b-b7fe-f053f4c43809",
+        "item-30025736-88d1-4f80-983c-93753b35ddb6": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-746474be-0690-4118-ae45-f27699dc657b": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-cfd274ed-06c7-465c-85a0-98100ac9b5d4": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-f58242c7-7870-436e-bcf3-31586d280a4d": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-556d47c1-ab98-4706-b076-e0a792fc8a6a": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-96cbbbb5-3f41-43db-945c-3e2705fa97b7": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-c52afa1a-ec2f-4ecc-952b-aae77811267d": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-571d7a16-a28c-453d-8d73-9b8920b02523": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-f16b41de-da37-41b0-a583-8622712319ab": "cd3ca8ab-7717-4453-9f93-4f2a5ec58ae0",
+        "item-e016e401-dc70-4038-b550-f1819307c47f": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-0d3e384f-181a-4216-ae71-d816b4f099f6": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-1573abf3-b916-4296-a78f-5d46094a913d": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-af7b5c33-4cce-4090-a200-8ad6f1d1addb": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-08a3b1a9-3fe7-4ee7-9ca0-53e45199e39a": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-04f221cf-848c-463c-a6f3-c4ef5e528874": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-01a9ad99-8bf5-409b-905d-6e624c1d3692": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-61663b8b-5638-4a83-b1c3-d23e737a2912": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-c1df6828-d109-4737-8692-7063e86ee362": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-b2c11e12-4492-4c17-880e-59c644d064f2": "399f337a-bf9a-4c95-890e-d37a61001d46",
+        "item-062573a0-2167-40d2-b247-2c9b32af0e55": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+        "item-d9eb979d-41a5-4943-8d5b-9af5f3620a21": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+        "item-930222d9-4d99-4193-aff9-c366ace8fe90": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+        "item-0a07f10b-58d9-4901-b704-5c61f69f46f4": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+        "item-26f2f497-c345-4e3b-8ddc-b490a773f9f4": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+        "item-4bfeaff0-cd19-4f79-8bc0-970cc9803579": "65540cb4-3a06-4626-93e7-dcfda5be2900",
+        "item-4939d8d5-5374-4a22-8ae9-c08d6ae72c94": "bd2f5466-220c-4040-8236-f684be145add"
+      }
     },
     {
       "id": "menu-drinks",
