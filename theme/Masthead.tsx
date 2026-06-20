@@ -36,7 +36,7 @@ export default function Masthead({
   return (
     <header className="pc-masthead">
       <SpotWrap spotId={SPOT.mastheadEyebrow} as="div" {...spotProps}>
-        <div className="pc-eyebrow">{restaurant.eyebrowLine}</div>
+        <div className="pc-eyebrow">{menu.eyebrowLine ?? restaurant.eyebrowLine}</div>
       </SpotWrap>
 
       <SpotWrap spotId={SPOT.mastheadLogo} as="div" {...spotProps}>

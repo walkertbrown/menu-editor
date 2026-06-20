@@ -72,6 +72,9 @@ function SidePage({
           sectionMap={sectionMap}
           allItems={items}
           restaurant={restaurant}
+          editMode={editMode}
+          selectedSpotId={selectedSpotId}
+          onSelectSpot={onSelectSpot}
         />
       );
     }
@@ -81,6 +84,9 @@ function SidePage({
         sectionMap={sectionMap}
         allItems={items}
         restaurant={restaurant}
+        editMode={editMode}
+        selectedSpotId={selectedSpotId}
+        onSelectSpot={onSelectSpot}
       />
     );
   }

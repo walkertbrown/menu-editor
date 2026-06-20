@@ -192,8 +192,8 @@
 /* ── Airy spirits page variant (page 1 "Spirits List") ──────────────────── */
 
 .pc-page--air .pc-spirit {
-  margin: 2px 0;
-  line-height: 1.38;
+  margin: 4px 0;
+  line-height: 1.42;
 }
 
 .pc-page--air .pc-section {

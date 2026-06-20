@@ -50,11 +50,22 @@ export function introSpotId(index: number): string {
   return `intro-${index}`;
 }
 
+/**
+ * Strips a leading page-scope prefix of the form `pN:` (e.g. "p1:", "p2:")
+ * before matching. Spirits masthead/fleuron spots are prefixed to avoid
+ * key collisions between page 1 and page 2 within the same menu.
+ */
+function stripPagePrefix(spotId: string): string {
+  // Match "p" + one-or-more digits + ":" at the start of the string.
+  return spotId.replace(/^p\d+:/, "");
+}
+
 /** Returns the spacing category for a spot id. */
 export function categoryOfSpot(spotId: string): "header" | "item" | "masthead" | "footer" {
-  if (spotId.startsWith("section-")) return "header";
-  if (spotId.startsWith("item-")) return "item";
-  if (spotId === "footer") return "footer";
+  const id = stripPagePrefix(spotId);
+  if (id.startsWith("section-")) return "header";
+  if (id.startsWith("item-")) return "item";
+  if (id === "footer") return "footer";
   // masthead-eyebrow, masthead-logo, masthead-title, fleuron, prixfixe, intro-*, ornament
   return "masthead";
 }
@@ -71,23 +82,35 @@ export interface SpotLabelContext {
  * Returns a human-readable label for the sidebar SpacingControl panel.
  * When ctx is supplied, item- and section- ids resolve to their actual names.
  * Falls back to the raw id for unknown spots.
+ *
+ * For spirits page-prefixed ids (e.g. "p1:masthead-eyebrow"), the prefix is
+ * stripped for matching and optionally surfaced in the label (e.g. "Eyebrow (p1)").
  */
 export function spotLabel(id: string, ctx?: SpotLabelContext): string {
-  if (id === SPOT.mastheadEyebrow) return "Eyebrow";
-  if (id === SPOT.mastheadLogo)    return "Logo";
-  if (id === SPOT.mastheadTitle)   return "Menu title";
-  if (id === SPOT.fleuron)         return "Divider";
-  if (id === SPOT.prixfixe)        return "Prix-fixe header";
-  if (id === SPOT.ornament)        return "Ornament";
-  if (id === SPOT.footer)          return "Footer";
+  // Extract page prefix if present (e.g. "p1:", "p2:") for optional label suffix.
+  const prefixMatch = id.match(/^(p\d+):/);
+  const pageTag = prefixMatch ? prefixMatch[1] : undefined;
+  const bare = stripPagePrefix(id);
 
-  if (id.startsWith("intro-")) {
-    const n = id.slice("intro-".length);
-    return `Intro line ${Number(n) + 1}`;
+  function withPage(label: string): string {
+    return pageTag ? `${label} (${pageTag})` : label;
   }
 
-  if (id.startsWith("section-")) {
-    const sectionId = id.slice("section-".length);
+  if (bare === SPOT.mastheadEyebrow) return withPage("Eyebrow");
+  if (bare === SPOT.mastheadLogo)    return withPage("Logo");
+  if (bare === SPOT.mastheadTitle)   return withPage("Menu title");
+  if (bare === SPOT.fleuron)         return withPage("Divider");
+  if (bare === SPOT.prixfixe)        return withPage("Prix-fixe header");
+  if (bare === SPOT.ornament)        return withPage("Ornament");
+  if (bare === SPOT.footer)          return withPage("Footer");
+
+  if (bare.startsWith("intro-")) {
+    const n = bare.slice("intro-".length);
+    return withPage(`Intro line ${Number(n) + 1}`);
+  }
+
+  if (bare.startsWith("section-")) {
+    const sectionId = bare.slice("section-".length);
     if (ctx?.sections) {
       const section = ctx.sections.find((s) => s.id === sectionId);
       if (section) return `${section.name} — header`;
@@ -95,8 +118,8 @@ export function spotLabel(id: string, ctx?: SpotLabelContext): string {
     return `Section — ${sectionId} (header)`;
   }
 
-  if (id.startsWith("item-")) {
-    const itemId = id.slice("item-".length);
+  if (bare.startsWith("item-")) {
+    const itemId = bare.slice("item-".length);
     if (ctx?.items) {
       const item = ctx.items.find((i) => i.id === itemId);
       if (item) return item.name;

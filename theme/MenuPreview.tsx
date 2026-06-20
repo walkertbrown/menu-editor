@@ -261,7 +261,7 @@ export default function MenuPreview({
     (a, b) => a.sortOrder - b.sortOrder
   );
 
-  // Spirits menu: two dedicated page components (not wired for spacing yet)
+  // Spirits menu: two dedicated page components
   if (menu.id === "menu-spirits") {
     const sectionMap = new Map(sections.map((s) => [s.id, s]));
     const p1Sections = orderedSections.filter((s) => SPIRITS_P1_ALL.has(s.name));
@@ -275,6 +275,9 @@ export default function MenuPreview({
             sectionMap={sectionMap}
             allItems={items}
             restaurant={restaurant}
+            editMode={editMode}
+            selectedSpotId={selectedSpotId}
+            onSelectSpot={onSelectSpot}
           />
         )}
         {p2Sections.length > 0 && (
@@ -283,6 +286,9 @@ export default function MenuPreview({
             sectionMap={sectionMap}
             allItems={items}
             restaurant={restaurant}
+            editMode={editMode}
+            selectedSpotId={selectedSpotId}
+            onSelectSpot={onSelectSpot}
           />
         )}
       </div>

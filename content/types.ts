@@ -142,6 +142,12 @@ export interface Menu {
   /** Spirits page 2 masthead title, e.g. "After Dinner". Only relevant for menu-spirits. */
   spiritsP2Title?: string;
   /**
+   * Per-menu override for the eyebrow line shown above the house name.
+   * When set, takes precedence over RestaurantIdentity.eyebrowLine.
+   * e.g. "New Orleans · Established 1990" for the spirits menu.
+   */
+  eyebrowLine?: string;
+  /**
    * Per-category baseline vertical spacing in px. Keys: "header" | "item" | "masthead" | "footer".
    * Applied to every spot in that category. A per-spot spacingOverrides entry takes precedence.
    */
