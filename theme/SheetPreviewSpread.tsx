@@ -18,6 +18,20 @@ const PAGE_H = 1344;
 const SPREAD_GAP = 24;
 const SPREAD_W = PAGE_W * 2 + SPREAD_GAP;
 
+const SCALE_MIN = 0.25;
+const SCALE_MAX = 1.5;
+
+/**
+ * How the preview is scaled:
+ *   fit-width — auto-scale so the page/spread fills the available width (≤100%)
+ *   fit-page  — auto-scale so the WHOLE page (height included) fits the viewport
+ *   manual    — a user-chosen scale (zoom in/out buttons)
+ */
+export type ZoomSetting =
+  | { mode: "fit-width" }
+  | { mode: "fit-page" }
+  | { mode: "manual"; scale: number };
+
 interface SideData {
   menu: Menu;
   sections: Section[];
@@ -40,6 +54,10 @@ interface Props {
   selectedSpotId?: string;
   /** Called when the user clicks a spot in the preview. Receives post-transform viewport rect. */
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
+  /** How to scale the preview. Defaults to fit-width. */
+  zoom?: ZoomSetting;
+  /** Reports the effective (computed) scale so the toolbar can show a percentage. */
+  onScaleChange?: (scale: number) => void;
 }
 
 // ── Single page renderer — no wrapper, just the .pc-page ─────────────────
@@ -119,40 +137,55 @@ export default function SheetPreviewSpread({
   editMode,
   selectedSpotId,
   onSelectSpot,
+  zoom = { mode: "fit-width" },
+  onScaleChange,
 }: Props) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
+  // Serialized zoom key so the effect re-runs when the mode or manual scale changes.
+  const zoomKey = zoom.mode === "manual" ? `m${zoom.scale}` : zoom.mode;
+
   useEffect(() => {
     function computeScale() {
-      if (!outerRef.current) return;
-      // 32px padding inside the outer container
-      const availW = outerRef.current.clientWidth - 32;
-      // In single-side focus mode scale against one page width; in spread
-      // mode scale against the full two-page spread width.
+      const el = outerRef.current;
+      if (!el) return;
+      // 32px padding inside the outer container.
+      const availW = el.clientWidth - 32;
+      // Single-side focus mode scales against one page width; spread mode
+      // against the full two-page spread width.
       const referenceW = focusSide ? PAGE_W : SPREAD_W;
-      const s = Math.min(1, availW / referenceW);
-      setScale(s);
+
+      let s: number;
+      if (zoom.mode === "manual") {
+        s = zoom.scale;
+      } else if (zoom.mode === "fit-page") {
+        // Fit the whole page — width AND height — into the visible viewport.
+        const top = el.getBoundingClientRect().top;
+        const availH = window.innerHeight - top - 24;
+        s = Math.min(1, availW / referenceW, availH / PAGE_H);
+      } else {
+        // fit-width (default): fill the available width, never upscaling.
+        s = Math.min(1, availW / referenceW);
+      }
+
+      setScale(Math.max(SCALE_MIN, Math.min(SCALE_MAX, s)));
     }
     computeScale();
+    // Recompute after layout settles (sidebar toggle fires no resize event).
+    const raf = requestAnimationFrame(computeScale);
     window.addEventListener("resize", computeScale);
-    return () => window.removeEventListener("resize", computeScale);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", computeScale);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusSide]);
+  }, [focusSide, zoomKey]);
 
-  // When focusSide changes the container width may change (sidebar
-  // collapses/expands without firing a window resize). Force a recompute
-  // after the DOM has settled using a requestAnimationFrame.
+  // Report the effective scale upward for the toolbar percentage display.
   useEffect(() => {
-    const raf = requestAnimationFrame(() => {
-      if (!outerRef.current) return;
-      const availW = outerRef.current.clientWidth - 32;
-      const referenceW = focusSide ? PAGE_W : SPREAD_W;
-      const s = Math.min(1, availW / referenceW);
-      setScale(s);
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [focusSide]);
+    onScaleChange?.(scale);
+  }, [scale, onScaleChange]);
 
   if (focusSide) {
     // ── Single-side enlarged view ─────────────────────────────────────

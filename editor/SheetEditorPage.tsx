@@ -31,8 +31,10 @@ import RestaurantEditor from "./RestaurantEditor";
 import SheetTitleEditor from "./SheetTitleEditor";
 import SpacingMenu from "./SpacingMenu";
 import SpotNudgePopup from "./SpotNudgePopup";
+import ZoomControl from "./ZoomControl";
 import SheetPreviewSpread from "@/theme/SheetPreviewSpread";
 import { useSpotSpacing } from "./useSpotSpacing";
+import { usePreviewZoom } from "./usePreviewZoom";
 import {
   tabBarStyle,
   backLinkStyle,
@@ -71,6 +73,10 @@ export default function SheetEditorPage({
 }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeFace, setActiveFace] = useState<Face>("front");
+
+  // Preview zoom (fit-width / fit-page / manual) + effective % for the toolbar.
+  const { zoom, scalePercent, onScaleChange, zoomIn, zoomOut, fitPage, fitWidth } =
+    usePreviewZoom();
 
   // Live preview state for both sides (sections/items/header — not spacing)
   const [liveFront, setLiveFront] = useState(frontData);
@@ -166,6 +172,14 @@ export default function SheetEditorPage({
           onCreateCategory={(name) => handleCreateCategory(activeFace, name)}
         />
 
+        <ZoomControl
+          scalePercent={scalePercent}
+          onZoomOut={zoomOut}
+          onZoomIn={zoomIn}
+          onFitPage={fitPage}
+          onFitWidth={fitWidth}
+        />
+
         <button
           className="pc-editor-chrome"
           onClick={() => setSidebarOpen((o) => !o)}
@@ -257,6 +271,8 @@ export default function SheetEditorPage({
             editMode={isEditMode}
             selectedSpotId={selectedSpotId}
             onSelectSpot={handleSelectSpot}
+            zoom={zoom}
+            onScaleChange={onScaleChange}
           />
         </div>
       </div>
