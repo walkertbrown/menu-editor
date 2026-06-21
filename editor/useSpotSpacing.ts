@@ -21,12 +21,14 @@
 import { useState, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { Menu } from "@/content/types";
+import { effectiveSpotDelta } from "@/theme/spotSpacing";
 
 export interface SideSpacing {
   categorySpacing?: Record<string, number>;
   spacingOverrides?: Record<string, number>;
   customCategories?: { id: string; name: string }[];
   spotCategories?: Record<string, string>;
+  spacingBaseline?: Record<string, number>;
 }
 
 interface UseSpotSpacingResult {
@@ -46,6 +48,13 @@ interface UseSpotSpacingResult {
   handleCreateCategory: (face: "front" | "back", name: string) => string;
   /** Assign a spot to a category (null removes the assignment) */
   handleAssignSpot: (face: "front" | "back", spotId: string, categoryId: string | null) => void;
+  /**
+   * Freeze the current effective spacing of the given spots into the baseline,
+   * then clear all sliders (overrides + category values) to 0/auto. The layout
+   * is unchanged; the controls reset. spotIds should be every spot currently
+   * rendered on that side.
+   */
+  handleSetAsDefault: (face: "front" | "back", spotIds: string[]) => void;
   /** Returns a menu object with current spacing merged in (for preview) */
   mergeSpacingIntoMenu: (face: "front" | "back", menu: Menu) => Menu;
 }
@@ -59,12 +68,14 @@ export function useSpotSpacing(
     spacingOverrides: initialFrontMenu.spacingOverrides,
     customCategories: initialFrontMenu.customCategories,
     spotCategories: initialFrontMenu.spotCategories,
+    spacingBaseline: initialFrontMenu.spacingBaseline,
   });
   const [backSpacing, setBackSpacing] = useState<SideSpacing>({
     categorySpacing: initialBackMenu.categorySpacing,
     spacingOverrides: initialBackMenu.spacingOverrides,
     customCategories: initialBackMenu.customCategories,
     spotCategories: initialBackMenu.spotCategories,
+    spacingBaseline: initialBackMenu.spacingBaseline,
   });
 
   const setSpacing = useCallback(
@@ -158,6 +169,32 @@ export function useSpotSpacing(
     [setSpacing]
   );
 
+  const handleSetAsDefault = useCallback(
+    (face: "front" | "back", spotIds: string[]) => {
+      setSpacing(face, (prev) => {
+        const baseline: Record<string, number> = { ...(prev.spacingBaseline ?? {}) };
+        for (const id of spotIds) {
+          const delta = effectiveSpotDelta(
+            id,
+            prev.spacingOverrides,
+            prev.categorySpacing,
+            prev.spotCategories
+          );
+          // Fold the live nudge into the baseline; skip 0/undefined (no effect).
+          if (delta) baseline[id] = (baseline[id] ?? 0) + delta;
+        }
+        return {
+          ...prev,
+          spacingBaseline: Object.keys(baseline).length > 0 ? baseline : undefined,
+          // Reset the sliders — the look is now carried entirely by the baseline.
+          spacingOverrides: undefined,
+          categorySpacing: undefined,
+        };
+      });
+    },
+    [setSpacing]
+  );
+
   const mergeSpacingIntoMenu = useCallback(
     (face: "front" | "back", menu: Menu): Menu => {
       const spacing = face === "front" ? frontSpacing : backSpacing;
@@ -167,6 +204,7 @@ export function useSpotSpacing(
         spacingOverrides: spacing.spacingOverrides,
         customCategories: spacing.customCategories,
         spotCategories: spacing.spotCategories,
+        spacingBaseline: spacing.spacingBaseline,
       };
     },
     [frontSpacing, backSpacing]
@@ -182,6 +220,7 @@ export function useSpotSpacing(
     handleCategoryReset,
     handleCreateCategory,
     handleAssignSpot,
+    handleSetAsDefault,
     mergeSpacingIntoMenu,
   };
 }

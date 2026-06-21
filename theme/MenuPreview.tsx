@@ -40,6 +40,8 @@ interface EditProps {
   categorySpacing?: Record<string, number>;
   /** Phase 3: spot → category assignment map. */
   spotCategories?: Record<string, string>;
+  /** Per-spot frozen baseline gap (added to the nudge). */
+  spacingBaseline?: Record<string, number>;
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
@@ -94,6 +96,7 @@ function SectionBlock({
       overrides={editProps.overrides}
       categorySpacing={editProps.categorySpacing}
       spotCategories={editProps.spotCategories}
+      spacingBaseline={editProps.spacingBaseline}
       editMode={editProps.editMode}
       selectedSpotId={editProps.selectedSpotId}
       onSelectSpot={editProps.onSelectSpot}
@@ -186,7 +189,8 @@ export function SinglePageShell({
   const overrides = menu.spacingOverrides;
   const categorySpacing = menu.categorySpacing;
   const spotCategories = menu.spotCategories;
-  const editProps: EditProps = { overrides, categorySpacing, spotCategories, editMode, selectedSpotId, onSelectSpot };
+  const spacingBaseline = menu.spacingBaseline;
+  const editProps: EditProps = { overrides, categorySpacing, spotCategories, spacingBaseline, editMode, selectedSpotId, onSelectSpot };
 
   return (
     <div className="pc-page pc-page--fill">
@@ -197,6 +201,7 @@ export function SinglePageShell({
         overrides={overrides}
         categorySpacing={categorySpacing}
         spotCategories={spotCategories}
+        spacingBaseline={spacingBaseline}
         editMode={editMode}
         selectedSpotId={selectedSpotId}
         onSelectSpot={onSelectSpot}
@@ -214,6 +219,7 @@ export function SinglePageShell({
         overrides={overrides}
         categorySpacing={categorySpacing}
         spotCategories={spotCategories}
+        spacingBaseline={spacingBaseline}
         editMode={editMode}
         selectedSpotId={selectedSpotId}
         onSelectSpot={onSelectSpot}
@@ -239,6 +245,7 @@ export function SinglePageShell({
           overrides={overrides}
           categorySpacing={categorySpacing}
           spotCategories={spotCategories}
+          spacingBaseline={spacingBaseline}
           editMode={editMode}
           selectedSpotId={selectedSpotId}
           onSelectSpot={onSelectSpot}

@@ -25,6 +25,8 @@ interface Props {
   onChange: (category: string, value: number) => void;
   onReset: (category: string) => void;
   onCreateCategory: (name: string) => void;
+  /** Freeze the current spacing as the baseline and reset all sliders to 0. */
+  onSetAsDefault: () => void;
 }
 
 const popoverStyle: React.CSSProperties = {
@@ -85,12 +87,35 @@ const newCatBtnStyle: React.CSSProperties = {
   width: "100%",
 };
 
+const setDefaultBtnStyle: React.CSSProperties = {
+  background: "#5a5040",
+  border: "1px solid #5a5040",
+  borderRadius: 4,
+  color: "#faf8f3",
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+  padding: "6px 10px",
+  cursor: "pointer",
+  width: "100%",
+};
+
+const setDefaultHintStyle: React.CSSProperties = {
+  fontSize: 10,
+  color: "#9a8a70",
+  fontStyle: "italic",
+  marginTop: 4,
+  lineHeight: 1.3,
+};
+
 export default function SpacingMenu({
   categorySpacing,
   customCategories,
   onChange,
   onReset,
   onCreateCategory,
+  onSetAsDefault,
 }: Props) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -121,6 +146,18 @@ export default function SpacingMenu({
     const name = prompt("New category name:")?.trim();
     if (name) {
       onCreateCategory(name);
+    }
+  }
+
+  function handleSetAsDefault() {
+    const ok = window.confirm(
+      "Freeze the current spacing as the new default?\n\n" +
+        "The menu stays exactly as it looks now, and every spacing slider resets " +
+        "to 0 so you can adjust from this baseline."
+    );
+    if (ok) {
+      onSetAsDefault();
+      setOpen(false);
     }
   }
 
@@ -180,6 +217,14 @@ export default function SpacingMenu({
           <button style={newCatBtnStyle} onClick={handleNewCategory}>
             + New category
           </button>
+
+          <div style={dividerStyle} />
+          <button style={setDefaultBtnStyle} onClick={handleSetAsDefault}>
+            Set current as default
+          </button>
+          <div style={setDefaultHintStyle}>
+            Freezes the layout and resets all sliders to 0.
+          </div>
         </div>
       )}
     </div>

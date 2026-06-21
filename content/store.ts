@@ -152,6 +152,7 @@ export async function saveMenu(
     categorySpacing,
     customCategories,
     spotCategories,
+    spacingBaseline,
   } = mergeMenuSave(
     storedSections,
     storedItems,
@@ -175,6 +176,7 @@ export async function saveMenu(
     categorySpacing,
     customCategories,
     spotCategories,
+    spacingBaseline,
     updatedAt: new Date().toISOString(),
   };
 

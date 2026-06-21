@@ -22,6 +22,8 @@ interface Props {
   categorySpacing?: Record<string, number>;
   /** Phase 3: maps spotId → assigned category id (custom or built-in). */
   spotCategories?: Record<string, string>;
+  /** Per-spot frozen baseline gap (added to the nudge). See spotSpacing.ts. */
+  spacingBaseline?: Record<string, number>;
   /**
    * When true, the resolved spacing is rendered as padding-top instead of
    * margin-top. Required for spots inside CSS multi-column grids: the browser
@@ -46,6 +48,7 @@ export default function SpotWrap({
   overrides,
   categorySpacing,
   spotCategories,
+  spacingBaseline,
   spacingAsPadding,
   editMode,
   selectedSpotId,
@@ -55,7 +58,7 @@ export default function SpotWrap({
   style,
   children,
 }: Props) {
-  const marginStyle = spotMarginStyle(overrides, spotId, categorySpacing, spotCategories);
+  const marginStyle = spotMarginStyle(overrides, spotId, categorySpacing, spotCategories, spacingBaseline);
   const isSelected = editMode && selectedSpotId === spotId;
 
   // In multi-column grids, emit the gap as padding-top (clamped ≥0) so the

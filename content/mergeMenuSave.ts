@@ -70,6 +70,11 @@ export interface MergeMenuSaveResult {
    * Stale item/section keys are pruned. On an unscoped save: taken as-is.
    */
   spotCategories: Record<string, string> | undefined;
+  /**
+   * Per-spot baseline spacing to persist. Reconciled like spacingOverrides on a
+   * scoped save; taken as-is on an unscoped save.
+   */
+  spacingBaseline: Record<string, number> | undefined;
 }
 
 /**
@@ -109,6 +114,7 @@ export function mergeMenuSave(
       categorySpacing: incomingMenu.categorySpacing,
       customCategories: incomingMenu.customCategories,
       spotCategories: incomingMenu.spotCategories,
+      spacingBaseline: incomingMenu.spacingBaseline,
     };
   }
 
@@ -225,6 +231,15 @@ export function mergeMenuSave(
     mergedItemIds
   );
 
+  const spacingBaseline = reconcileSpotMap<number>(
+    storedMenu.spacingBaseline ?? {},
+    incomingMenu.spacingBaseline ?? {},
+    scopeSet,
+    inScopeItemIds,
+    mergedSectionIds,
+    mergedItemIds
+  );
+
   return {
     sections: mergedSections,
     items: mergedItems,
@@ -235,5 +250,6 @@ export function mergeMenuSave(
     // Menu-global fields: incoming wins
     customCategories: incomingMenu.customCategories ?? storedMenu.customCategories,
     spotCategories,
+    spacingBaseline,
   };
 }

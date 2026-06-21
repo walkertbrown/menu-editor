@@ -33,6 +33,7 @@ interface Props {
     spacingOverrides?: Record<string, number>;
     customCategories?: { id: string; name: string }[];
     spotCategories?: Record<string, string>;
+    spacingBaseline?: Record<string, number>;
   };
 }
 

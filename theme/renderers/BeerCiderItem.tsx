@@ -14,6 +14,7 @@ interface Props {
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
   spotCategories?: Record<string, string>;
+  spacingBaseline?: Record<string, number>;
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
@@ -24,6 +25,7 @@ export default function BeerCiderItemRenderer({
   overrides,
   categorySpacing,
   spotCategories,
+  spacingBaseline,
   editMode,
   selectedSpotId,
   onSelectSpot,
@@ -34,6 +36,7 @@ export default function BeerCiderItemRenderer({
       overrides={overrides}
       categorySpacing={categorySpacing}
       spotCategories={spotCategories}
+      spacingBaseline={spacingBaseline}
       editMode={editMode}
       selectedSpotId={selectedSpotId}
       onSelectSpot={onSelectSpot}

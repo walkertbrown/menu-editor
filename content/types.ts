@@ -179,6 +179,15 @@ export interface Menu {
    * per-spot spacingOverrides precedence — that still wins.
    */
   spotCategories?: Record<string, string>;
+  /**
+   * Per-spot baseline vertical spacing in px, keyed by stable spot id.
+   * Set by "Set current spacing as default": the current effective gaps are
+   * frozen here while the sliders (categorySpacing/spacingOverrides) reset to 0.
+   * The rendered gap is spacingBaseline[id] + the slider nudge (additive), so
+   * baking leaves the layout unchanged but zeroes the controls. Empty/absent
+   * means no baseline (legacy behavior — nudge alone).
+   */
+  spacingBaseline?: Record<string, number>;
   createdAt: string;
   updatedAt: string;
 }

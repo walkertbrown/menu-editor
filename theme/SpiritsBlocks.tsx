@@ -16,6 +16,7 @@ export interface SpiritsEditProps {
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
   spotCategories?: Record<string, string>;
+  spacingBaseline?: Record<string, number>;
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
@@ -45,6 +46,7 @@ export function SpiritSectionBlock({
       overrides={ep.overrides}
       categorySpacing={ep.categorySpacing}
       spotCategories={ep.spotCategories}
+      spacingBaseline={ep.spacingBaseline}
       editMode={ep.editMode}
       selectedSpotId={ep.selectedSpotId}
       onSelectSpot={ep.onSelectSpot}
@@ -75,6 +77,7 @@ export function SpiritSectionBlock({
               overrides={ep.overrides}
               categorySpacing={ep.categorySpacing}
               spotCategories={ep.spotCategories}
+              spacingBaseline={ep.spacingBaseline}
               editMode={ep.editMode}
               selectedSpotId={ep.selectedSpotId}
               onSelectSpot={ep.onSelectSpot}
@@ -84,6 +87,7 @@ export function SpiritSectionBlock({
                 overrides={ep.overrides}
                 categorySpacing={ep.categorySpacing}
                 spotCategories={ep.spotCategories}
+                spacingBaseline={ep.spacingBaseline}
                 editMode={ep.editMode}
                 selectedSpotId={ep.selectedSpotId}
                 onSelectSpot={ep.onSelectSpot}
@@ -103,6 +107,7 @@ export function SpiritSectionBlock({
               overrides={ep.overrides}
               categorySpacing={ep.categorySpacing}
               spotCategories={ep.spotCategories}
+              spacingBaseline={ep.spacingBaseline}
               editMode={ep.editMode}
               selectedSpotId={ep.selectedSpotId}
               onSelectSpot={ep.onSelectSpot}
@@ -146,6 +151,7 @@ export function DessertsBlock({
       overrides={ep.overrides}
       categorySpacing={ep.categorySpacing}
       spotCategories={ep.spotCategories}
+      spacingBaseline={ep.spacingBaseline}
       editMode={ep.editMode}
       selectedSpotId={ep.selectedSpotId}
       onSelectSpot={ep.onSelectSpot}
@@ -162,6 +168,7 @@ export function DessertsBlock({
             overrides={ep.overrides}
             categorySpacing={ep.categorySpacing}
             spotCategories={ep.spotCategories}
+            spacingBaseline={ep.spacingBaseline}
             editMode={ep.editMode}
             selectedSpotId={ep.selectedSpotId}
             onSelectSpot={ep.onSelectSpot}

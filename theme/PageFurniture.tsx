@@ -19,6 +19,7 @@ interface Props {
   categorySpacing?: Record<string, number>;
   /** Phase 3: spot → category assignment map. */
   spotCategories?: Record<string, string>;
+  spacingBaseline?: Record<string, number>;
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
@@ -30,11 +31,12 @@ export default function PageFurniture({
   overrides,
   categorySpacing,
   spotCategories,
+  spacingBaseline,
   editMode,
   selectedSpotId,
   onSelectSpot,
 }: Props) {
-  const spotProps = { overrides, categorySpacing, spotCategories, editMode, selectedSpotId, onSelectSpot };
+  const spotProps = { overrides, categorySpacing, spotCategories, spacingBaseline, editMode, selectedSpotId, onSelectSpot };
 
   if (!furniture) return null;
 

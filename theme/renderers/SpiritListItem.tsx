@@ -18,6 +18,7 @@ interface Props {
   overrides?: Record<string, number>;
   categorySpacing?: Record<string, number>;
   spotCategories?: Record<string, string>;
+  spacingBaseline?: Record<string, number>;
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;

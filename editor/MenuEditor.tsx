@@ -51,6 +51,7 @@ interface Props {
     spacingOverrides?: Record<string, number>;
     customCategories?: { id: string; name: string }[];
     spotCategories?: Record<string, string>;
+    spacingBaseline?: Record<string, number>;
   };
 }
 
@@ -99,6 +100,7 @@ export default function MenuEditor({
         spacingOverrides: spacingRef.current?.spacingOverrides,
         customCategories: spacingRef.current?.customCategories,
         spotCategories: spacingRef.current?.spotCategories,
+        spacingBaseline: spacingRef.current?.spacingBaseline,
       },
     }),
     onRestored: (m, s, i) => { setMenu(m); setSections(s); setItems(i); setShowHistory(false); },

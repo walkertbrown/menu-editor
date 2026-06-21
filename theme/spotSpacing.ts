@@ -147,32 +147,45 @@ export function assignedCategoryOf(
 }
 
 /**
- * Returns { marginTop: N } when the spot has an override, a category-level
- * baseline, or a spot-category-based baseline; undefined when none applies.
+ * Returns the spot's "nudge" delta (the slider-driven value), or undefined when
+ * none applies. This is the value shown in the spacing controls.
  *
  * Precedence (highest → lowest):
  *   1. spacingOverrides[spotId]   — per-spot explicit override
  *   2. categorySpacing[ spotCategories[spotId] ]  — assigned custom/built-in
  *   3. categorySpacing[ categoryOfSpot(spotId) ]  — default built-in category
+ */
+export function effectiveSpotDelta(
+  id: string,
+  overrides?: Record<string, number>,
+  categorySpacing?: Record<string, number>,
+  spotCategories?: Record<string, string>
+): number | undefined {
+  if (overrides?.[id] !== undefined) return overrides[id];
+  if (spotCategories?.[id] !== undefined && categorySpacing?.[spotCategories[id]] !== undefined) {
+    return categorySpacing[spotCategories[id]];
+  }
+  return categorySpacing?.[categoryOfSpot(id)];
+}
+
+/**
+ * Returns { marginTop: N } for a spot's effective vertical gap, or undefined
+ * when nothing applies (so no inline margin is emitted and CSS defaults stand).
  *
- * Zero-config (no overrides, no customCategories): behaves identically to
- * the original two-argument form (returns undefined, emitting no inline margin).
+ * The gap is ADDITIVE:  spacingBaseline[id]  +  effectiveSpotDelta(id).
+ * The baseline is the frozen "default" set by "Set current as default"; the
+ * delta is the live slider nudge. With no baseline this is identical to the
+ * original precedence-only behavior (delta alone).
  */
 export function spotMarginStyle(
   overrides: Record<string, number> | undefined,
   id: string,
   categorySpacing?: Record<string, number>,
-  spotCategories?: Record<string, string>
+  spotCategories?: Record<string, string>,
+  spacingBaseline?: Record<string, number>
 ): { marginTop: number } | undefined {
-  if (overrides?.[id] !== undefined) {
-    return { marginTop: overrides[id] };
-  }
-  if (spotCategories?.[id] !== undefined && categorySpacing) {
-    const assignedKey = spotCategories[id];
-    const assignedVal = categorySpacing[assignedKey];
-    if (assignedVal !== undefined) return { marginTop: assignedVal };
-  }
-  const defaultVal = categorySpacing?.[categoryOfSpot(id)];
-  if (defaultVal === undefined) return undefined;
-  return { marginTop: defaultVal };
+  const delta = effectiveSpotDelta(id, overrides, categorySpacing, spotCategories);
+  const base = spacingBaseline?.[id];
+  if (base === undefined && delta === undefined) return undefined;
+  return { marginTop: (base ?? 0) + (delta ?? 0) };
 }

@@ -28,20 +28,14 @@ import type {
 import type { SheetConfig } from "@/sheets/sheetConfig";
 import SideEditorPanel from "./SideEditorPanel";
 import RestaurantEditor from "./RestaurantEditor";
-import SheetTitleEditor from "./SheetTitleEditor";
-import SpacingMenu from "./SpacingMenu";
 import SpotNudgePopup from "./SpotNudgePopup";
-import ZoomControl from "./ZoomControl";
+import SheetToolbar from "./SheetToolbar";
 import SheetPreviewSpread from "@/theme/SheetPreviewSpread";
 import { useSpotSpacing } from "./useSpotSpacing";
 import { usePreviewZoom } from "./usePreviewZoom";
 import {
-  tabBarStyle,
-  backLinkStyle,
-  printBtnStyle,
   activeTabStyle,
   inactiveTabStyle,
-  collapseToggleStyle,
   sidebarContainerStyle,
   faceToggleGroupStyle,
 } from "./sheetEditorStyles";
@@ -103,8 +97,26 @@ export default function SheetEditorPage({
     handleCategoryReset,
     handleCreateCategory,
     handleAssignSpot,
+    handleSetAsDefault,
     mergeSpacingIntoMenu,
   } = useSpotSpacing(frontData.menu, backData.menu);
+
+  // Ref on the live preview so "Set as default" can enumerate the rendered spots.
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const handleSetCurrentAsDefault = useCallback(() => {
+    const root = previewRef.current;
+    const ids = root
+      ? [
+          ...new Set(
+            Array.from(root.querySelectorAll<HTMLElement>("[data-spot-id]"))
+              .map((el) => el.dataset.spotId)
+              .filter((v): v is string => Boolean(v))
+          ),
+        ]
+      : [];
+    handleSetAsDefault(activeFace, ids);
+  }, [handleSetAsDefault, activeFace]);
 
   const handleFrontStateChange = useCallback(
     (menu: Menu, sections: Section[], items: Item[]) => {
@@ -158,39 +170,24 @@ export default function SheetEditorPage({
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
       {/* Top chrome bar */}
-      <div className="pc-editor-chrome" style={tabBarStyle}>
-        <a href="/" style={backLinkStyle}>← All Sheets</a>
-        <SheetTitleEditor sheetId={sheet.id} initialTitle={sheetTitle} />
-        <div style={{ flex: 1 }} />
-
-        {/* Phase 2: Spacing ▾ dropdown */}
-        <SpacingMenu
-          categorySpacing={activeSpacing.categorySpacing}
-          customCategories={activeSpacing.customCategories}
-          onChange={(cat, val) => handleCategoryChange(activeFace, cat, val)}
-          onReset={(cat) => handleCategoryReset(activeFace, cat)}
-          onCreateCategory={(name) => handleCreateCategory(activeFace, name)}
-        />
-
-        <ZoomControl
-          scalePercent={scalePercent}
-          onZoomOut={zoomOut}
-          onZoomIn={zoomIn}
-          onFitPage={fitPage}
-          onFitWidth={fitWidth}
-        />
-
-        <button
-          className="pc-editor-chrome"
-          onClick={() => setSidebarOpen((o) => !o)}
-          style={{ ...collapseToggleStyle, marginLeft: 8 }}
-        >
-          {sidebarOpen ? "Hide editor" : "Show editor"}
-        </button>
-        <button className="pc-editor-chrome" onClick={handlePrint} style={printBtnStyle}>
-          Print / Save PDF
-        </button>
-      </div>
+      <SheetToolbar
+        sheetId={sheet.id}
+        sheetTitle={sheetTitle}
+        categorySpacing={activeSpacing.categorySpacing}
+        customCategories={activeSpacing.customCategories}
+        onCategoryChange={(cat, val) => handleCategoryChange(activeFace, cat, val)}
+        onCategoryReset={(cat) => handleCategoryReset(activeFace, cat)}
+        onCreateCategory={(name) => handleCreateCategory(activeFace, name)}
+        onSetAsDefault={handleSetCurrentAsDefault}
+        scalePercent={scalePercent}
+        onZoomOut={zoomOut}
+        onZoomIn={zoomIn}
+        onFitPage={fitPage}
+        onFitWidth={fitWidth}
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen((o) => !o)}
+        onPrint={handlePrint}
+      />
 
       {/* Main body: sidebar + preview */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
@@ -253,7 +250,7 @@ export default function SheetEditorPage({
         )}
 
         {/* RIGHT: live preview */}
-        <div style={{ flex: 1, overflowY: "auto" }}>
+        <div ref={previewRef} style={{ flex: 1, overflowY: "auto" }}>
           <SheetPreviewSpread
             sheet={sheet}
             frontData={{
