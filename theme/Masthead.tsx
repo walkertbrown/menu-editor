@@ -54,6 +54,9 @@ export default function Masthead({
 
       <SpotWrap spotId={SPOT.mastheadLogo} as="div" {...spotProps}>
         {restaurant.logoUrl ? (
+          // Plain <img> on purpose: this renders into the print/PDF menu, where
+          // next/image's optimization, lazy-loading and wrappers hurt fidelity.
+          // eslint-disable-next-line @next/next/no-img-element
           <img src={restaurant.logoUrl} alt="" className="pc-masthead-logo" />
         ) : (
           <h1 className="pc-house-name pc-house-name--compact">

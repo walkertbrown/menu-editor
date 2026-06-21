@@ -1,7 +1,6 @@
 // Dinner menu: sections and menu definition.
 // Real Pelican Club content — Restaurant Week PDF, June 2026.
 // Items are split into seed-dinner-starters.ts and seed-dinner-mains.ts.
-import { v4 as uuidv4 } from "uuid";
 import type { Menu, Section } from "./types";
 
 const now = new Date().toISOString();

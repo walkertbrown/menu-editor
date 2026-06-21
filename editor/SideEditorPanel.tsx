@@ -5,12 +5,13 @@
 // shown to the user and passed to MenuEditor.
 //
 // The SCOPE — the section ids this side originally owned — is captured ONCE
-// at mount (via useRef) from the initially-filtered set. It must NOT drift as
+// at mount (via a lazy useState initializer) from the initially-filtered set.
+// It must NOT drift as
 // the user edits, because the server uses it to know which stored sections
 // belong to this side and which belong to the other side. Passing a drifting
 // scope would cause the server to over-preserve or under-preserve sections.
 
-import { useMemo, useRef } from "react";
+import { useMemo, useState } from "react";
 import type { Menu, Section, Item, VersionSnapshot } from "@/content/types";
 import MenuEditor from "./MenuEditor";
 
@@ -59,17 +60,15 @@ export default function SideEditorPanel({
     return items.filter((i) => sectionIds.has(i.sectionId));
   }, [items, filteredSections, sectionFilter]);
 
-  // Capture the scope (ids of the initially-filtered sections) ONCE at mount.
-  // This is intentionally a ref so it never re-triggers effects or re-renders,
-  // and so the scope remains stable even as the user adds/removes sections.
-  // The scope is only meaningful when sectionFilter is set (spirits pages).
-  const scopeRef = useRef<string[] | undefined>(undefined);
-  if (scopeRef.current === undefined && sectionFilter) {
-    // First render: record which section ids match this side's filter.
-    scopeRef.current = sections
-      .filter((s) => sectionFilter.has(s.name))
-      .map((s) => s.id);
-  }
+  // Capture the scope (ids of the initially-filtered sections) ONCE at mount via
+  // a lazy useState initializer, so it never drifts as the user adds/removes
+  // sections (the server uses it to know which sections this side owns) and is
+  // read-safe during render. Only meaningful when sectionFilter is set (spirits).
+  const [scopeSectionIds] = useState<string[] | undefined>(() =>
+    sectionFilter
+      ? sections.filter((s) => sectionFilter.has(s.name)).map((s) => s.id)
+      : undefined
+  );
 
   return (
     <MenuEditor
@@ -80,7 +79,7 @@ export default function SideEditorPanel({
       spiritsSlot={spiritsSlot}
       onStateChange={onStateChange}
       embedded={embedded}
-      scopeSectionIds={scopeRef.current}
+      scopeSectionIds={scopeSectionIds}
       spacing={spacing}
     />
   );

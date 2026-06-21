@@ -16,7 +16,7 @@
  *   </div>
  */
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 
 export interface PopupPos { x: number; y: number }
 
@@ -35,29 +35,17 @@ function anchorToPos(rect: DOMRect): PopupPos {
 
 export function useDraggablePopup(anchorRect: DOMRect | undefined) {
   const [pos, setPos] = useState<PopupPos>({ x: 100, y: 100 });
-  // Track whether user has manually dragged (so anchor updates don't reset it)
-  const dragged = useRef(false);
+  // The anchor the current position was derived from. Selecting a new spot
+  // (anchorRect identity changes) re-anchors the popup; dragging moves `pos`
+  // within the current anchor. Adjusting state during render on a prop change
+  // is the supported pattern and avoids a reposition flicker.
+  const [posAnchor, setPosAnchor] = useState<DOMRect | undefined>(undefined);
   const dragStart = useRef<{ mx: number; my: number; px: number; py: number } | null>(null);
 
-  // Reset position when anchor changes and user has not dragged
-  useEffect(() => {
-    if (!anchorRect) return;
-    if (!dragged.current) {
-      setPos(anchorToPos(anchorRect));
-    }
-  }, [anchorRect]);
-
-  // Reset drag state when anchor changes to a new spot
-  const prevAnchorRef = useRef<DOMRect | undefined>(undefined);
-  useEffect(() => {
-    if (anchorRect !== prevAnchorRef.current) {
-      dragged.current = false;
-      prevAnchorRef.current = anchorRect;
-      if (anchorRect) {
-        setPos(anchorToPos(anchorRect));
-      }
-    }
-  }, [anchorRect]);
+  if (anchorRect !== posAnchor) {
+    setPosAnchor(anchorRect);
+    if (anchorRect) setPos(anchorToPos(anchorRect));
+  }
 
   const handleDragStart = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
@@ -67,7 +55,6 @@ export function useDraggablePopup(anchorRect: DOMRect | undefined) {
 
     function onMove(me: PointerEvent) {
       if (!dragStart.current) return;
-      dragged.current = true;
       const dx = me.clientX - dragStart.current.mx;
       const dy = me.clientY - dragStart.current.my;
       const nx = clamp(dragStart.current.px + dx, 0, window.innerWidth - POPUP_W - 4);

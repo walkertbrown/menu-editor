@@ -144,7 +144,9 @@ export default function RestaurantEditor({ restaurant, onRestaurantChange }: Pro
             <label style={labelStyle}>Logo</label>
             {draft.logoUrl && (
               <div style={{ margin: "6px 0", padding: "8px", background: "#1a1a1a", borderRadius: 4, display: "inline-block" }}>
-                {/* Dark background so light logos are visible */}
+                {/* Dark bg so light logos are visible. Plain <img>: small editor
+                    preview of a user-uploaded logo; next/image adds no value. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={draft.logoUrl} alt="restaurant logo" style={{ maxHeight: 48, maxWidth: 220, display: "block", objectFit: "contain" }} />
               </div>
             )}

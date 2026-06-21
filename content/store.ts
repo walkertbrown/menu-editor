@@ -25,6 +25,7 @@ import type {
   RestaurantIdentity,
 } from "./types";
 import { mergeMenuSave } from "./mergeMenuSave";
+import { seedData } from "./seed";
 
 // ---- Error types --------------------------------------------------------
 
@@ -51,7 +52,6 @@ const DATA_FILE = path.join(DATA_DIR, "menus.json");
 function readStore(): StoreShape {
   if (!fs.existsSync(DATA_FILE)) {
     // Bootstrap from seed on first read
-    const { seedData } = require("./seed");
     writeStore(seedData);
     return seedData;
   }

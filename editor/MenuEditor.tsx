@@ -4,6 +4,7 @@
 // Save/restore logic lives in useMenuPersist.ts.
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import Link from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import {
   DndContext,
@@ -82,13 +83,15 @@ export default function MenuEditor({
     onStateChange?.(menu, sections, items);
   }, [menu, sections, items, onStateChange]);
 
-  // Stable ref so the hook can read current state without stale closures.
+  // Refs read only at save time (inside event handlers via getState), never
+  // during render. Kept current by an effect after each commit so the latest
+  // state is saved without writing refs during render.
   const stateRef = useRef({ menu, sections, items });
-  stateRef.current = { menu, sections, items };
-
-  // Spacing ref: read at save time only, never drives re-renders.
   const spacingRef = useRef(spacing);
-  spacingRef.current = spacing;
+  useEffect(() => {
+    stateRef.current = { menu, sections, items };
+    spacingRef.current = spacing;
+  });
 
   const { saving, saveMsg, handleSave, handleRestore } = useMenuPersist({
     menuId: menu.id,
@@ -218,7 +221,7 @@ export default function MenuEditor({
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
         {!embedded && (
           <div>
-            <a href="/" style={{ fontSize: "0.85em", color: "#666", textDecoration: "none" }}>← All Menus</a>
+            <Link href="/" style={{ fontSize: "0.85em", color: "#666", textDecoration: "none" }}>← All Menus</Link>
             <h1 style={{ fontFamily: "serif", margin: "4px 0 0" }}>{menu.name}</h1>
           </div>
         )}

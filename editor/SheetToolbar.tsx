@@ -7,6 +7,7 @@
  * Extracted to keep SheetEditorPage within the ~300-line file limit.
  */
 
+import Link from "next/link";
 import SheetTitleEditor from "./SheetTitleEditor";
 import SpacingMenu from "./SpacingMenu";
 import ZoomControl from "./ZoomControl";
@@ -62,7 +63,7 @@ export default function SheetToolbar({
 }: Props) {
   return (
     <div className="pc-editor-chrome" style={tabBarStyle}>
-      <a href="/" style={backLinkStyle}>← All Sheets</a>
+      <Link href="/" style={backLinkStyle}>← All Sheets</Link>
       <SheetTitleEditor sheetId={sheetId} initialTitle={sheetTitle} />
       <div style={{ flex: 1 }} />
 
