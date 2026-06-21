@@ -43,3 +43,9 @@ next-env.d.ts
 # Menu data — commit sample data but not live edits
 # Uncomment below to gitignore the live data file:
 # /data/menus.json
+
+# Local design references + scratch (not part of the app, never committed)
+/_*_ref_*.png
+/_*_shots/
+/_shot_result.png
+/.playwright-mcp/
