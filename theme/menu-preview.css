@@ -270,6 +270,20 @@
   column-gap: 32px;
 }
 
+/* In multi-column flow the browser strips the top margin of whichever item
+   lands at the top of a column, so margin-based spacing nudges die for the
+   first item in the right column. Carry the inter-item gap on the wrapper as
+   padding-top instead (padding survives column tops), and zero the inner item
+   margins so the gap isn't counted twice. The 3px baseline replaces the inner
+   margin for un-nudged items; an explicit nudge overrides it inline. */
+.pc-two-col-grid > * {
+  padding-top: 3px;
+}
+.pc-two-col-grid .pc-food,
+.pc-two-col-grid .pc-wine {
+  margin: 0;
+}
+
 /* Hide dotted leaders in two-col food sections — name left, price right, no dots */
 .pc-two-col-grid .pc-dots {
   display: none;

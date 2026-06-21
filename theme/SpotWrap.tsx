@@ -22,6 +22,15 @@ interface Props {
   categorySpacing?: Record<string, number>;
   /** Phase 3: maps spotId → assigned category id (custom or built-in). */
   spotCategories?: Record<string, string>;
+  /**
+   * When true, the resolved spacing is rendered as padding-top instead of
+   * margin-top. Required for spots inside CSS multi-column grids: the browser
+   * truncates the top margin of any box that lands at the top of a column, so a
+   * margin-based nudge is silently dropped for the first item in each column.
+   * Padding is not truncated, so column-top items honour their spacing.
+   * (Inner item margins must be zeroed in CSS so the gap isn't double-counted.)
+   */
+  spacingAsPadding?: boolean;
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
@@ -37,6 +46,7 @@ export default function SpotWrap({
   overrides,
   categorySpacing,
   spotCategories,
+  spacingAsPadding,
   editMode,
   selectedSpotId,
   onSelectSpot,
@@ -48,8 +58,16 @@ export default function SpotWrap({
   const marginStyle = spotMarginStyle(overrides, spotId, categorySpacing, spotCategories);
   const isSelected = editMode && selectedSpotId === spotId;
 
+  // In multi-column grids, emit the gap as padding-top (clamped ≥0) so the
+  // browser doesn't strip it at column tops. Elsewhere, keep it as margin-top.
+  const spacingStyle: CSSProperties = spacingAsPadding
+    ? marginStyle
+      ? { paddingTop: Math.max(0, marginStyle.marginTop) }
+      : {}
+    : marginStyle ?? {};
+
   const combinedStyle: CSSProperties = {
-    ...(marginStyle ?? {}),
+    ...spacingStyle,
     ...(style ?? {}),
   };
 

@@ -16,6 +16,8 @@ interface Props {
   editMode?: boolean;
   selectedSpotId?: string;
   onSelectSpot?: (id: string, rect?: DOMRect) => void;
+  /** True when rendered inside a CSS multi-column grid (see SpotWrap.spacingAsPadding). */
+  inColumn?: boolean;
 }
 
 export default function FoodItemRenderer({
@@ -26,6 +28,7 @@ export default function FoodItemRenderer({
   editMode,
   selectedSpotId,
   onSelectSpot,
+  inColumn,
 }: Props) {
   return (
     <SpotWrap
@@ -33,6 +36,7 @@ export default function FoodItemRenderer({
       overrides={overrides}
       categorySpacing={categorySpacing}
       spotCategories={spotCategories}
+      spacingAsPadding={inColumn}
       editMode={editMode}
       selectedSpotId={selectedSpotId}
       onSelectSpot={onSelectSpot}

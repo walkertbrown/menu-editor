@@ -130,7 +130,7 @@ function SectionBlock({
       {isFoodTwoCol && (
         <div className="pc-two-col-grid">
           {(items as FoodItem[]).map((item) => (
-            <FoodItemRenderer key={item.id} item={item} {...editProps} />
+            <FoodItemRenderer key={item.id} item={item} inColumn {...editProps} />
           ))}
         </div>
       )}
@@ -138,7 +138,7 @@ function SectionBlock({
       {isWineTwoCol && (
         <div className="pc-two-col-grid">
           {(items as WineByGlassItem[]).map((item) => (
-            <WineByGlassItemRenderer key={item.id} item={item} {...editProps} />
+            <WineByGlassItemRenderer key={item.id} item={item} inColumn {...editProps} />
           ))}
         </div>
       )}
