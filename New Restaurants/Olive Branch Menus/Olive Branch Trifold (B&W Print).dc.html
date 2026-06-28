@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+.lab{font-family:'Work Sans',sans-serif;margin-bottom:14px;cursor:grab;user-select:none}
+.lab-k{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:#8a8467;font-weight:600}
+.lab-n{font-size:24px;font-weight:700;color:#2f3320;margin-top:4px}
+.lab-d{font-size:13.5px;color:#6f6b54;margin-top:5px;max-width:980px;line-height:1.5}
+.sh-shadow{filter:drop-shadow(0 2px 14px rgba(40,40,20,.16))}
+.sheet{width:1056px;height:816px;background:#fff;color:#141414;font-family:'Work Sans',sans-serif;display:grid;grid-template-columns:1fr 1fr 1fr;overflow:hidden}
+.panel{padding:24px 24px;position:relative;display:flex;flex-direction:column}
+.fold{border-right:1.4px dashed rgba(0,0,0,.45)}
+.foldtag{position:absolute;top:50%;right:-9px;transform:translateY(-50%);background:#fff;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#555555;writing-mode:vertical-rl;padding:5px 1px;font-weight:600}
+.ph{background:#141414;color:#ffffff;font-family:'Zilla Slab',serif;font-weight:600;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;padding:2.5px 9px;margin:0 -2px 5px;display:flex;justify-content:space-between;align-items:baseline}
+.ph small{font-size:8.5px;letter-spacing:.03em;opacity:.85;font-weight:500;text-transform:none}
+.ph2{margin-top:8px}
+.ti{margin-bottom:3px}
+.tih{display:flex;justify-content:space-between;gap:6px;align-items:baseline}
+.tin{font-family:'Zilla Slab',serif;font-weight:600;font-size:10.6px;line-height:1.16}
+.tip{font-family:'Zilla Slab',serif;font-weight:600;font-size:10.6px;color:#141414;white-space:nowrap}
+.tid{font-size:8px;line-height:1.24;opacity:.74;margin-top:.5px}
+.note{font-size:8.4px;line-height:1.38;opacity:.72;font-style:italic;margin-top:6px}
+.outp{padding-top:204px}
+.byo-base{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:'Zilla Slab',serif;font-weight:600;font-size:10px;border-bottom:1.2px solid rgba(0,0,0,.3);padding-bottom:3px;margin:1px 0 5px}
+.byo-base b{color:#141414}
+.byo-l{font-size:8.6px;line-height:1.34;margin-bottom:3px;opacity:.9}
+.byo-k{font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:7.8px;color:#141414;margin-right:3px}
+/* cover */
+.cov{justify-content:space-between;text-align:center;align-items:center}
+.cov-est{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.72;font-weight:600}
+.cov-logo{width:248px;max-width:90%;height:auto;margin:6px auto 0;filter:grayscale(1) contrast(1.05)}
+.cov-tag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-top:14px;line-height:1.7}
+.cov-togo{font-family:'Zilla Slab',serif;font-weight:700;font-size:30px;letter-spacing:.02em;margin-top:18px;color:#141414}
+.cov-rule{width:54px;height:3px;background:#141414;margin:12px auto 0}
+.cov-sub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.78;margin-top:12px}
+/* back / contact */
+.bk-h{font-family:'Zilla Slab',serif;font-weight:700;font-size:21px;text-align:center;margin:0}
+.bk-rule{width:48px;height:2.5px;background:#141414;margin:9px auto 16px}
+.loc{margin-bottom:22px;text-align:center}
+.loc-city{font-family:'Zilla Slab',serif;font-weight:700;font-size:15px;letter-spacing:.1em}
+.loc-l{font-size:10.5px;line-height:1.55;opacity:.85;margin-top:2px}
+.hrs{text-align:center;margin-top:10px;padding-top:18px;border-top:1.4px solid rgba(0,0,0,.5)}
+.hrs-big{font-family:'Zilla Slab',serif;font-weight:700;font-size:16px}
+.hrs-s{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;opacity:.72;margin-top:4px;line-height:1.6}
+.web{font-family:'Zilla Slab',serif;font-weight:700;font-size:14px;letter-spacing:.14em;text-align:center;margin-top:auto;color:#141414}
+/* about / cater */
+.sprig{display:block;margin:0 auto 8px;width:88px;color:#141414}
+.sprig line{stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.sprig ellipse,.sprig circle{fill:currentColor}
+.ab-h{font-family:'Zilla Slab',serif;font-weight:700;font-size:20px;text-align:center;margin:0 0 9px}
+.ab-p{font-size:10.5px;line-height:1.6;opacity:.86;text-align:center}
+.ab-p+.ab-p{margin-top:16px}
+.cater-list{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;text-align:center;opacity:.8;margin-top:20px;line-height:1.9}
+.sign{font-size:10.5px;letter-spacing:.05em;text-align:center;margin-top:auto;font-weight:600;font-style:italic}
+</style>
+</helmet>
+<div style="position:absolute;left:0;top:0">
+<div class="lab" data-drags-parent="1"><div class="lab-k">To-Go Trifold · Black & White Print · Letter 11 × 8.5 landscape</div><div class="lab-n">The Olive Branch Café — To-Go Menu (B&W Print)</div><div class="lab-d">Pure white background, solid-black ink only — for clean office or copy-shop printing. Print Sheet 1 and Sheet 2 back-to-back (flip on short edge), then fold along the dashed guides; the right outside panel becomes the front cover.</div></div>
+</div>
+<div style="position:absolute;left:0;top:150px">
+<div class="lab" data-drags-parent="1"><div class="lab-k">Sheet 1 · Outside (back · about · cover)</div></div>
+<div class="sh-shadow sheet">
+<div class="panel fold outp">
+<h3 class="bk-h">Visit Us</h3><div class="bk-rule"></div>
+<div class="loc"><div class="loc-city">MARRERO</div><div class="loc-l">1995 Barataria Blvd<br>(504) 555-0142</div></div>
+<div class="loc"><div class="loc-city">ALGIERS</div><div class="loc-l">5145 Gen. de Gaulle Dr<br>(504) 555-0187</div></div>
+<div class="hrs"><div class="hrs-big">Open Daily · 11–9</div><div class="hrs-s">Dine-In · Takeout · Curbside<br>We Serve Louisiana Shrimp & Crawfish</div></div>
+<div class="web">OLIVEBRANCHCAFE.COM</div>
+<span class="foldtag">Fold</span>
+</div>
+<div class="panel fold outp">
+<svg class="sprig" viewBox="0 0 200 46"><line x1="8" y1="23" x2="192" y2="23"/><ellipse cx="58" cy="13" rx="11" ry="4.5" transform="rotate(-22 58 13)"/><ellipse cx="84" cy="11" rx="11" ry="4.5" transform="rotate(-22 84 11)"/><ellipse cx="110" cy="13" rx="11" ry="4.5" transform="rotate(-22 110 13)"/><ellipse cx="71" cy="33" rx="11" ry="4.5" transform="rotate(22 71 33)"/><ellipse cx="97" cy="35" rx="11" ry="4.5" transform="rotate(22 97 35)"/><ellipse cx="123" cy="33" rx="11" ry="4.5" transform="rotate(22 123 33)"/><circle cx="146" cy="23" r="5"/><circle cx="160" cy="23" r="5"/></svg>
+<h3 class="ab-h">We Cater to You</h3>
+<p class="ab-p">Affordable gourmet pizza & Italian on the West Bank — from-scratch dough daily, Spanish olives, fresh vegetables. Nothing's made till you order it.</p>
+<p class="ab-p">Extending the olive branch is our way of meeting needs in our community. Visit us online to find out how your organization can partner with us.</p>
+<div class="cater-list">Parties · Special Events<br>Church Functions · Holidays<br>Birthdays · Anniversaries</div>
+<div class="sign">— Russell "Rusty" Autry, Owner</div>
+<span class="foldtag">Fold</span>
+</div>
+<div class="panel cov">
+<div class="cov-est">Est. 1997 · Family-Owned 29 Years</div>
+<div><img class="cov-logo" src="assets/olive-branch-logo.png" alt="The Olive Branch Café"><div class="cov-tag">Westbank Born · Raised · Proud</div></div>
+<div><div class="cov-togo">To-Go Menu</div><div class="cov-rule"></div><div class="cov-sub">Pizza · Pasta · Po-Boys & More</div></div>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:0;top:1140px">
+<div class="lab" data-drags-parent="1"><div class="lab-k">Sheet 2 · Inside (full menu spread)</div></div>
+<div class="sh-shadow sheet">
+<div class="panel fold">
+<div class="ph">Appetizers</div>
+<sc-for list="{{ appetizers }}" as="it" hint-placeholder-count="12"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<div class="ph ph2">Cannolis <small>w/ pasta salad or chips</small></div>
+<sc-for list="{{ cannolis }}" as="it" hint-placeholder-count="3"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<div class="ph ph2">Soups & Salads <small>add chicken 4 · shrimp 6</small></div>
+<sc-for list="{{ soupsSalads }}" as="it" hint-placeholder-count="8"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<span class="foldtag">Fold</span>
+</div>
+<div class="panel fold">
+<div class="ph">Subs & Wraps <small>w/ pasta salad or chips</small></div>
+<sc-for list="{{ subsWraps }}" as="it" hint-placeholder-count="11"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<div class="ph ph2">Signature Entrées</div>
+<sc-for list="{{ signature }}" as="it" hint-placeholder-count="6"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<div class="ph ph2">Classic Entrées</div>
+<sc-for list="{{ classic }}" as="it" hint-placeholder-count="7"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<span class="foldtag">Fold</span>
+</div>
+<div class="panel">
+<div class="ph">Gourmet Pizzas <small>10″ | 14″</small></div>
+<sc-for list="{{ pizzas }}" as="it" hint-placeholder-count="13"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<div class="ph ph2">Combos & Lunch</div>
+<sc-for list="{{ combos }}" as="it" hint-placeholder-count="4"><div class="ti"><div class="tih"><span class="tin">{{ it.n }}</span><span class="tip">{{ it.p }}</span></div><sc-if value="{{ it.d }}" hint-placeholder-val="{{ true }}"><div class="tid">{{ it.d }}</div></sc-if></div></sc-for>
+<div class="ph ph2">Build Your Own <small>pizza or calzone</small></div>
+<div class="byo-base"><span>Cheese Base</span><span><b>8″ 9 · 10″ 12 · 14″ 17 · Calzone 11</b></span></div>
+<div class="byo-l"><span class="byo-k">Add Protein</span>Meatballs · Chicken · Sausage 3–5 · Shrimp 4–6</div>
+<div class="byo-l"><span class="byo-k">Sauces</span>Traditional · Garlic · Pesto · Alfredo · BBQ</div>
+<div class="byo-l"><span class="byo-k">Finish</span>14+ fresh toppings · cauliflower & thin crust available</div>
+<div class="note">18% gratuity added to parties of six or more. Gluten-friendly options available — we cannot guarantee an allergen-free kitchen.</div>
+</div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1056,&quot;height&quot;:816}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      appetizers: [
+        { n: 'Bread Sticks', p: '6', d: 'Fresh-baked, marinara on the side.' },
+        { n: 'Spinach & Artichoke Dip', p: '11', d: 'House recipe with fresh-baked bread bites.' },
+        { n: 'Cajun Wings', p: '15', d: '8 crispy baked wings, choice of sauce.' },
+        { n: 'Chicken Quesadilla', p: '15', d: 'Chicken, cheese & veggies; salsa & sour cream.' },
+        { n: 'Pizza Bites', p: '8', d: 'Choice of sauce, mozzarella & toppings.' },
+        { n: 'BBQ Chicken Bites', p: '12', d: 'Chicken, bacon, onions, cheddar & BBQ.' },
+        { n: 'Pesto Bites', p: '11', d: 'Pesto, artichokes, tomatoes, spinach & feta.' },
+        { n: 'Seafood Bites', p: '11', d: 'Shrimp & fish in seafood sauce, mozzarella.' },
+        { n: 'Hummus Tahini', p: '10', d: 'Black olives, feta & sun-dried tomatoes; pita.' },
+        { n: 'Mozzarella Cheese Sticks', p: '8', d: '8 breaded sticks with marinara.' },
+        { n: 'Boudin Egg Rolls', p: '11', d: 'Cajun boudin with sweet chili sauce.' },
+        { n: 'Caprese Salad', p: '12', d: 'Fresh mozzarella, tomatoes, basil & balsamic.' }
+      ],
+      cannolis: [
+        { n: 'Savory Cannoli', p: '14', d: 'Ham, pepperoni, salami, onions & olives.' },
+        { n: 'Spinach & Artichoke Cannoli', p: '13', d: 'Spinach, artichoke, mushrooms & feta; alfredo.' },
+        { n: 'Chicken Pesto Cannoli', p: '14', d: 'Chicken, pesto, artichoke & feta; alfredo.' }
+      ],
+      soupsSalads: [
+        { n: 'Shrimp & Corn Bisque', p: '6', d: 'Our famous house bisque.' },
+        { n: 'House Salad', p: 'Lg 12 · Sm 8', d: 'Veggies, pepperoni & cheese; Italian.' },
+        { n: 'Caesar Salad', p: 'Lg 12 · Sm 8', d: 'Romaine, croutons & parmesan.' },
+        { n: 'Spinach Salad', p: 'Lg 12 · Sm 8', d: 'Pecans, onions, tomatoes & feta; balsamic.' },
+        { n: 'Citrus Salad', p: 'Lg 12 · Sm 8', d: 'Mandarin, pecans & feta; raspberry.' },
+        { n: 'Greek Salad', p: 'Lg 12 · Sm 8', d: 'Kalamata, pepperoncini & feta.' },
+        { n: 'Redfish Spinach Salad', p: '20', d: 'Grilled redfish over spinach & cheese.' },
+        { n: 'Cobb Salad', p: '20', d: 'Avocado, egg, bacon & grilled chicken.' }
+      ],
+      subsWraps: [
+        { n: 'Meatball or Italian Sausage Sub', p: '14', d: 'Marinara, mozzarella & parmesan on a roll.' },
+        { n: 'Spinach & Artichoke Sub', p: '12', d: 'Roma, onion, mushrooms, garlic sauce & feta.' },
+        { n: 'Italian Sub', p: '14', d: 'Pepperoni, salami, ham, olives & provolone.' },
+        { n: 'Tuscan Sub', p: '13', d: 'Breaded eggplant, peppers, spinach & mozz.' },
+        { n: 'Chicken Parmesan Sub', p: '14', d: 'Grilled chicken, marinara & mozzarella.' },
+        { n: 'Muffuletta Sub', p: '14', d: 'Olive salad, salami, ham & provolone.' },
+        { n: 'California Club', p: '14', d: 'Turkey, bacon, spinach, avocado & aioli.' },
+        { n: 'Chicken Bacon & Ranch Wrap', p: '12', d: 'Chicken, bacon & lettuce; ranch.' },
+        { n: 'Chicken Caesar Wrap', p: '12', d: 'Chicken, romaine & parmesan; Caesar.' },
+        { n: 'Mediterranean Wrap', p: '12', d: 'Hummus, artichoke, chicken, olives & feta.' },
+        { n: 'Citrus Chicken Wrap', p: '12', d: 'Chicken, mandarin, feta & bacon; raspberry.' }
+      ],
+      signature: [
+        { n: 'Shrimp Carnival', p: '20', d: 'Shrimp & sausage in garlic cream over penne.' },
+        { n: "Becky's Pasta", p: '20', d: 'Shrimp & eggplant in Cajun cream, angel hair.' },
+        { n: 'Pasta Jambalaya', p: '18', d: 'Sausage & chicken in garlic cream, penne.' },
+        { n: 'Spicy Cajun Trio', p: '20', d: 'Crawfish, sausage & chicken; spicy cream.' },
+        { n: 'Spicy Cajun Redfish', p: '22', d: 'Blackened redfish over spicy cream pasta.' },
+        { n: 'Grilled Redfish Medley', p: '22', d: 'Artichokes, spinach & tomatoes; garlic oil.' }
+      ],
+      classic: [
+        { n: 'Pasta with Alfredo Sauce', p: '12', d: 'Penne in savory alfredo.' },
+        { n: 'Pasta with Seafood Sauce', p: '14', d: 'Shrimp & fish seafood sauce.' },
+        { n: 'Lasagna', p: '17', d: 'Beef, marinara & cheeses, baked.' },
+        { n: 'Meatballs or Sausage & Pasta', p: '16', d: 'Zesty marinara over angel hair.' },
+        { n: 'Cheese Manicotti — Marinara/Alfredo', p: '14', d: 'Italian cheese blend.' },
+        { n: 'Cheese Manicotti — Seafood', p: '16', d: 'Shrimp & fish seafood sauce.' },
+        { n: 'Cheese Manicotti — Spinach & Artichoke', p: '16', d: 'Spinach, mushrooms & onions.' }
+      ],
+      pizzas: [
+        { n: 'Combination', p: '19 | 25', d: 'Pepperoni, sausage, veggies & olives.' },
+        { n: 'Meat Feast', p: '19 | 25', d: 'Beef, sausage, ham, pepperoni & bacon.' },
+        { n: 'Chicken Alfredo', p: '19 | 25', d: 'Alfredo, chicken, onions & feta.' },
+        { n: 'Artichoke & Spinach', p: '17 | 23', d: 'Garlic, mushrooms, spinach & feta.' },
+        { n: 'Chicken Pesto', p: '19 | 25', d: 'Pesto, chicken, artichokes & feta.' },
+        { n: 'BBQ Chicken', p: '19 | 25', d: 'Chicken, bacon, onions & cheddar.' },
+        { n: 'Muffuletta', p: '18 | 24', d: 'Salami, ham, olive salad & mozz.' },
+        { n: 'Cajun Trio', p: '20 | 26', d: 'Sausage, chicken & crawfish.' },
+        { n: 'Hawaiian', p: '15 | 21', d: 'Ham, pineapple & green peppers.' },
+        { n: 'Veggie', p: '17 | 23', d: 'Mushrooms, onions, peppers & olives.' },
+        { n: 'Margherita', p: '15 | 21', d: 'Basil, roma tomatoes & fresh mozz.' },
+        { n: 'Luau BBQ', p: '20 | 26', d: 'Pineapple, jalapeños, bacon & shrimp.' },
+        { n: "Mario's Hot Honey", p: '19 | 25', d: 'Spinach, bacon, feta & hot honey.' }
+      ],
+      combos: [
+        { n: 'Sandwich Combo', p: '18', d: 'Any sub with a side salad or cup of soup.' },
+        { n: 'Wrap Combo', p: '16', d: 'Any wrap with a side salad or cup of soup.' },
+        { n: 'Personal Pizza Combo', p: '17', d: 'Three toppings plus soup or side salad.' },
+        { n: 'Soup & Salad', p: '13', d: 'Side salad and a cup of soup of the day.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

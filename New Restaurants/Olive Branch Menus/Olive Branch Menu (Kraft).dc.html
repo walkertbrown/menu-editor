@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+.frame-label{font-family:'Work Sans',sans-serif;margin-bottom:16px;cursor:grab;user-select:none}
+.fl-kicker{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:#8a8467;font-weight:600}
+.fl-name{font-size:26px;font-weight:700;color:#2f3320;margin-top:4px}
+.fl-desc{font-size:14px;color:#6f6b54;margin-top:5px;max-width:780px;line-height:1.5}
+.pg-tag{font-family:'Work Sans',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#8a8467;font-weight:600;margin-bottom:10px;cursor:grab;user-select:none}
+.page-shadow{filter:drop-shadow(0 2px 14px rgba(40,40,20,.16))}
+</style>
+</helmet>
+<div style="position:absolute;left:0;top:0">
+<div class="frame-label" data-drags-parent="1"><div class="fl-kicker">Rustic Kraft Deli · Legal 8.5 × 14 · 3 separate pages</div><div class="fl-name">The Olive Branch Café — Dine-In Menu</div><div class="fl-desc">Kraft-paper tone, Zilla Slab headers in olive bars, boxed sections. Each page is its own frame so it prints / exports one sheet at a time.</div></div>
+</div>
+<div style="position:absolute;left:0;top:150px">
+<div class="pg-tag" data-drags-parent="1">Page 1 · Cover</div>
+<div class="page-shadow"><dc-import name="MenuBody" variant="b" page="cover" hint-size="816px,1344px"></dc-import></div>
+</div>
+<div style="position:absolute;left:920px;top:150px">
+<div class="pg-tag" data-drags-parent="1">Page 2 · Starters → Entrées</div>
+<div class="page-shadow"><dc-import name="MenuBody" variant="b" page="food" hint-size="816px,1344px"></dc-import></div>
+</div>
+<div style="position:absolute;left:1840px;top:150px">
+<div class="pg-tag" data-drags-parent="1">Page 3 · Pasta · Pizza · Build Your Own</div>
+<div class="page-shadow"><dc-import name="MenuBody" variant="b" page="special" hint-size="816px,1344px"></dc-import></div>
+</div>
+<div style="position:absolute;left:2760px;top:150px">
+<div class="pg-tag" data-drags-parent="1">Back · Drinks · Desserts · BYO Wine · Catering</div>
+<div class="page-shadow"><dc-import name="MenuBody" variant="b" page="back" hint-size="816px,1344px"></dc-import></div>
+</div>
+</x-dc>
+</body>
+</html>
