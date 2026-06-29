@@ -36,6 +36,15 @@ let out = html
   .replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]+"[^>]*>/, `<style>\n${css}\n</style>`)
   .replace(/<script type="module"[^>]*src="\/assets\/[^"]+"[^>]*><\/script>/, scriptTag);
 
+// inline the favicon (browser-tab icon) as a data URI so it travels with the file
+const favPath = path.join(DIST, 'olive-branch-favicon.png');
+let faviconInlined = false;
+if (fs.existsSync(favPath)) {
+  const faviconDataUri = 'data:image/png;base64,' + fs.readFileSync(favPath).toString('base64');
+  out = out.split('/olive-branch-favicon.png').join(faviconDataUri);
+  faviconInlined = true;
+}
+
 if (out.includes('/assets/')) { console.error('ERROR: /assets/ reference still present — replace failed'); process.exit(1); }
 
 fs.mkdirSync(OUT, { recursive: true });
@@ -47,4 +56,5 @@ const bytes = Buffer.byteLength(out);
 console.log(`wrote ${outFile} (${(bytes / 1024).toFixed(0)} KB)`);
 console.log(`  restaurantId : ${restaurantId}`);
 console.log(`  backupUrl    : ${backupUrl}`);
-console.log(`  inlined      : css ${cssFile}, js ${jsFile}, logo ${(logo.length / 1024).toFixed(0)} KB`);
+console.log(`  inlined      : css ${cssFile}, js ${jsFile}, logo ${(logo.length / 1024).toFixed(0)} KB${faviconInlined ? ', favicon' : ''}`);
+if (!faviconInlined) console.warn('  note         : no olive-branch-favicon.png in dist — favicon not inlined');
