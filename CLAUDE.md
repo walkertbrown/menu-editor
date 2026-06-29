@@ -1,80 +1,52 @@
-@AGENTS.md
+# Menu Editor — project memory (READ FIRST)
 
-# Pelican Club Menu Editor — Project Conventions
+This repo is the home for Walker's **restaurant menu-redesign business**. Walker (GM of the
+independent Pelican Club; AI-native builder) redesigns a restaurant's menu by hand, then has
+Claude Code turn that design into an **editable, backed-up, printable** single-file app to hand
+the restaurant. The bespoke design is his; Claude does the editing/saving/printing plumbing.
 
-## Stack
-- Next.js (App Router) · TypeScript · React
-- `@dnd-kit/core` + `@dnd-kit/sortable` for drag-to-reorder
-- Local JSON file store at `data/menus.json` (swappable to Supabase)
+**The full build process is in [`PLAYBOOK.md`](./PLAYBOOK.md) — read it before doing a build.**
 
-## Branch convention
-- `main` — stable only; never work directly here
-- Feature work always goes on a named branch, e.g. `phase-1-theme`
-
-## File-size limit
-~300 lines per file. If a file approaches that, split it.
-
-## Architecture — three top-level areas
-
-| Area | Path | What lives here |
-|---|---|---|
-| content | `/content/` | Data types, store interface, seed data, snapshot logic |
-| theme | `/theme/` | Per-item-type read-only renderers + page furniture stub |
-| editor | `/editor/` | Editor screens, section editor, item card shell, field editors |
-
-## One feature per file
-- Each item-type renderer has its own file: `theme/renderers/<Type>Item.tsx`
-- Each item-type field editor has its own file: `editor/fields/<Type>Fields.tsx`
-- `ItemCard.tsx` — card shell + type dispatch only (no field logic)
-- `SectionEditor.tsx` — section header, reorder controls, droppable container
-- `MenuEditor.tsx` — top-level screen, DndContext, save/restore
-
-## Data model summary
-See `/content/types.ts` for full TypeScript interfaces.
-
-Item types: `food`, `wine_by_glass`, `beer_cider`, `cocktail`, `spirit_list`
-
-The store shape (`StoreShape`) is:
+## Repo layout
 ```
-{ menus, sections, items, snapshots }
+/                     ← this file (main memory) + PLAYBOOK.md
+pelican-club/         ← the original Next.js "menu-editor" app + design sources
+                        (New Restaurants/… holds the .dc.html reference designs)
+builds/               ← one folder per restaurant menu we make editable
+  olive-branch/       ← FIRST build: the Vite+React editor app. This is the TEMPLATE
+                        other builds are copied from. See builds/olive-branch/CLAUDE.md.
+server/               ← menu-save-server: backs up each menu to ServerMac (Node, no deps)
+site/                 ← marketing-site draft (brand placeholder "Fresh Sheet"; parked)
 ```
 
-## Data access layer
-`/content/store.ts` exports:
-- `getMenus()` — list all menus
-- `getMenu(id)` — menu + sections + items
-- `saveMenu(menu, sections, items, opts?)` — persists + creates snapshot
-  - `opts.snapshotLabel` — human label for the snapshot
-  - `opts.scopeSectionIds` — string[]; when provided, only those section ids are
-    considered "this side's" scope. Sections/items outside the scope are preserved
-    from the store (scoped-merge mode). Omit for unscoped full-replace saves
-    (dinner and drinks).
-  - `opts.allowEmpty` — when true bypasses the empty-save guard. Use only after
-    the user confirms they want to erase all content on this side.
-  - Throws `EmptyMenuSaveError` (exported; `err.code === 'EMPTY_MENU_SAVE'`) when
-    the incoming scoped set is empty but the store has content there.
-  - Snapshots always store the FULL merged state so restore is always safe.
-- `listSnapshots(menuId)` — last 10 snapshots
-- `restoreSnapshot(snapshotId)` — rolls back live data
-- `EmptyMenuSaveError` — exported error class; `code === 'EMPTY_MENU_SAVE'`
+## The loop (per restaurant)
+1. Walker redesigns the menu → hands over **labeled HTML files** (one per sheet: "Dinner front",
+   "Dinner back", "Brunch front"…) + restaurant name + notes (paper size, anything unusual).
+2. Claude builds the editable app under `builds/<name>/` (copy `builds/olive-branch` as the base;
+   lift the design CSS, one sheet → one tab, reuse `Editable`, sortable item/section,
+   `ParkedSidebar`, `backup.ts`, `package-single.cjs`).
+3. A **tester subagent** drives the build headless and reports PASS/FAIL (content + controls +
+   print + backup — NOT spacing/drag; headless renders fonts tall & can't sim dnd-kit drags).
+4. Walker final-reviews in his real browser.
 
-`/content/mergeMenuSave.ts` — pure helper (no I/O) that implements the
-scoped-merge logic. Supabase adapter must call the equivalent logic.
+## Backup infrastructure (shared)
+- Start server (no sudo): `bash server/start.sh` (port 9120, data in `server/data/`).
+- Expose on Funnel (sudo, Walker runs once / after reboot — no domain needed):
+  `sudo tailscale funnel --bg --set-path /menus 9120` → `https://servermac.tailaad45c.ts.net/menus`.
+  Verify: `curl https://servermac.tailaad45c.ts.net/menus/api/health`.
+- Per restaurant gets a unique `restaurantId` (the only key on its data) recorded in
+  `server/<slug>.id`. See `server/SETUP.md`.
 
-**To swap to Supabase**: implement the same five functions + EmptyMenuSaveError in
-a new file and change the import in `/content/store.ts`. No other files change.
+## Status
+- **Olive Branch Café** — DONE. Deliverable: `builds/olive-branch/package/`. Backup id in
+  `server/olive-branch.id`. Editor runs over Tailscale: `cd builds/olive-branch && npm run dev`
+  → http://100.107.152.109:5173.
+- **Bacchus** (Mississippi upscale seafood; Regular + Brunch, two-sided sheets) — NEXT. Walker
+  will redesign it; current photos are content-source only. Likely two deliverables.
 
-## API routes
-- `GET  /api/menus` — all menus
-- `GET  /api/menus/[id]` — menu + sections + items
-- `PUT  /api/menus/[id]` — save; body: `{menu, sections, items, snapshotLabel?,
-  scopeSectionIds?, allowEmpty?}`; returns 200 `{ok, snapshots}`, 409 `{code,
-  error}` on empty-save guard, 400 on missing fields
-- `GET  /api/menus/[id]/snapshots` — snapshot list
-- `POST /api/menus/[id]/snapshots` — restore (body: `{snapshotId}`)
-
-## What's NOT here yet (future phases)
-- Pelican Club design/theme (Phase 1)
-- PDF export (Phase 2)
-- Supabase cloud store (Phase 3)
-- Auth / multi-user (Phase 4)
+## Notes
+- Headless puppeteer lies about spacing and can't drag — **Walker's browser is the source of truth**.
+- localStorage on a `file://` deliverable is fragile (per-file/browser, Safari may not persist) —
+  the ServerMac backup is the durable copy; the app also offers Download/Load backup + Restore.
+- There is also a home-level Claude auto-memory (`~/.claude/projects/-home-elizabethcorley/memory/`)
+  with Walker's broader profile/projects; `project_menu_business.md` there mirrors this.

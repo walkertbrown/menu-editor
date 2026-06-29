@@ -1,0 +1,90 @@
+/* Trifold (to-go) styles — lifted verbatim from the approved design
+   (Olive Branch Trifold (Kraft).dc.html). Landscape letter, 3 panels. */
+.sheet {
+  width: 1056px; height: 816px; background: #e6d6b6; color: #3a3322;
+  font-family: 'Work Sans', sans-serif; display: grid;
+  grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr; overflow: hidden;
+}
+.panel { min-height: 0; }
+.panel { padding: 24px 24px; position: relative; display: flex; flex-direction: column; }
+/* never let content boxes squish & overlap — they must keep natural height so the
+   auto-fit measures real overflow and scales the whole sheet down to fit. */
+.panel > * { flex-shrink: 0; }
+.fold { border-right: 1.4px dashed rgba(84,98,47,.55); }
+.foldtag {
+  position: absolute; top: 50%; right: -9px; transform: translateY(-50%);
+  background: #e6d6b6; font-size: 8.5px; letter-spacing: .16em; text-transform: uppercase;
+  color: #7d7a52; writing-mode: vertical-rl; padding: 5px 1px; font-weight: 600;
+}
+.ph {
+  background: #54622f; color: #f1e8d2; font-family: 'Zilla Slab', serif; font-weight: 600;
+  font-size: calc(13.5px * var(--fs, 1)); letter-spacing: .05em; text-transform: uppercase; padding: 2.5px 9px;
+  margin: 0 -2px calc(3px * var(--fs, 1)); display: flex; justify-content: space-between; align-items: baseline;
+}
+.ph small { font-size: calc(9px * var(--fs, 1)); letter-spacing: .03em; opacity: .85; font-weight: 500; text-transform: none; }
+.ph2 { margin-top: calc(3px * var(--fs, 1)); }
+.ti { margin-bottom: calc(5px * var(--fs, 1)); line-height: 1; position: relative; }
+.ti-list { min-height: 6px; }
+.ti:hover .item-tools { opacity: 1; }
+/* empty description: hidden, revealed as "+ note" on hover/focus (matches dine-in) */
+.tid.editable[data-empty] { display: none; }
+.ti:hover .tid.editable[data-empty],
+.tid.editable[data-empty]:focus { display: block; opacity: .55; }
+.tid.editable[data-empty]:not(:focus)::before { content: '+ note'; }
+.tih { display: flex; justify-content: space-between; gap: 6px; align-items: baseline; line-height: 1; }
+.tin { font-family: 'Zilla Slab', serif; font-weight: 600; font-size: calc(12.6px * var(--fs, 1)); line-height: 1.1; }
+.tip { font-family: 'Zilla Slab', serif; font-weight: 600; font-size: calc(12.6px * var(--fs, 1)); line-height: 1.1; color: #9d3d24; white-space: nowrap; }
+.tid { display: block; font-size: calc(8.4px * var(--fs, 1)); line-height: 1.16; opacity: .74; margin-top: calc(1px * var(--fs, 1)); }
+.note { font-size: calc(8.4px * var(--fs, 1)); line-height: 1.38; opacity: .72; font-style: italic; margin-top: 6px; }
+.outp { padding-top: 204px; }
+/* compact Build Your Own grid: label + one column per size */
+.tbyo-grid {
+  display: grid; grid-template-columns: 1fr repeat(4, minmax(0, max-content));
+  column-gap: calc(8px * var(--fs, 1)); align-items: baseline; margin-top: calc(2px * var(--fs, 1));
+}
+.tbh {
+  font-family: 'Work Sans', sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; font-size: calc(7.4px * var(--fs, 1)); color: #54622f; opacity: .9;
+  text-align: right; line-height: 1.4;
+}
+.tbh.lead { text-align: left; }
+.tbr { font-family: 'Zilla Slab', serif; font-weight: 600; font-size: calc(10.4px * var(--fs, 1)); line-height: 1.4; }
+.tbc {
+  font-family: 'Zilla Slab', serif; font-weight: 600; font-size: calc(10.4px * var(--fs, 1));
+  color: #9d3d24; text-align: right; line-height: 1.4;
+}
+.tbsep {
+  font-family: 'Work Sans', sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; font-size: calc(7px * var(--fs, 1)); color: #54622f; opacity: .85;
+  display: flex; align-items: center; gap: 7px; margin: calc(4px * var(--fs, 1)) 0 calc(2px * var(--fs, 1));
+}
+.tbsep::before, .tbsep::after { content: ''; flex: 1; height: 1px; background: rgba(84,98,47,.3); }
+.byo-l { font-size: calc(8.6px * var(--fs, 1)); line-height: 1.34; margin-bottom: 3px; opacity: .9; }
+.byo-k { font-weight: 700; text-transform: uppercase; letter-spacing: .07em; font-size: calc(7.8px * var(--fs, 1)); color: #54622f; margin-right: 3px; }
+/* cover panel */
+.cov { justify-content: space-between; text-align: center; align-items: center; }
+.cov-est { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; opacity: .72; font-weight: 600; }
+.cov-logo { width: 248px; max-width: 90%; height: auto; margin: 6px auto 0; }
+.cov-tag { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; margin-top: 14px; line-height: 1.7; }
+.cov-togo { font-family: 'Zilla Slab', serif; font-weight: 700; font-size: 30px; letter-spacing: .02em; margin-top: 18px; color: #54622f; }
+.cov-rule { width: 54px; height: 3px; background: #9d3d24; margin: 12px auto 0; }
+.cov-sub { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; opacity: .78; margin-top: 12px; }
+/* contact panel */
+.bk-h { font-family: 'Zilla Slab', serif; font-weight: 700; font-size: 21px; text-align: center; margin: 0; }
+.bk-rule { width: 48px; height: 2.5px; background: #9d3d24; margin: 9px auto 16px; }
+.tloc { margin-bottom: 22px; text-align: center; }
+.loc-city { font-family: 'Zilla Slab', serif; font-weight: 700; font-size: 15px; letter-spacing: .1em; }
+.loc-l { font-size: 10.5px; line-height: 1.55; opacity: .85; margin-top: 2px; }
+.hrs { text-align: center; margin-top: 10px; padding-top: 18px; border-top: 1.4px solid rgba(84,98,47,.5); }
+.hrs-big { font-family: 'Zilla Slab', serif; font-weight: 700; font-size: 16px; }
+.hrs-s { font-size: 9.5px; letter-spacing: .13em; text-transform: uppercase; opacity: .72; margin-top: 4px; line-height: 1.6; }
+.web { font-family: 'Zilla Slab', serif; font-weight: 700; font-size: 14px; letter-spacing: .14em; text-align: center; margin-top: auto; color: #9d3d24; }
+/* about / cater panel */
+.t-sprig { display: block; margin: 0 auto 8px; width: 88px; color: #9d3d24; }
+.t-sprig line { stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.t-sprig ellipse, .t-sprig circle { fill: currentColor; }
+.ab-h { font-family: 'Zilla Slab', serif; font-weight: 700; font-size: 20px; text-align: center; margin: 0 0 9px; }
+.ab-p { font-size: 10.5px; line-height: 1.6; opacity: .86; text-align: center; }
+.ab-p + .ab-p { margin-top: 16px; }
+.t-cater-list { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; text-align: center; opacity: .8; margin-top: 20px; line-height: 1.9; }
+.t-sign { font-size: 10.5px; letter-spacing: .05em; text-align: center; margin-top: auto; font-weight: 600; font-style: italic; }

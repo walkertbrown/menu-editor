@@ -1,0 +1,141 @@
+/* Editor chrome — wraps the menu without disturbing its pristine layout. */
+.editor { display: flex; min-height: 100vh; background: #4f4833; }
+
+.sidebar {
+  width: 240px; flex: none; background: #3a3322; color: #e7ddc3;
+  padding: 16px; font-family: 'Work Sans', sans-serif; overflow: auto;
+}
+.side-title {
+  font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  font-size: 12px; opacity: .85; margin-bottom: 10px;
+}
+.side-empty { font-size: 12px; opacity: .55; line-height: 1.45; }
+.add-item {
+  width: 100%; font-family: 'Work Sans', sans-serif; font-size: 12.5px; cursor: pointer;
+  background: #9d3d24; color: #fff; border: none; border-radius: 6px;
+  padding: 7px 10px; margin-bottom: 12px; font-weight: 600;
+}
+.park {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px; padding: 6px 8px; margin-bottom: 6px; font-size: 12.5px;
+}
+.park-grip {
+  flex: none; border: none; background: transparent; color: #e7ddc3;
+  cursor: grab; opacity: .55; font-size: 12px; padding: 0; line-height: 1;
+}
+.park-name { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+.park-price { flex: none; color: #d8c08a; }
+.park .editable:hover { box-shadow: inset 0 0 0 1px rgba(231,221,195,.45); }
+.park .editable:focus { color: #2a2418; }
+
+.stage {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 18px 40px 48px; overflow: auto;
+}
+.toolbar {
+  display: flex; gap: 10px; align-self: stretch; justify-content: flex-end;
+  margin-bottom: 14px; flex-wrap: wrap; align-items: center;
+}
+.toolbar .spacer { flex: 1; }
+.toolbar .sync {
+  font-family: 'Work Sans', sans-serif; font-size: 12px; color: #cdbf9a;
+  align-self: center; white-space: nowrap;
+}
+.toolbar .sync-ok { color: #9fc27a; }
+.toolbar .sync-pending { color: #e0b061; }
+.toolbar button.ghost.danger { background: transparent; color: #d99; box-shadow: inset 0 0 0 1px rgba(217,153,153,.5); }
+.toolbar button.ghost.danger:hover { background: rgba(157,61,36,.25); }
+.tabs { display: flex; gap: 4px; }
+.tab {
+  font-family: 'Work Sans', sans-serif; font-size: 12.5px; cursor: pointer;
+  border: none; border-radius: 6px; padding: 7px 12px;
+  background: rgba(255,255,255,.10); color: #e7ddc3;
+}
+.tab.active { background: #e7ddc3; color: #3a3322; font-weight: 600; }
+.toolbar button {
+  font-family: 'Work Sans', sans-serif; font-size: 13px; cursor: pointer;
+  border: none; border-radius: 6px; padding: 7px 14px;
+}
+.toolbar .save { background: #9d3d24; color: #fff; font-weight: 600; }
+.toolbar .save:disabled { background: #7a7768; cursor: default; }
+.toolbar button.ghost { background: #e7ddc3; color: #3a3322; }
+
+/* remove control — absolute, in the gutter, so it never shifts the menu layout */
+.item { position: relative; }
+/* grip + remove grouped as one hover control in the left gutter (never floats off the edge) */
+.item-tools {
+  position: absolute; left: -17px; top: 0; display: flex; flex-direction: column;
+  gap: 1px; opacity: 0; transition: opacity .12s; z-index: 3;
+}
+.item:hover .item-tools { opacity: 1; }
+.item-tools button {
+  width: 14px; height: 14px; line-height: 13px; text-align: center; padding: 0;
+  border: none; border-radius: 50%; font-size: 11px; cursor: pointer;
+}
+.item-tools .grip { background: transparent; color: #9d3d24; cursor: grab; }
+.item-tools .rm { background: #9d3d24; color: #fff; }
+.sec-grip {
+  border: none; background: transparent; color: #f1e8d2; font-size: 12px;
+  cursor: grab; padding: 0 8px 0 0; opacity: .75; line-height: 1;
+}
+/* inline description: collapsed when empty, revealed as "+ note" on hover/focus */
+.item-desc.editable { display: block; }
+.item-desc.editable[data-empty] { display: none; }
+.item:hover .item-desc.editable[data-empty],
+.item-desc.editable[data-empty]:focus { display: block; opacity: .5; }
+.item-desc.editable[data-empty]::before { content: '+ note'; }
+
+/* drag overlay chip */
+.drag-chip {
+  font-family: 'Zilla Slab', serif; font-weight: 600; font-size: 13px;
+  background: #54622f; color: #f1e8d2; padding: 6px 12px; border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35); cursor: grabbing;
+}
+.sec-head { user-select: none; }
+
+/* inline editing */
+.editable { outline: none; cursor: text; border-radius: 3px; min-width: 6px; }
+.editable:hover { box-shadow: inset 0 0 0 1px rgba(157,61,36,.35); }
+.editable:focus { box-shadow: inset 0 0 0 1.5px #9d3d24; background: rgba(255,255,255,.55); }
+.editable[data-empty]:not(:focus)::before { content: '—'; opacity: .3; }
+
+/* Build Your Own: add / remove topping */
+.byo-row { position: relative; }
+.byo-rm {
+  position: absolute; left: -14px; top: 0; width: 14px; height: 14px; line-height: 12px;
+  text-align: center; border-radius: 50%; border: none; background: #9d3d24; color: #fff;
+  font-size: 11px; cursor: pointer; opacity: 0; transition: opacity .12s;
+}
+.build:hover .byo-rm { opacity: .85; }
+.add-topping {
+  font-family: 'Work Sans', sans-serif; font-size: 11px; cursor: pointer;
+  background: #54622f; color: #f1e8d2; border: none; border-radius: 5px;
+  padding: 4px 10px; margin: 2px 0 10px;
+}
+
+/* Cover/Back drag-to-nudge pieces */
+.dblock { position: relative; }
+.dgrip {
+  position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+  width: 34px; height: 18px; border: none; border-radius: 4px; cursor: ns-resize;
+  background: rgba(84,98,47,.92); color: #f1e8d2; font-size: 12px; line-height: 1; padding: 0;
+  opacity: 0; transition: opacity .12s; z-index: 3; touch-action: none;
+}
+.dblock:hover .dgrip { opacity: 1; }
+
+/* ---- Print / Save-as-PDF: just the menu page, colors intact, no chrome ---- */
+@media print {
+  @page { size: 8.5in 14in; margin: 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { background: #fff !important; }
+  .editor { display: block !important; background: #fff !important; }
+  .sidebar, .toolbar { display: none !important; }
+  .stage { padding: 0 !important; overflow: visible !important; }
+  .menu { margin: 0 !important; }
+  /* hide every editing affordance */
+  .item-tools, .grip, .rm, .byo-rm, .add-topping, .dgrip { display: none !important; }
+  .editable { box-shadow: none !important; background: none !important; outline: none !important; }
+  .editable[data-empty]::before { content: none !important; }
+  .item-desc.editable[data-empty] { display: none !important; }
+}

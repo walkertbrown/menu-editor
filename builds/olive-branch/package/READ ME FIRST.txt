@@ -1,0 +1,66 @@
+================================================================
+  THE OLIVE BRANCH CAFÉ — YOUR EDITABLE MENU
+================================================================
+
+Thanks for taking a look! This is your menu — and now you can edit
+it yourself, anytime, with no special software.
+
+----------------------------------------------------------------
+HOW TO OPEN IT
+----------------------------------------------------------------
+Double-click the file:
+
+    Olive Branch Cafe Menu Editor.html
+
+It opens in your web browser (Chrome works best). That's it —
+nothing to install.
+
+----------------------------------------------------------------
+HOW TO EDIT
+----------------------------------------------------------------
+• Click any item name, price, or description to change the words.
+• Use the tabs at the top to switch between the dine-in menu pages,
+  the cover, the back, and the to-go trifold.
+• Hover over an item to get a "grip" handle (drag to reorder) and
+  an "x" (removes it to the Saved Items list on the left).
+• Add something new: click "+ New item" on the left, type the name
+  and price, then drag it onto the menu where you want it.
+
+When you like how it looks, click  SAVE.
+
+----------------------------------------------------------------
+SAVING & BACKUP — YOU WON'T LOSE YOUR WORK
+----------------------------------------------------------------
+Every time you hit SAVE, your menu is kept in THREE places:
+
+  1. In this browser (instant).
+  2. Backed up to our private server automatically — you'll see
+     "Backed up ✓" in the top corner.
+  3. Any time you like, click "Download backup" to save a copy
+     file you keep yourself.
+
+If you ever edit while your internet is down, no problem — it
+saves on your computer and backs up automatically the next time
+you're online.
+
+Got a new computer? Open the file and click "Restore from server"
+to pull your latest menu back down.
+
+----------------------------------------------------------------
+PRINTING / PDF
+----------------------------------------------------------------
+• Click "Save PDF" to make a print-ready PDF of the page you're on.
+• "Switch to B&W" gives you a black-and-white version for the
+  office copier.
+• The to-go trifold prints on regular letter paper, double-sided.
+
+----------------------------------------------------------------
+A FEW NOTES
+----------------------------------------------------------------
+• Keep this file somewhere easy to find (your Desktop is great).
+• "Reset" puts the menu back to the original — it will ask first.
+• Questions, or something not looking right? Just reach out to
+  Walker and I'll take care of it.
+
+Enjoy!
+================================================================
