@@ -1,0 +1,27 @@
+{
+  "name": "taste-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.2",
+    "@ai-sdk/deepseek": "^3.0.1",
+    "@ai-sdk/openai": "^4.0.3",
+    "@google/genai": "^2.10.0",
+    "ai": "^7.0.6",
+    "dotenv": "^17.4.2",
+    "puppeteer": "^25.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
