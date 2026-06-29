@@ -31,11 +31,15 @@ site/                 ← marketing-site draft (brand placeholder "Fresh Sheet";
 
 ## Backup infrastructure (shared)
 - Start server (no sudo): `bash server/start.sh` (port 9120, data in `server/data/`).
-- Expose on Funnel (sudo, Walker runs once / after reboot — no domain needed):
+- Expose on Funnel (sudo — no domain needed; Funnel mount PERSISTS across reboots, set once):
   `sudo tailscale funnel --bg --set-path /menus 9120` → `https://servermac.tailaad45c.ts.net/menus`.
   Verify: `curl https://servermac.tailaad45c.ts.net/menus/api/health`.
 - Per restaurant gets a unique `restaurantId` (the only key on its data) recorded in
   `server/<slug>.id`. See `server/SETUP.md`.
+- **⚠️ After a ServerMac REBOOT, restart the node server:** `bash ~/menu-editor-src/server/start.sh`.
+  It runs via `setsid` (survives logout, NOT a reboot). The Funnel mount itself persists, so this
+  is the only reboot step. Full public chain (file:// deliverable → Funnel → server save/load) has
+  been verified working end-to-end.
 
 ## Status
 - **Olive Branch Café** — DONE. Deliverable: `builds/olive-branch/package/`. Backup id in
