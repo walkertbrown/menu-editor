@@ -18,6 +18,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy, arrayMove } 
 import { CSS } from '@dnd-kit/utilities';
 import { type Item, type Section, type BuildData, type TrifoldOutsideData } from './data';
 import { load, save, seed, hasLocal, adopt, type MenuState } from './store';
+import { ItemRow, SectionBlock } from './SectionBlock';
 import { pushBackup, pullBackup } from './backup';
 import { BACKUP_ENABLED } from './config';
 import { Cover, Back, Page3Extras } from './StaticPages';
@@ -38,83 +39,6 @@ const PAGES: { id: PageId; label: string; editable: boolean }[] = [
 ];
 // Trifold sheets are landscape letter; everything else is legal portrait.
 const LANDSCAPE: PageId[] = ['trifold', 'trioutside'];
-
-function ItemRow({
-  it,
-  sid,
-  onRemove,
-  onEdit,
-}: {
-  it: Item;
-  sid: string;
-  onRemove?: () => void;
-  onEdit: (id: string, patch: Partial<Item>) => void;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: it.id as string,
-    data: { type: 'item', container: sid },
-  });
-  const style: CSSProperties = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.35 : 1 };
-  const id = it.id as string;
-  return (
-    <div className="item" ref={setNodeRef} style={style} {...attributes}>
-      <div className="item-tools">
-        <button className="grip" title="Drag" {...listeners}>⠿</button>
-        {onRemove && (
-          <button className="rm" title="Remove" onPointerDown={(e) => e.stopPropagation()} onClick={onRemove}>×</button>
-        )}
-      </div>
-      <div className="item-head">
-        <Editable className="item-name" value={it.n} onChange={(v) => onEdit(id, { n: v })} />
-        <span className="dots" />
-        <Editable className="item-price" value={it.p} onChange={(v) => onEdit(id, { p: v })} />
-      </div>
-      <Editable className="item-desc" value={it.d ?? ''} onChange={(v) => onEdit(id, { d: v })} />
-    </div>
-  );
-}
-
-function SectionBlock({
-  s,
-  gap,
-  onRemove,
-  onEdit,
-  onEditSection,
-}: {
-  s: Section;
-  gap?: number;
-  onRemove: (sid: string, itemId: string) => void;
-  onEdit: (id: string, patch: Partial<Item>) => void;
-  onEditSection: (sid: string, patch: Partial<Section>) => void;
-}) {
-  const sortable = useSortable({ id: 'sec:' + s.id, data: { type: 'section' } });
-  const drop = useDroppable({ id: s.id, data: { type: 'container' } });
-  const style: CSSProperties = {
-    transform: CSS.Transform.toString(sortable.transform),
-    transition: sortable.transition,
-    marginBottom: gap != null ? gap : undefined,
-    opacity: sortable.isDragging ? 0.6 : 1,
-  };
-  return (
-    <div className="section" ref={sortable.setNodeRef} data-sid={s.id} style={style}>
-      <div className="sec-head">
-        <button className="sec-grip" title="Drag section" {...sortable.attributes} {...sortable.listeners}>⠿</button>
-        <Editable className="sec-title" value={s.title} onChange={(v) => onEditSection(s.id, { title: v })} />
-        <span className="sec-line" />
-        {s.note != null ? (
-          <Editable className="sec-note" value={s.note} onChange={(v) => onEditSection(s.id, { note: v })} />
-        ) : null}
-      </div>
-      <div className="items" ref={drop.setNodeRef}>
-        <SortableContext items={s.items.map((i) => i.id as string)} strategy={verticalListSortingStrategy}>
-          {s.items.map((it) => (
-            <ItemRow key={it.id} it={it} sid={s.id} onRemove={() => onRemove(s.id, it.id as string)} onEdit={onEdit} />
-          ))}
-        </SortableContext>
-      </div>
-    </div>
-  );
-}
 
 // One editable column inside the locked Beverages+Desserts pair.
 function PairColumn({
@@ -225,17 +149,44 @@ export default function App() {
   const curParked = isTri ? state.trifold.parked : state.parked;
   const curBuild = isTri ? state.trifold.build : state.build;
   const secsOf = (s: MenuState) => (isTri ? s.trifold.sections : s.sections);
-  const getItems = (s: MenuState, c: string): Item[] =>
-    c === PARKED ? (isTri ? s.trifold.parked : s.parked) : secsOf(s)[c].items;
+
+  // Container ids for normal dine-in sections use `${sectionId}::L` / `::R`.
+  // Beverages, desserts, and trifold sections still use the bare section id.
+  const getItems = (s: MenuState, c: string): Item[] => {
+    if (c === PARKED) return isTri ? s.trifold.parked : s.parked;
+    if (c.endsWith('::L')) return secsOf(s)[c.slice(0, -3)].colL ?? [];
+    if (c.endsWith('::R')) return secsOf(s)[c.slice(0, -3)].colR ?? [];
+    return secsOf(s)[c].items; // bev, dess, or trifold sections
+  };
   const setItems = (s: MenuState, c: string, arr: Item[]) => {
-    if (c === PARKED) { if (isTri) s.trifold.parked = arr; else s.parked = arr; }
-    else secsOf(s)[c].items = arr;
+    if (c === PARKED) { if (isTri) s.trifold.parked = arr; else s.parked = arr; return; }
+    if (c.endsWith('::L')) { secsOf(s)[c.slice(0, -3)].colL = arr; return; }
+    if (c.endsWith('::R')) { secsOf(s)[c.slice(0, -3)].colR = arr; return; }
+    secsOf(s)[c].items = arr; // bev, dess, or trifold sections
   };
 
   const findContainer = (id: string): string | null => {
     if (id === PARKED) return PARKED;
-    if (curSections[id]) return id;
-    for (const sid of Object.keys(curSections)) if (curSections[sid].items.some((it) => it.id === id)) return sid;
+    // Already a column container id (e.g. when dragging over an empty column).
+    if (id.endsWith('::L') || id.endsWith('::R')) return id;
+    if (isTri) {
+      // Trifold: all sections use single items lists.
+      if (curSections[id]) return id;
+      for (const sid of Object.keys(curSections)) {
+        if (curSections[sid].items.some((it) => it.id === id)) return sid;
+      }
+    } else {
+      // Dine-in: bev/dess use bare section id; all others use ::L / ::R columns.
+      if (id === 'beverages' || id === 'desserts') return id;
+      for (const sid of Object.keys(curSections)) {
+        if (sid === 'beverages' || sid === 'desserts') {
+          if (curSections[sid].items.some((it) => it.id === id)) return sid;
+        } else {
+          if ((curSections[sid].colL ?? []).some((it) => it.id === id)) return `${sid}::L`;
+          if ((curSections[sid].colR ?? []).some((it) => it.id === id)) return `${sid}::R`;
+        }
+      }
+    }
     if (curParked.some((it) => it.id === id)) return PARKED;
     return null;
   };
@@ -312,9 +263,17 @@ export default function App() {
   const removeItem = (sid: string, itemId: string) => {
     setState((prev) => {
       const s = structuredClone(prev);
-      const items = secsOf(s)[sid].items;
-      const idx = items.findIndex((x) => x.id === itemId);
-      if (idx >= 0) (isTri ? s.trifold.parked : s.parked).push(items.splice(idx, 1)[0]);
+      const sec = secsOf(s)[sid];
+      // Search colL, colR, then items (for bev/dess and trifold sections).
+      for (const col of ['colL', 'colR', 'items'] as const) {
+        const list = sec[col] as Item[] | undefined;
+        if (!list) continue;
+        const idx = list.findIndex((x) => x.id === itemId);
+        if (idx >= 0) {
+          (isTri ? s.trifold.parked : s.parked).push(list.splice(idx, 1)[0]);
+          break;
+        }
+      }
       return s;
     });
     bumpFit();
@@ -335,9 +294,13 @@ export default function App() {
   const editItem = (itemId: string, patch: Partial<Item>) => {
     setState((prev) => {
       const s = structuredClone(prev);
-      for (const sec of Object.values(secsOf(s))) {
-        const it = sec.items.find((x) => x.id === itemId);
-        if (it) { Object.assign(it, patch); return s; }
+      outer: for (const sec of Object.values(secsOf(s))) {
+        for (const col of ['colL', 'colR', 'items'] as const) {
+          const list = sec[col] as Item[] | undefined;
+          if (!list) continue;
+          const it = list.find((x) => x.id === itemId);
+          if (it) { Object.assign(it, patch); break outer; }
+        }
       }
       const pit = (isTri ? s.trifold.parked : s.parked).find((x) => x.id === itemId); // also editable while parked
       if (pit) Object.assign(pit, patch);
@@ -546,7 +509,14 @@ export default function App() {
   const order = state.pageOrders[pageId] ?? [];
   const activeItem =
     activeId && !activeId.startsWith('sec:')
-      ? [...Object.values(curSections).flatMap((s) => s.items), ...curParked].find((i) => i.id === activeId)
+      ? [
+          ...Object.values(curSections).flatMap((s) => [
+            ...(s.colL ?? []),
+            ...(s.colR ?? []),
+            ...s.items, // catches bev/dess and trifold sections (no colL/colR)
+          ]),
+          ...curParked,
+        ].find((i) => i.id === activeId)
       : null;
 
   return (

@@ -3,7 +3,17 @@
 // This is the data that pre-seeds localStorage on first run.
 
 export type Item = { id?: string; n: string; p: string; d?: string };
-export type Section = { id: string; title: string; note?: string; items: Item[] };
+export type Section = {
+  id: string;
+  title: string;
+  note?: string;
+  items: Item[];
+  /** Independent left/right column lists for normal dine-in sections.
+   *  Absent on beverages, desserts, and all trifold sections.
+   *  Populated by the normalize() migration in store.ts. */
+  colL?: Item[];
+  colR?: Item[];
+};
 
 export const SECTIONS: Record<string, Section> = {
   appetizers: {

@@ -19,6 +19,19 @@ import {
 
 const KEY = 'olive-branch-menu-v1';
 
+/** Sections that keep a single flat `items` list and are never split into columns. */
+const SPLIT_EXCLUDED = new Set(['beverages', 'desserts']);
+
+/** For a normal dine-in section that has never been split: distribute items by
+ *  position — even-indexed items (0,2,4…) → colL, odd-indexed (1,3,5…) → colR.
+ *  This matches the old row-major 2-column grid, so nothing visually moves on first
+ *  load. If colL/colR already exist (saved data from the new editor), leave as-is. */
+function splitIntoColumns(sec: Section): void {
+  if (sec.colL !== undefined || sec.colR !== undefined) return; // idempotent
+  sec.colL = sec.items.filter((_, i) => i % 2 === 0);
+  sec.colR = sec.items.filter((_, i) => i % 2 === 1);
+}
+
 /** The To-Go trifold is INDEPENDENT of the dine-in menu — its own sections,
  *  parking lot, and Build block. Seeded as a copy, then edited separately. */
 export type TrifoldData = {
@@ -69,6 +82,15 @@ function normalize(s: MenuState): MenuState {
   // ensure all default sections exist (migrates older saves that predate new sections)
   for (const [id, sec] of Object.entries(SECTIONS)) if (!s.sections[id]) s.sections[id] = clone(sec);
   for (const sec of Object.values(s.sections)) for (const it of sec.items) if (!it.id) it.id = uid();
+  // Split normal dine-in sections (not bev/dess) into independent colL / colR.
+  for (const [id, sec] of Object.entries(s.sections)) {
+    if (!SPLIT_EXCLUDED.has(id)) splitIntoColumns(sec);
+  }
+  // Ensure ids on any items that landed in colL/colR via migration.
+  for (const sec of Object.values(s.sections)) {
+    if (sec.colL) for (const it of sec.colL) if (!it.id) it.id = uid();
+    if (sec.colR) for (const it of sec.colR) if (!it.id) it.id = uid();
+  }
   if (!s.parked) s.parked = [];
   for (const it of s.parked) if (!it.id) it.id = uid();
   if (!s.pageOrders) s.pageOrders = defaultOrders();

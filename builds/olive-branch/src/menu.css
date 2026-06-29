@@ -25,6 +25,11 @@
 .sec-note{font-size:11px;opacity:.72;white-space:nowrap;letter-spacing:.02em}
 .items{display:grid;grid-template-columns:1fr 1fr;gap:5px 32px}
 .one-col{grid-template-columns:1fr}
+/* Independent two-column layout for normal dine-in sections.
+   Each column is its own drop target; an empty column keeps min-height so
+   items can still be dragged back into it. */
+.items-cols{display:flex;gap:32px}
+.items-col{flex:1;display:flex;flex-direction:column;gap:5px;min-height:28px}
 .item-head{display:flex;align-items:baseline;gap:6px}
 .item-name{font-weight:600;font-size:13.3px;line-height:1.1}
 .dots{flex:1;border-bottom:1.5px dotted currentColor;opacity:.32;transform:translateY(-3px);min-width:10px}
