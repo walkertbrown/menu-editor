@@ -88,3 +88,28 @@
 .ab-p + .ab-p { margin-top: 16px; }
 .t-cater-list { font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; text-align: center; opacity: .8; margin-top: 20px; line-height: 1.9; }
 .t-sign { font-size: 10.5px; letter-spacing: .05em; text-align: center; margin-top: auto; font-weight: 600; font-style: italic; }
+
+/* ===== VARIANT BW — Trifold (Black & White Print) =====
+   Recolor ONLY (color/background/border/filter) — no font-size, padding, or margin —
+   so the --fs auto-fit lands on the SAME layout as color. That keeps the B&W trifold
+   character-identical in content and shape to the color trifold (both render the one
+   state.trifold dataset). Look mirrors "Olive Branch Trifold (B&W Print).dc.html". */
+.v-bw .sheet { background: #fff; color: #141414; }
+.v-bw .fold { border-right-color: rgba(0, 0, 0, .45); }
+.v-bw .foldtag { background: #fff; color: #555; }
+/* inside — item rows */
+.v-bw .ph { background: #141414; color: #fff; }
+.v-bw .tip { color: #141414; }
+/* inside — Build Your Own grid */
+.v-bw .tbh, .v-bw .tbc, .v-bw .tbsep, .v-bw .byo-k { color: #141414; }
+.v-bw .tbsep::before, .v-bw .tbsep::after { background: rgba(0, 0, 0, .3); }
+/* outside — cover panel */
+.v-bw .cov-togo { color: #141414; }
+.v-bw .cov-rule { background: #141414; }
+.v-bw .cov-logo { filter: grayscale(1) contrast(1.05); }
+/* outside — contact / Visit panel */
+.v-bw .bk-rule { background: #141414; }
+.v-bw .hrs { border-top-color: rgba(0, 0, 0, .5); }
+.v-bw .web { color: #141414; }
+/* outside — about / cater panel */
+.v-bw .t-sprig { color: #141414; }
