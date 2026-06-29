@@ -491,9 +491,10 @@ export default function App() {
     return () => { live = false; };
   }, [pageId]);
 
-  // Auto-fit engine. Always COMPRESS when content overflows (so the page can never
-  // hang off the bottom, even on load). SPREAD to fill only after an edit — a page
-  // that already fits is left exactly as designed on a plain load.
+  // Auto-fit engine. ONLY COMPRESS when content overflows (so the page can never
+  // hang off the bottom). As long as the content fits, the designed/saved spacing is
+  // left exactly as-is — moving, reordering, or editing never re-spreads the gaps.
+  // (Previously it spread-to-fill after any edit, which flattened hand-tuned spacing.)
   useLayoutEffect(() => {
     const page = pageRef.current;
     if (!page) return;
@@ -507,7 +508,7 @@ export default function App() {
     natural += MIN_GAP * (blocks.length - 1);
     if (foot) { const fcs = getComputedStyle(foot); natural += foot.offsetHeight + parseFloat(fcs.marginTop); }
     const leftover = availH - natural;
-    if (leftover >= 0 && fit === 0) return; // fits on a plain load → leave frozen
+    if (leftover >= 0) return; // still fits → keep the saved spacing exactly (no reflow on moves/edits)
     const overflow = leftover < 0;
     const denom = overflow ? blocks.length : blocks.length - 1;
     const extra = denom > 0 ? leftover / denom : 0;
